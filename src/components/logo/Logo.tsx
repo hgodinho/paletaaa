@@ -1,6 +1,6 @@
 import { cva, VariantProps } from "class-variance-authority";
 
-const logoVariants = cva([], {
+const logoVariants = cva(["z-20"], {
     variants: {
         variant: {
             dark: [],
