@@ -1,35 +1,15 @@
 import { PaletteProvider } from "@/context";
 import { cn } from "@/lib";
-import { LayoutProps } from "./types";
+import { Editor, Logo, Menu, Preview } from "@/components";
 
-export function Layout({ editor, preview }: LayoutProps) {
+export function Layout() {
     return (
         <PaletteProvider>
-            <div className={cn("flex", "flex-col", "lg:flex-row", "h-screen")}>
-                <div
-                    className={cn(
-                        "h-2/5",
-                        "w-screen",
-
-                        "lg:w-[22%]",
-                        "lg:h-screen",
-
-                        "bg-gray-300"
-                    )}
-                >
-                    {editor}
-                </div>
-                <div
-                    className={cn(
-                        "h-3/5",
-                        "w-screen",
-
-                        "lg:w-[1fr]",
-                        "lg:h-screen"
-                    )}
-                >
-                    {preview}
-                </div>
+            <div className={cn("h-screen", "flex", "flex-row")}>
+                <Menu />
+                <Editor />
+                <Preview />
+                <Logo className={cn("fixed", "bottom-6", "left-6")} />
             </div>
         </PaletteProvider>
     );
