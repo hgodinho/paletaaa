@@ -8,4 +8,5 @@ export * from "./picker";
 export * from "./preview";
 export * from "./textarea";
 export * from "./validator";
+export * from "./button";
 export * from "./logo";
