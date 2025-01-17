@@ -1,5 +1,5 @@
-export type LabelProps<Variant = unknown> =
-    React.LabelHTMLAttributes<HTMLLabelElement> & {
-        title?: React.ReactNode;
-        ref?: React.Ref<HTMLLabelElement>;
-    } & Variant;
+import { LabelProps as PrimitiveProps } from "react-aria-components";
+export type LabelProps<Variant = unknown> = PrimitiveProps & {
+    title?: React.ReactNode;
+    ref?: React.Ref<HTMLLabelElement>;
+} & Variant;

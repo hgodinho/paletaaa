@@ -1,19 +1,7 @@
-import { cn } from "@/lib";
 import { LabelProps } from "./types";
-import { cva, VariantProps } from "class-variance-authority";
-
-const labelVariants = cva(["flex", "gap-2", "text-lg"], {
-    variants: {
-        size: {
-            small: ["text-sm", "items-center"],
-            medium: ["text-lg", "flex-col"],
-            large: ["text-xl"],
-        },
-    },
-    defaultVariants: {
-        size: "medium",
-    },
-});
+import { VariantProps } from "class-variance-authority";
+import { labelVariants } from "./variants";
+import { Label as Primitive } from "react-aria-components";
 
 export function Label({
     ref,
@@ -24,15 +12,13 @@ export function Label({
     ...props
 }: LabelProps<VariantProps<typeof labelVariants>>) {
     return (
-        <label
+        <Primitive
             ref={ref}
             className={labelVariants({ className, size })}
             {...props}
         >
-            {title && (
-                <span className={cn("font-bold", "font-mono")}>{title}</span>
-            )}
+            {title && <span>{title}</span>}
             {children}
-        </label>
+        </Primitive>
     );
 }
