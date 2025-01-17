@@ -24,6 +24,14 @@ export const buttonVariants = cva(
                     "border-gray-400",
                     "hover:bg-gray-200",
                 ],
+                trigger: [
+                    "p-3",
+                    "fixed",
+                    "rounded-full",
+                    "z-20",
+                    "duration-300",
+                    "hover:p-4"
+                ],
                 none: [],
             },
         },
