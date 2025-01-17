@@ -1,74 +1,55 @@
 import { cn } from "@/lib";
 import { ValidLineProps } from "./types";
-import { Check, X } from "lucide-react";
-import { usePaletteContext } from "@/context";
+import { Check, CheckCheck, X } from "lucide-react";
+import { useMemo } from "react";
 
-export function ValidLine({
-    name,
-    compliance,
-    color,
-    background,
-}: ValidLineProps) {
-    let { backgroundContrast } = usePaletteContext();
+export function ValidLine({ name, compliance, color }: ValidLineProps) {
+    const Icon = useMemo(() => {
+        let totalCompliance = 0;
+        if (
+            compliance["16pt"].valid &&
+            !compliance["22pt"].valid &&
+            !compliance.large.valid
+        ) {
+            totalCompliance = 1;
+        }
+        if (
+            compliance["16pt"].valid &&
+            compliance["22pt"].valid &&
+            !compliance.large.valid
+        ) {
+            totalCompliance = 2;
+        }
+        if (
+            compliance["16pt"].valid &&
+            compliance["22pt"].valid &&
+            compliance.large.valid
+        ) {
+            totalCompliance = 3;
+        }
+
+        if (totalCompliance <= 1) {
+            return <X size={32} />;
+        }
+        if (totalCompliance === 2) {
+            return <Check size={32} />;
+        }
+        if (totalCompliance === 3) {
+            return <CheckCheck size={32} />;
+        }
+    }, [compliance]);
 
     return (
         <div
-            className={cn(
-                "flex",
-                "flex-col",
-                "items-center",
-                "justify-center",
-                `text-${backgroundContrast}`
-            )}
+            className={cn("flex", "flex-row", "items-center", "gap-4  ")}
+            style={{
+                color: color.toString("hex"),
+            }}
         >
-            <p
-                className={cn(
-                    "font-bold",
-                    "font-mono",
-                    "border-b",
-                    `border-${backgroundContrast}`,
-                    "w-full",
-                    "mb-1"
-                )}
-            >
+            <p className={cn("font-bold", "mb-1", "text-2xl")}>
                 {name}
             </p>
-            {Object.entries(compliance).map(([item, prop]) => {
-                return (
-                    <div
-                        key={item}
-                        className={cn(
-                            "flex",
-                            "flex-row",
-                            "items-center",
-                            "justify-between",
-                            "w-full"
-                        )}
-                    >
-                        <p
-                            className={cn("w-full", "pl-2")}
-                            style={{
-                                color: color?.value,
-                                backgroundColor: background?.value,
-                            }}
-                        >
-                            {item}
-                        </p>
-                        <div
-                            className={cn(
-                                "w-6",
-                                "h-6",
-                                "p-1",
-                                prop.valid
-                                    ? ["bg-green-500"].join(" ")
-                                    : ["bg-red-700", "text-white"].join(" ")
-                            )}
-                        >
-                            {prop.valid ? <Check size={16} /> : <X size={16} />}
-                        </div>
-                    </div>
-                );
-            })}
+            {Icon}
         </div>
     );
 }
