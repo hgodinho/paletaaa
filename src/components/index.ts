@@ -1,6 +1,5 @@
 export * from "./colors";
 export * from "./editor";
-export * from "./header";
 export * from "./input";
 export * from "./label";
 export * from "./layout";
