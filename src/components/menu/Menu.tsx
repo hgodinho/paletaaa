@@ -1,20 +1,33 @@
 import { createRef, useState } from "react";
 import { MenuContext } from "./Context";
-import { Trigger } from "./Trigger";
 import { cn } from "@/lib";
-import { Picker, Input, Label, Button, Links } from "@/components";
-import { Color, usePaletteContext } from "@/context";
-import { ChevronDown, X } from "lucide-react";
+import {
+    Picker,
+    Input,
+    Label,
+    Button,
+    Links,
+    ColorSwatch,
+    Trigger,
+    Logo,
+} from "@/components";
+import { usePaletteContext } from "@/context";
+import { ChevronDown, MenuIcon, X } from "lucide-react";
+import { AddButton } from "../colors/AddButton";
 
 export function MenuItems() {
     const [menu, setExpanded] = useState(new Map([["background", false]]));
 
-    const { colorSpace, bfsAll, getNode, updateVertex, removeVertex } =
-        usePaletteContext();
+    const {
+        colorSpace,
+        bfsAll,
+        updateColorName,
+        updateColorData,
+        removeVertex,
+    } = usePaletteContext();
 
     return bfsAll((vertex) => {
         const { id, color } = vertex;
-
         return (
             <div
                 key={id}
@@ -34,15 +47,14 @@ export function MenuItems() {
                 <h3
                     className={cn(
                         "text-lg",
-                        // "font-mono",
-                        // "font-bold",
-                        // "italic",
                         "flex",
                         "items-center",
                         "gap-2",
                         "w-full",
                         "justify-between",
-                        "p-2"
+                        "p-2",
+                        "border-gray-400",
+                        menu.get(id) && "border-b"
                     )}
                 >
                     <div
@@ -53,12 +65,7 @@ export function MenuItems() {
                             "items-center"
                         )}
                     >
-                        <div
-                            className={cn("w-8", "h-8", "rounded-full")}
-                            style={{
-                                backgroundColor: color.data.toString("hex"),
-                            }}
-                        ></div>
+                        <ColorSwatch size="large" color={color.data} />
                         {color.title || id}
                     </div>
                     <div
@@ -73,14 +80,16 @@ export function MenuItems() {
                     >
                         <Button
                             variant={"square"}
-                            title="Delete"
+                            title={`${id === "background"
+                                ? "can't delete background"
+                                : "delete color"
+                                }`}
                             aria-disabled={id === "background"}
                             disabled={id === "background"}
                             onClick={() => removeVertex(id)}
                             className={cn(
                                 "hidden",
                                 "group-hover:block",
-                                // "border",
                                 "text-gray-400",
                                 "hover:bg-white",
                                 "hover:border-red-500",
@@ -91,6 +100,7 @@ export function MenuItems() {
                         </Button>
                         <Button
                             variant={"square"}
+                            title={`expand color ${color.title || id}`}
                             aria-expanded={menu.get(id)}
                             aria-controls={id}
                             id={`trigger-item-${id}`}
@@ -145,31 +155,19 @@ export function MenuItems() {
                                 placeholder="Name"
                                 value={color.title || ""}
                                 onChange={(e) => {
-                                    updateVertex({
-                                        ...vertex,
-                                        color: {
-                                            ...color,
-                                            title: e.target.value,
-                                        },
-                                    });
+                                    updateColorName(id, e.target.value);
                                 }}
-                                // disabled={menu.get(id)}
+                            // disabled={menu.get(id)}
                             />
                         </Label>
                         <Picker
                             // disabled={menu.get(id)}
-                            // title="Background"
-                            variant="compact"
+                            title="color"
                             colorSpace={colorSpace}
-                            color={color}
-                            background={getNode("background")?.color as Color}
+                            color={color.data}
                             onChange={(newColor) => {
-                                updateVertex({
-                                    ...vertex,
-                                    color: {
-                                        ...color,
-                                        ...newColor,
-                                    },
+                                updateColorData(id, {
+                                    data: newColor,
                                 });
                             }}
                         />
@@ -186,7 +184,7 @@ export function Menu() {
     const menuId = "menu";
     const ref = createRef<HTMLDivElement>();
     const [open, setOpen] = useState(true);
-    const { contrastColor, getNode } = usePaletteContext();
+    const { contrastColor, getNode, onColorAdd } = usePaletteContext();
 
     // const handleKeyDown = useCallback(
     //     (e: React.KeyboardEvent<HTMLDivElement>) => {
@@ -199,7 +197,7 @@ export function Menu() {
     // );
 
     return (
-        <MenuContext.Provider value={{ open, setOpen }}>
+        <MenuContext value={{ open, setOpen }}>
             <div
                 className={cn(
                     "z-10",
@@ -208,10 +206,6 @@ export function Menu() {
                     "justify-start",
                     "bg-transparent"
                 )}
-                // style={{
-                //     backgroundColor:
-                //         getNode("background")?.color.data.toString("hex"),
-                // }}
             >
                 <aside
                     ref={ref}
@@ -238,6 +232,10 @@ export function Menu() {
                         ),
                     }}
                 >
+                    <AddButton
+                        className={cn("duration-300", !open && "hidden")}
+                        onClick={onColorAdd}
+                    />
                     <div
                         className={cn(
                             "accordion",
@@ -252,10 +250,33 @@ export function Menu() {
                     </div>
                 </aside>
                 <Trigger
-                    menuId={menuId}
-                    className={cn("duration-300", "ml-4", "mt-4")}
+                    value={open}
+                    onClick={setOpen}
+                    controlledId={menuId}
+                    aria-label={"Toggle menu"}
+                    className={cn(
+                        "ml-4",
+                        "mt-4",
+                        "hover:ml-3",
+                        "hover:mt-3",
+                        open ? "left-96" : "left-0"
+                    )}
+                    ValueTrue={X}
+                    ValueFalse={MenuIcon}
                 />
             </div>
-        </MenuContext.Provider>
+            <Logo
+                variant={
+                    open
+                        ? contrastColor(
+                            getNode("background")?.color.data.toString("hex"),
+                            "#FFF"
+                        )
+                        : "white"
+                }
+                size={"small"}
+                className={cn("fixed", "bottom-6", "left-6")}
+            />
+        </MenuContext>
     );
 }
