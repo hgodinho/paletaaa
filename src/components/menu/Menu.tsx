@@ -213,6 +213,7 @@ export function Menu() {
                     className={cn(
                         "h-screen",
                         "text-black",
+                        "*:mx-2",
                         "pt-4",
                         "pb-16",
                         "flex",
@@ -220,6 +221,7 @@ export function Menu() {
                         "duration-300",
                         "bg-white",
                         "border-r",
+                        "gap-2",
                         open ? ["w-96"] : ["w-0"]
                     )}
                     aria-expanded={open}
@@ -240,8 +242,7 @@ export function Menu() {
                         className={cn(
                             "accordion",
                             "overflow-auto",
-                            "px-4",
-                            "h-screen",
+                            "h-full",
                             "duration-300",
                             !open && "hidden"
                         )}

@@ -8,8 +8,6 @@ export function AddButton({ className, ...props }: AddButtonProps) {
         <Button
             variant={"square"}
             className={cn(
-                "mx-4",
-                "mb-2",
                 "flex",
                 "items-center",
                 "justify-center",
