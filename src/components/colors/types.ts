@@ -1,10 +1,14 @@
+import { Color } from "@/context";
+
 export type ColorProps = {
-    onChange?: (value: ColorType) => void;
+    onChange?: (value: Color) => void;
     onDelete?: () => void;
-    color?: ColorType;
+    color: Color;
 };
 
 export type ColorType = {
     title: string;
     value: string;
 };
+
+export type AddButtonProps = React.HTMLAttributes<HTMLButtonElement>;
