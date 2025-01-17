@@ -5,8 +5,12 @@ import {
     PaletteContextDefault,
     PaletteContextType,
 } from "./Context";
-import { ColorType } from "@/components";
 import ColorContrastChecker from "color-contrast-checker";
+import { useGraph } from "@/lib";
+
+import type { Node, Link } from "./types";
+import { parseColor } from "react-aria-components";
+import type { Color } from "./Context";
 
 export function PaletteProvider({
     children,
@@ -15,52 +19,67 @@ export function PaletteProvider({
         PaletteContextDefault
     );
 
+    const { graph, ...graphActions } = useGraph<Node, Link>();
+
     const validator = useMemo(() => {
         return new ColorContrastChecker();
     }, []);
 
-    const pushColor = useCallback((color: ColorType) => {
-        setPalette((prev: PaletteContextType) => ({
-            ...prev,
-            colors: [...(prev.colors || []), color],
-        }));
+    const contrastColor = useCallback((colorA: string, colorB: string) => {
+        return validator?.check(colorA, colorB, 18).WCAG_AAA
+            ? "white"
+            : "black";
     }, []);
 
-    const editColor = useCallback((color: ColorType, index: number) => {
-        setPalette((prev: PaletteContextType) => {
-            const colors = [...(prev.colors || [])];
-            colors[index] = color;
-            return { ...prev, colors };
+    const onColorAdd = () => {
+        graphActions.addVertex({
+            id: Math.random().toString(36).substring(2, 7),
+            color: {
+                data: parseColor(
+                    `hsl(${Math.random() * 360}, ${Math.random() * 100}%, ${Math.random() * 100
+                    }%)`
+                ),
+                title: "",
+            },
         });
-    }, []);
+    };
 
-    const deleteColor = useCallback((index: number) => {
-        setPalette((prev: PaletteContextType) => {
-            const colors = [...(prev.colors || [])];
-            colors.splice(index, 1);
-            return { ...prev, colors };
+    const updateColorName = (id: string, title: string) => {
+        graphActions.updateVertex({
+            id,
+            color: {
+                ...graph.nodes.get(id)?.color,
+                title,
+            },
         });
-    }, []);
+    }
 
-    const backgroundContrast = useMemo(() => {
-        return validator?.check(
-            palette.background?.value || "#FFFFFF",
-            "#000000",
-            18
-        ).WCAG_AAA
-            ? "black"
-            : "white";
-    }, [palette.background?.value]);
+    const updateColorData = (id: string, data: Color) => {
+        console.log("updateColorData", { id, data, original: graph.nodes.get(id)?.color });
+
+        graphActions.updateVertex({
+            id,
+            color: {
+                ...graphActions.getNode(id)?.color,
+                ...data,
+            },
+        });
+    }
 
     return (
         <PaletteContext.Provider
             value={{
                 ...palette,
-                backgroundContrast,
                 setPalette,
-                pushColor,
-                editColor,
-                deleteColor,
+
+                contrastColor,
+                onColorAdd,
+                updateColorName,
+                updateColorData,
+
+                ...graph,
+                ...graphActions,
+
                 validator,
             }}
         >
