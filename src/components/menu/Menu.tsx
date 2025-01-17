@@ -15,6 +15,8 @@ import { usePaletteContext } from "@/context";
 import { ChevronDown, MenuIcon, X } from "lucide-react";
 import { AddButton } from "../colors/AddButton";
 
+import pkg from "../../../package.json";
+
 export function MenuItems() {
     const [menu, setExpanded] = useState(new Map([["background", false]]));
 
@@ -234,6 +236,53 @@ export function Menu() {
                         ),
                     }}
                 >
+                    <div
+                        className={cn(
+                            "flex",
+                            "flex-row",
+                            "justify-end",
+                            "gap-2",
+                            "items-center",
+                            "mb-4"
+                        )}
+                    >
+                        <span
+                            className={cn(
+                                "text-xs",
+                                "px-1",
+                                "rounded-full",
+                                "font-bold"
+                            )}
+                            style={{
+                                backgroundColor:
+                                    getNode("background")?.color.data.toString(
+                                        "hex"
+                                    ),
+                                color: contrastColor(
+                                    getNode("background")?.color.data.toString(
+                                        "hex"
+                                    ),
+                                    "#FFF"
+                                ),
+                            }}
+                        >
+                            {pkg.version}
+                        </span>
+                        <a
+                            href="https://github.com/hgodinho"
+                            target="_blank"
+                            aria-label="github hgodinho"
+                            title="github hgodinho"
+                            className={cn("align-self-end", "justify-self-end")}
+                        >
+                            <img
+                                src="https://cdn.simpleicons.org/github/181717"
+                                height={16}
+                                width={16}
+                                alt="github"
+                            />
+                        </a>
+                    </div>
                     <AddButton
                         className={cn("duration-300", !open && "hidden")}
                         onClick={onColorAdd}
