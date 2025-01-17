@@ -2,7 +2,7 @@ import { usePaletteContext } from "@/context";
 import { cn } from "@/lib";
 
 export function Preview() {
-    const { colors, graph, getNode } = usePaletteContext();
+    const { colors, getNode } = usePaletteContext();
     return (
         <div
             className={cn(

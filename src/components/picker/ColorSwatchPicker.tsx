@@ -1,5 +1,4 @@
 import {
-    ColorSwatchPickerItemProps,
     ColorSwatchPickerProps as PrimitiveType,
     ColorSwatchPicker as Primitive,
     ColorSwatchPickerItem,

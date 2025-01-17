@@ -12,7 +12,7 @@ export function PickerProvider({
     onChange,
     children
 }: React.PropsWithChildren<PickerContextProps>) {
-    const [colorSpace, setColorSpace] = useState<ColorSpace>("hsl");
+    const [colorSpace] = useState<ColorSpace>("hsl");
 
     const componentsProps: PickerPartsProps = {
         areaProps: {
