@@ -127,7 +127,10 @@ export function ColorGraph() {
                 )}
             >
                 <div className={cn("absolute")}>
-                    <ForceGraph2D ref={graphRef} {...options} {...callbacks} />
+                    <ForceGraph2D
+                        // @ts-ignore
+                        ref={graphRef}
+                        {...options} {...callbacks} />
                 </div>
             </div>
         </>
