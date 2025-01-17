@@ -269,11 +269,11 @@ export function Menu() {
             <Logo
                 variant={
                     open
-                        ? contrastColor(
+                        ? "black"
+                        : contrastColor(
                             getNode("background")?.color.data.toString("hex"),
                             "#FFF"
                         )
-                        : "white"
                 }
                 size={"small"}
                 className={cn("fixed", "bottom-6", "left-6")}
