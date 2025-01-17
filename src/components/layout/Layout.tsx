@@ -1,6 +1,6 @@
 import { PaletteProvider } from "@/context";
 import { cn } from "@/lib";
-import { Editor, Logo, Menu, Preview } from "@/components";
+import { Editor, Menu, Preview } from "@/components";
 
 export function Layout() {
     return (
@@ -8,8 +8,9 @@ export function Layout() {
             <div className={cn("h-screen", "flex", "flex-row")}>
                 <Menu />
                 <Editor />
-                <Preview />
-                <Logo className={cn("fixed", "bottom-6", "left-6")} />
+                {/* <Preview />
+                    // to be further implemented
+                */}
             </div>
         </PaletteProvider>
     );
