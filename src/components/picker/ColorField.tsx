@@ -3,33 +3,23 @@ import {
     ColorFieldProps as PrimitiveType,
 } from "react-aria-components";
 
-import { Label, Input, ColorType } from "@/components";
-import { usePaletteContext } from "@/context";
+import { Label, Input, InputProps } from "@/components";
+import { usePickerContext } from "./Context";
 import { cn } from "@/lib";
 
 export type ColorFieldProps = PrimitiveType & {
-    label?: PrimitiveType["channel"];
-    bg?: ColorType;
-};
+    label?: string;
+} & InputProps;
 
-export function ColorField({ label, bg, ...props }: ColorFieldProps) {
-    const { backgroundContrast } = usePaletteContext();
+export function ColorField({ label, size, ...props }: ColorFieldProps) {
+    const { fieldProps } = usePickerContext();
 
     return (
-        <Primitive channel={label} {...props}>
-            <Label
-                htmlFor="background"
-                size={"small"}
-                title={label || "hex"}
-                className={cn(`text-${backgroundContrast}`)}
-            >
-                <Input
-                    id="background"
-                    size={"small"}
-                    aria-label={label}
-                    className={cn("w-full", "text-black")}
-                />
-            </Label>
+        <Primitive {...fieldProps} {...props}>
+            {label && (
+                <Label size={size} title={label} className={cn("mb-2")} />
+            )}
+            <Input size={size} aria-label={label} />
         </Primitive>
     );
 }

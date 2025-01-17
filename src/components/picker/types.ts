@@ -1,4 +1,11 @@
-import { ColorType } from "@/components";
+import {
+    Color,
+    ColorAreaProps,
+    ColorSliderProps,
+    ColorSpace,
+    ColorThumbProps,
+} from "react-aria-components";
+import { ColorFieldProps } from "./ColorField";
 
 export type ValidProperty = {
     valid: boolean;
@@ -16,11 +23,36 @@ export type Valid = {
     AA: WCAGCompliance;
 };
 
-export type PickerProps = {
-    color?: ColorType;
-    background?: ColorType;
-    valid?: Valid;
-    variant?: "compact" | "full";
-    title?: string;
-    onChange?: (color: string) => void;
+export type PickerColors = {
+    color: Color;
 };
+
+export type PickerProps = PickerColors &
+    Omit<React.InputHTMLAttributes<HTMLInputElement>, "onChange" | "color"> & {
+        valid?: Valid;
+        title?: string;
+        colorSpace: ColorSpace;
+        onChange?: (color: Color) => void;
+    };
+
+export type PickerContextProps = PickerProps;
+
+export type PickerPartsProps = {
+    areaProps: ColorAreaProps;
+    thumbProps: ColorThumbProps;
+    sliderProps: ColorSliderProps;
+    fieldProps: ColorFieldProps;
+};
+
+export type PickerContextType = PickerProps &
+    PickerPartsProps & {
+        setColor: (color: Color) => void;
+    };
+
+export type PickerContextCallbacks = {};
+
+export type ColorSwatchPickerProps<T, ColorType> = {
+    colors?: ColorType[];
+    color?: Color;
+    onChange?: (color: Color) => void;
+} & T;

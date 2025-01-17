@@ -3,8 +3,10 @@ import {
     ColorThumb as Primitive,
     ColorThumbProps,
 } from "react-aria-components";
+import { usePickerContext } from "./Context";
 
 export function ColorThumb({ className, ...props }: ColorThumbProps) {
+    const { thumbProps } = usePickerContext();
     return (
         <Primitive
             className={cn(
@@ -23,6 +25,7 @@ export function ColorThumb({ className, ...props }: ColorThumbProps) {
 
                 String(className)
             )}
+            {...thumbProps}
             {...props}
         />
     );
