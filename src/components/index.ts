@@ -6,7 +6,6 @@ export * from "./layout";
 export * from "./picker";
 export * from "./preview";
 export * from "./textarea";
-export * from "./validator";
 export * from "./button";
 export * from "./menu";
 export * from "./links";
