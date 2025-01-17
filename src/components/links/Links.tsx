@@ -26,18 +26,9 @@ export function AddLink({ current }: LinksProps) {
 
     const [to, setTo] = useState<string>("");
 
-    const onSelect = (value: string) => {
-        setTo(value);
-        console.log({ value });
-    };
-
     const {
         getNodes,
         haveEdges,
-        bfsAll,
-        getLinks,
-        getNodeEdges,
-        isDirEdge,
         addDirEdge,
         addEdge,
     } = usePaletteContext();
@@ -106,7 +97,7 @@ export function AddLink({ current }: LinksProps) {
                                 .filter((node) => node.value !== current)}
                             placeholder="Select color"
                             className={cn("w-full")}
-                            onChange={onSelect}
+                            onChange={setTo}
                             value={to}
                         />
                         <Button
@@ -158,13 +149,6 @@ export function Links({ current }: LinksProps) {
     return (
         <div className={cn("flex", "flex-col", "gap-4")}>
             {getNodeEdges(current).map(({ source, target }) => {
-                const colorLuminance = validator?.hexToLuminance(
-                    getNode(target)?.color.data.toString("hex")
-                );
-                const backgroundLuminance = validator?.hexToLuminance(
-                    getNode(current)?.color.data.toString("hex")
-                );
-
                 return (
                     <div
                         key={`${source}-${target}`}
