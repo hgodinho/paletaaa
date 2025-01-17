@@ -1,6 +1,6 @@
 import { PaletteProvider } from "@/context";
 import { cn } from "@/lib";
-import { Editor, Menu, Preview } from "@/components";
+import { Editor, Menu, /*Preview*/ } from "@/components";
 
 export function Layout() {
     return (
