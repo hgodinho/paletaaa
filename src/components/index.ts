@@ -10,4 +10,6 @@ export * from "./textarea";
 export * from "./validator";
 export * from "./button";
 export * from "./menu";
+export * from "./links";
+export * from "./trigger";
 export * from "./logo";
