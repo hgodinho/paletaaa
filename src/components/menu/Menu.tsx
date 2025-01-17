@@ -83,8 +83,8 @@ export function MenuItems() {
                         <Button
                             variant={"square"}
                             title={`${id === "background"
-                                ? "can't delete background"
-                                : "delete color"
+                                    ? "can't delete background"
+                                    : "delete color"
                                 }`}
                             aria-disabled={id === "background"}
                             disabled={id === "background"}
