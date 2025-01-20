@@ -19,11 +19,8 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  download-release:
+  verify-release:
     runs-on: ubuntu-latest
-    # environment:
-    #   name: github-pages
-    #   url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - name: download
         uses: actions/download-artifact@v4
@@ -53,6 +50,7 @@ jobs:
         run: |
           echo "NEW_RELEASE_PUBLISHED=$NEW_RELEASE_PUBLISHED"
           echo "NEW_RELEASE_VERSION=$NEW_RELEASE_VERSION"
+
     outputs:
       NEW_RELEASE_PUBLISHED: ${{ steps.read.outputs.NEW_RELEASE_PUBLISHED }}
       NEW_RELEASE_VERSION: ${{ steps.read.outputs.NEW_RELEASE_VERSION }}
@@ -69,8 +67,11 @@ jobs:
 
   page-deploy:
     runs-on: ubuntu-latest
-    needs: download-release
-    if: ${{ needs.download-release.outputs.NEW_RELEASE_PUBLISHED == 'true' }}
+    needs: verify-release
+    if: ${{ needs.verify-release.outputs.NEW_RELEASE_PUBLISHED == 'true' }}
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -106,8 +107,8 @@ jobs:
 
   dont-deploy:
     runs-on: ubuntu-latest
-    needs: download-release
-    if: ${{ needs.download-release.outputs.NEW_RELEASE_PUBLISHED == 'false' }}
+    needs: verify-release
+    if: ${{ needs.verify-release.outputs.NEW_RELEASE_PUBLISHED == 'false' }}
     steps:
       - name: Skip
         run: echo "No new release to deploy"
