@@ -31,7 +31,6 @@ jobs:
 
       - name: read
         id: read
-        id: read
         run: |
           source semantic-release.txt
           echo "NEW_RELEASE_PUBLISHED=$new_release_published" >> $GITHUB_OUTPUT
@@ -52,19 +51,6 @@ jobs:
           echo "NEW_RELEASE_PUBLISHED=$NEW_RELEASE_PUBLISHED"
           echo "NEW_RELEASE_VERSION=$NEW_RELEASE_VERSION"
 
-    outputs:
-      NEW_RELEASE_PUBLISHED: ${{ steps.read.outputs.NEW_RELEASE_PUBLISHED }}
-      NEW_RELEASE_VERSION: ${{ steps.read.outputs.NEW_RELEASE_VERSION }}
-      NEW_RELEASE_MAJOR_VERSION: ${{ steps.read.outputs.NEW_RELEASE_MAJOR_VERSION }}
-      NEW_RELEASE_MINOR_VERSION: ${{ steps.read.outputs.NEW_RELEASE_MINOR_VERSION }}
-      NEW_RELEASE_PATCH_VERSION: ${{ steps.read.outputs.NEW_RELEASE_PATCH_VERSION }}
-      NEW_RELEASE_CHANNEL: ${{ steps.read.outputs.NEW_RELEASE_CHANNEL }}
-      NEW_RELEASE_NOTES: ${{ steps.read.outputs.NEW_RELEASE_NOTES }}
-      NEW_RELEASE_GIT_HEAD: ${{ steps.read.outputs.NEW_RELEASE_GIT_HEAD }}
-      NEW_RELEASE_GIT_TAG: ${{ steps.read.outputs.NEW_RELEASE_GIT_TAG }}
-      LAST_RELEASE_VERSION: ${{ steps.read.outputs.LAST_RELEASE_VERSION }}
-      LAST_RELEASE_GIT_HEAD: ${{ steps.read.outputs.LAST_RELEASE_GIT_HEAD }}
-      LAST_RELEASE_GIT_TAG: ${{ steps.read.outputs.LAST_RELEASE_GIT_TAG }}
     outputs:
       NEW_RELEASE_PUBLISHED: ${{ steps.read.outputs.NEW_RELEASE_PUBLISHED }}
       NEW_RELEASE_VERSION: ${{ steps.read.outputs.NEW_RELEASE_VERSION }}
