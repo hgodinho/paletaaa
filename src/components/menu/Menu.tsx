@@ -264,7 +264,7 @@ export function Menu() {
                                 ),
                             }}
                         >
-                            {import.meta.env.RELEASE_VERSION || pkg.version}
+                            {import.meta.env.VITE_NEW_RELEASE_VERSION || "dev"}
                         </span>
                         <a
                             href="https://github.com/hgodinho"
