@@ -15,8 +15,6 @@ import { usePaletteContext } from "@/context";
 import { ChevronDown, MenuIcon, X } from "lucide-react";
 import { AddButton } from "../colors/AddButton";
 
-import pkg from "../../../package.json";
-
 export function MenuItems() {
     const [menu, setExpanded] = useState(new Map([["background", false]]));
 
