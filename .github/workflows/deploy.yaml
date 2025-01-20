@@ -33,25 +33,39 @@ jobs:
           run-id: ${{ github.event.workflow_run.id }}
 
       - name: read
+        id: read
         run: |
           source semantic-release.txt
-          echo "NEW_RELEASE_PUBLISHED=$new_release_published" >> $GITHUB_ENV
-          echo "NEW_RELEASE_VERSION=$new_release_version" >> $GITHUB_ENV
-          echo "NEW_RELEASE_MAJOR_VERSION=$new_release_major_version" >> $GITHUB_ENV
-          echo "NEW_RELEASE_MINOR_VERSION=$new_release_minor_version" >> $GITHUB_ENV
-          echo "NEW_RELEASE_PATCH_VERSION=$new_release_patch_version" >> $GITHUB_ENV
-          echo "NEW_RELEASE_CHANNEL=$new_release_channel" >> $GITHUB_ENV
-          echo "NEW_RELEASE_NOTES=$new_release_notes" >> $GITHUB_ENV
-          echo "NEW_RELEASE_GIT_HEAD=$new_release_git_head" >> $GITHUB_ENV
-          echo "NEW_RELEASE_GIT_TAG=$new_release_git_tag" >> $GITHUB_ENV
-          echo "LAST_RELEASE_VERSION=$last_release_version" >> $GITHUB_ENV
-          echo "LAST_RELEASE_GIT_HEAD=$last_release_git_head" >> $GITHUB_ENV
-          echo "LAST_RELEASE_GIT_TAG=$last_release_git_tag" >> $GITHUB_ENV
+          echo "NEW_RELEASE_PUBLISHED=$new_release_published" >> $GITHUB_OUTPUT
+          echo "NEW_RELEASE_VERSION=$new_release_version" >> $GITHUB_OUTPUT
+          echo "NEW_RELEASE_MAJOR_VERSION=$new_release_major_version" >> $GITHUB_OUTPUT
+          echo "NEW_RELEASE_MINOR_VERSION=$new_release_minor_version" >> $GITHUB_OUTPUT
+          echo "NEW_RELEASE_PATCH_VERSION=$new_release_patch_version" >> $GITHUB_OUTPUT
+          echo "NEW_RELEASE_CHANNEL=$new_release_channel" >> $GITHUB_OUTPUT
+          echo "NEW_RELEASE_NOTES=$new_release_notes" >> $GITHUB_OUTPUT
+          echo "NEW_RELEASE_GIT_HEAD=$new_release_git_head" >> $GITHUB_OUTPUT
+          echo "NEW_RELEASE_GIT_TAG=$new_release_git_tag" >> $GITHUB_OUTPUT
+          echo "LAST_RELEASE_VERSION=$last_release_version" >> $GITHUB_OUTPUT
+          echo "LAST_RELEASE_GIT_HEAD=$last_release_git_head" >> $GITHUB_OUTPUT
+          echo "LAST_RELEASE_GIT_TAG=$last_release_git_tag" >> $GITHUB_OUTPUT
 
       - name: see
         run: |
           echo "NEW_RELEASE_PUBLISHED=$NEW_RELEASE_PUBLISHED"
           echo "NEW_RELEASE_VERSION=$NEW_RELEASE_VERSION"
+    outputs:
+      NEW_RELEASE_PUBLISHED: ${{ steps.read.outputs.NEW_RELEASE_PUBLISHED }}
+      NEW_RELEASE_VERSION: ${{ steps.read.outputs.NEW_RELEASE_VERSION }}
+      NEW_RELEASE_MAJOR_VERSION: ${{ steps.read.outputs.NEW_RELEASE_MAJOR_VERSION }}
+      NEW_RELEASE_MINOR_VERSION: ${{ steps.read.outputs.NEW_RELEASE_MINOR_VERSION }}
+      NEW_RELEASE_PATCH_VERSION: ${{ steps.read.outputs.NEW_RELEASE_PATCH_VERSION }}
+      NEW_RELEASE_CHANNEL: ${{ steps.read.outputs.NEW_RELEASE_CHANNEL }}
+      NEW_RELEASE_NOTES: ${{ steps.read.outputs.NEW_RELEASE_NOTES }}
+      NEW_RELEASE_GIT_HEAD: ${{ steps.read.outputs.NEW_RELEASE_GIT_HEAD }}
+      NEW_RELEASE_GIT_TAG: ${{ steps.read.outputs.NEW_RELEASE_GIT_TAG }}
+      LAST_RELEASE_VERSION: ${{ steps.read.outputs.LAST_RELEASE_VERSION }}
+      LAST_RELEASE_GIT_HEAD: ${{ steps.read.outputs.LAST_RELEASE_GIT_HEAD }}
+      LAST_RELEASE_GIT_TAG: ${{ steps.read.outputs.LAST_RELEASE_GIT_TAG }}
 
   page-deploy:
     runs-on: ubuntu-latest
