@@ -2,60 +2,82 @@ name: deploy
 
 on:
   workflow_run:
-    workflows:
-      - release
+    workflows: ["release"]
     types:
       - completed
 
-  # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
-# Sets the GITHUB_TOKEN permissions to allow deployment to GitHub Pages
 permissions:
   contents: read
   pages: write
   id-token: write
 
-# Allow one concurrent deployment
 concurrency:
   group: "pages"
   cancel-in-progress: true
 
 jobs:
-  # Single deploy job since we're just deploying
   deploy:
+    runs-on: ubuntu-latest
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
+      - name: download
+        uses: actions/download-artifact@v4
         with:
-          node-version: 20
-          #   cache: "pnpm"
+          name: semantic-release
 
-      - name: Install pnpm
-        run: npm install -g pnpm
+      - name: read
+        run: |
+          source semantic-release.txt
+          echo "NEW_RELEASE_PUBLISHED=$new_release_published" >> $GITHUB_ENV
+          echo "NEW_RELEASE_VERSION=$new_release_version" >> $GITHUB_ENV
+          echo "NEW_RELEASE_MAJOR_VERSION=$new_release_major_version" >> $GITHUB_ENV
+          echo "NEW_RELEASE_MINOR_VERSION=$new_release_minor_version" >> $GITHUB_ENV
+          echo "NEW_RELEASE_PATCH_VERSION=$new_release_patch_version" >> $GITHUB_ENV
+          echo "NEW_RELEASE_CHANNEL=$new_release_channel" >> $GITHUB_ENV
+          echo "NEW_RELEASE_NOTES=$new_release_notes" >> $GITHUB_ENV
+          echo "NEW_RELEASE_GIT_HEAD=$new_release_git_head" >> $GITHUB_ENV
+          echo "NEW_RELEASE_GIT_TAG=$new_release_git_tag" >> $GITHUB_ENV
+          echo "LAST_RELEASE_VERSION=$last_release_version" >> $GITHUB_ENV
+          echo "LAST_RELEASE_GIT_HEAD=$last_release_git_head" >> $GITHUB_ENV
+          echo "LAST_RELEASE_GIT_TAG=$last_release_git_tag" >> $GITHUB_ENV
 
-      - name: Install dependencies
-        run: pnpm install
+      - name: see
+        run: |
+          echo "NEW_RELEASE_PUBLISHED=$NEW_RELEASE_PUBLISHED"
+          echo "NEW_RELEASE_VERSION=$NEW_RELEASE_VERSION"
 
-      - name: Build
-        run: pnpm build
+      # - name: Checkout
+      #   uses: actions/checkout@v4
 
-      - name: Setup Pages
-        uses: actions/configure-pages@v4
+      # - name: Set up Node.js
+      #   uses: actions/setup-node@v4
+      #   with:
+      #     node-version: 20
 
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          # Upload dist folder
-          path: "./dist"
+      # - name: Install pnpm
+      #   run: npm install -g pnpm
 
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+      # - name: Install dependencies
+      #   run: pnpm install
+
+      # - name: Checkout release branch
+      #   uses: actions/checkout@v4
+
+      # - name: Build
+      #   run: pnpm build
+
+      # - name: Setup Pages
+      #   uses: actions/configure-pages@v4
+
+      # - name: Upload artifact
+      #   uses: actions/upload-pages-artifact@v3
+      #   with:
+      #     path: "./dist"
+
+      # - name: Deploy to GitHub Pages
+      #   id: deployment
+      #   uses: actions/deploy-pages@v4
