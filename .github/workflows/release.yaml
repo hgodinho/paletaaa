@@ -21,7 +21,7 @@ jobs:
           extra_plugins: |
             - @semantic-release/git
         env:
-          GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: save
         run: |
