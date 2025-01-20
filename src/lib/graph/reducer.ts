@@ -44,11 +44,6 @@ export function reducer<V extends BaseVertex, E extends BaseEdge<V>>(
             };
 
         case "UPDATE_VERTEX":
-            console.log("UPDATE_VERTEX", {
-                node: state.nodes.get(action.payload.id),
-                payload: action.payload,
-            });
-
             return {
                 ...state,
                 nodes: new Map([
@@ -56,7 +51,7 @@ export function reducer<V extends BaseVertex, E extends BaseEdge<V>>(
                     [
                         (action.payload as V).id,
                         {
-                            // ...state.nodes.get((action.payload as V).id),
+                            ...state.nodes.get((action.payload as V).id),
                             ...(action.payload as V),
                         },
                     ],

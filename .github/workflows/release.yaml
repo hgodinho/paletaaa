@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - beta
   workflow_dispatch:
 
 jobs:
@@ -14,8 +13,33 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - name: release
+        id: semantic
         uses: cycjimmy/semantic-release-action@v4
+        with:
+          branches: |
+            ["main"]
+          extra_plugins: |
+            - @semantic-release/git
         env:
           GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+
+      - name: save
+        run: |
+          echo "new_release_published=${{ steps.semantic.outputs.new_release_published }}" > semantic-release.txt
+          echo "new_release_version=${{ steps.semantic.outputs.new_release_version }}" >> semantic-release.txt
+          echo "new_release_major_version=${{ steps.semantic.outputs.new_release_major_version }}" >> semantic-release.txt
+          echo "new_release_minor_version=${{ steps.semantic.outputs.new_release_minor_version }}" >> semantic-release.txt
+          echo "new_release_patch_version=${{ steps.semantic.outputs.new_release_patch_version }}" >> semantic-release.txt
+          echo "new_release_channel=${{ steps.semantic.outputs.new_release_channel }}" >> semantic-release.txt
+          echo "new_release_notes=${{ steps.semantic.outputs.new_release_notes }}" >> semantic-release.txt
+          echo "new_release_git_head=${{ steps.semantic.outputs.new_release_git_head }}" >> semantic-release.txt
+          echo "new_release_git_tag=${{ steps.semantic.outputs.new_release_git_tag }}" >> semantic-release.txt
+          echo "last_release_version=${{ steps.semantic.outputs.last_release_version }}" >> semantic-release.txt
+          echo "last_release_git_head=${{ steps.semantic.outputs.last_release_git_head }}" >> semantic-release.txt
+          echo "last_release_git_tag=${{ steps.semantic.outputs.last_release_git_tag }}" >> semantic-release.txt
+
+      - name: upload
+        uses: actions/upload-artifact@v4
         with:
-          extra_plugins: "@semantic-release/git"
+          name: semantic-release
+          path: semantic-release.txt
