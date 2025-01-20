@@ -84,13 +84,11 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      - name: Checkout release branch
-        uses: actions/checkout@v4
-
       - name: Build
         run: |
           echo "VITE_NEW_RELEASE_VERSION=${{ needs.verify-release.outputs.NEW_RELEASE_VERSION }}" >> .env
           pnpm build
+
       - name: Setup Pages
         uses: actions/configure-pages@v4
 
