@@ -51,6 +51,7 @@ jobs:
         run: |
           echo "NEW_RELEASE_PUBLISHED=$NEW_RELEASE_PUBLISHED"
           echo "NEW_RELEASE_VERSION=$NEW_RELEASE_VERSION"
+
     outputs:
       NEW_RELEASE_PUBLISHED: ${{ steps.read.outputs.NEW_RELEASE_PUBLISHED }}
       NEW_RELEASE_VERSION: ${{ steps.read.outputs.NEW_RELEASE_VERSION }}
