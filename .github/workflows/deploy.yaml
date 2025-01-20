@@ -45,12 +45,10 @@ jobs:
           echo "LAST_RELEASE_VERSION=$last_release_version" >> $GITHUB_OUTPUT
           echo "LAST_RELEASE_GIT_HEAD=$last_release_git_head" >> $GITHUB_OUTPUT
           echo "LAST_RELEASE_GIT_TAG=$last_release_git_tag" >> $GITHUB_OUTPUT
-
       - name: see
         run: |
           echo "NEW_RELEASE_PUBLISHED=$NEW_RELEASE_PUBLISHED"
           echo "NEW_RELEASE_VERSION=$NEW_RELEASE_VERSION"
-
     outputs:
       NEW_RELEASE_PUBLISHED: ${{ steps.read.outputs.NEW_RELEASE_PUBLISHED }}
       NEW_RELEASE_VERSION: ${{ steps.read.outputs.NEW_RELEASE_VERSION }}
@@ -94,7 +92,6 @@ jobs:
         run: |
           echo "VITE_NEW_RELEASE_VERSION=${{ needs.verify-release.outputs.NEW_RELEASE_VERSION }}" >> .env
           pnpm build
-
       - name: Setup Pages
         uses: actions/configure-pages@v4
 
