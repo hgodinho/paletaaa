@@ -21,15 +21,13 @@ export function PaletteProvider({
 
     const { graph, ...graphActions } = useGraph<Node, Link>();
 
-    const validator = useMemo(() => {
-        return new ColorContrastChecker();
-    }, []);
+    const validator = new ColorContrastChecker();
 
-    const contrastColor = useCallback((colorA: string, colorB: string) => {
+    const contrastColor = (colorA: string, colorB: string) => {
         return validator?.check(colorA, colorB, 18).WCAG_AAA
             ? "white"
             : "black";
-    }, []);
+    }
 
     const onColorAdd = () => {
         graphActions.addVertex({
