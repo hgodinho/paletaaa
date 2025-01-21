@@ -21,7 +21,7 @@ export type Link = LinkObject & {
 export function ColorGraph() {
     const { getNodes, getLinks } = useGraphContext();
 
-    const { getBackgroundHex, contrastColor, onColorSelected } =
+    const { getBackgroundHex, contrastColor, expandColor } =
         usePaletteContext();
 
     const { observe, width, height } = useDimensions();
@@ -79,21 +79,18 @@ export function ColorGraph() {
             ctx.stroke();
         },
         nodeCanvasObjectMode: () => "after",
-
         onNodeDragEnd: (node) => {
             node.fx = node.x;
             node.fy = node.y;
         },
+        onNodeClick: (node) => expandColor(node.id),
 
         // links
         linkColor: () => {
-            return contrastColor(
-                "#FFF",
-                getNode("background")?.color.data.toString("hex") || "#fff"
-            );
+            return contrastColor("#FFF", getBackgroundHex());
         },
         linkCanvasObject: (link, ctx, globalScale) => {
-            console.log({ link, ctx, globalScale });
+            // console.log({ link, ctx, globalScale });
         },
         linkCanvasObjectMode: () => "after",
     };

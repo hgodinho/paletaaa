@@ -2,7 +2,7 @@ import { usePaletteContext } from "@/context";
 import { cn } from "@/lib";
 
 export function Preview() {
-    const { colors, getNode } = usePaletteContext();
+    const { getBackgroundHex } = usePaletteContext();
     return (
         <div
             className={cn(
@@ -14,8 +14,7 @@ export function Preview() {
                 "max-w-lg"
             )}
             style={{
-                backgroundColor:
-                    getNode("background")?.color?.data.toString("hex"),
+                backgroundColor: getBackgroundHex(),
             }}
         >
             <h1
@@ -23,34 +22,33 @@ export function Preview() {
                     "text-5xl",
                     "font-bold",
                     "flex",
-                    "flex-col",
                     "gap-4"
                 )}
-                style={{
-                    color: colors?.[0]?.data.toString("hex"),
-                }}
+            // style={{
+            //     color: colors?.[0]?.data.toString("hex"),
+            // }}
             >
                 <p
                     className={cn("uppercase", "font-mono", "text-2xl")}
-                    style={{
-                        color: colors?.[0]?.data.toString("hex"),
-                    }}
+                // style={{
+                //     color: colors?.[0]?.data.toString("hex"),
+                // }}
                 >
                     Capítulo I
                 </p>
                 <p
-                    style={{
-                        color: colors?.[0]?.data.toString("hex"),
-                    }}
+                // style={{
+                //     color: colors?.[0]?.data.toString("hex"),
+                // }}
                 >
                     Do Título
                 </p>
             </h1>
             <p
                 className={cn("text-xl", "mt-8")}
-                style={{
-                    color: colors?.[0]?.data.toString("hex"),
-                }}
+            // style={{
+            //     color: colors?.[0]?.data.toString("hex"),
+            // }}
             >
                 Uma noite destas, vindo da cidade para o Engenho Novo, encontrei
                 no trem da Central um rapaz aqui do bairro, que eu conheço de
@@ -63,9 +61,9 @@ export function Preview() {
             </p>
             <p
                 className={cn("text-xl", "mt-8")}
-                style={{
-                    color: colors?.[0]?.data.toString("hex"),
-                }}
+            // style={{
+            //     color: colors?.[0]?.data.toString("hex"),
+            // }}
             >
                 — Continue, disse eu acordando.
                 <br />

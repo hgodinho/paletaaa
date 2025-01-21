@@ -34,18 +34,13 @@ export function Trigger({
     return (
         <Button
             variant={"trigger"}
-            className={cn(
-                className
-            )}
+            className={cn(className)}
             onClick={() => onClick(!value)}
             aria-controls={controlledId}
             {...props}
             style={{
-                backgroundColor: contrastColor(
-                    getBackgroundHex() || "#000",
-                    "#FFF"
-                ),
-                color: getBackgroundHex() || "#FFF",
+                backgroundColor: contrastColor(getBackgroundHex(), "#FFF"),
+                color: getBackgroundHex(),
             }}
         >
             {value ? <ValueTrue size={16} /> : <ValueFalse size={16} />}
