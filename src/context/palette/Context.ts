@@ -1,9 +1,5 @@
 import { createContext } from "react";
-import {
-    Color as PrimitiveColor,
-    ColorSpace,
-    parseColor,
-} from "react-aria-components";
+import { Color as PrimitiveColor, ColorSpace } from "react-aria-components";
 import { useGraph } from "@/lib";
 import { Link, Node } from "./types";
 
@@ -12,28 +8,32 @@ export type Color = {
     data: PrimitiveColor;
 };
 
-export type PaletteContextType = {
-    name: string;
+export type PalleteContextState = {
+    title: string;
     colorSpace: ColorSpace;
-    background: Color;
-    colors?: Color[];
+};
+
+export type PaletteContextType = {
     validator?: ColorContrastChecker;
-} & ReturnType<typeof useGraph<Node, Link>>;
+} & PalleteContextState &
+    ReturnType<typeof useGraph<Node, Link>>;
 
 export type PaletteContextCallback = {
-    setPalette: (palette: PaletteContextType) => void;
+    getColor: (id: string) => Color | undefined;
     onColorAdd: () => void;
     contrastColor: (colorA: string, colorB: string) => "black" | "white";
     updateColorName: (id: string, title: string) => void;
     updateColorData: (id: string, data: Color) => void;
+    onColorSelected: (id: string | null) => void;
 };
 
 export const PaletteCallback: PaletteContextCallback = {
-    setPalette: () => {},
+    getColor: () => undefined,
     onColorAdd: () => {},
     contrastColor: () => "black",
     updateColorName: () => {},
     updateColorData: () => {},
+    onColorSelected: () => {},
 };
 
 export const UseGraphCallbacks: ReturnType<typeof useGraph<Node, Link>> = {
@@ -59,9 +59,8 @@ export const UseGraphCallbacks: ReturnType<typeof useGraph<Node, Link>> = {
 };
 
 export const PaletteContextDefault: PaletteContextType = {
-    name: "",
+    title: "",
     colorSpace: "hsl",
-    background: { data: parseColor("hsl(50, 85%, 85%)") },
     ...UseGraphCallbacks,
 };
 
