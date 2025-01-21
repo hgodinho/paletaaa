@@ -1,17 +1,19 @@
-import { PaletteProvider } from "@/context";
+import { GraphProvider, PaletteProvider } from "@/context";
 import { cn } from "@/lib";
-import { Editor, Menu, /*Preview*/ } from "@/components";
+import { Editor, Menu /*Preview*/ } from "@/components";
 
 export function Layout() {
     return (
-        <PaletteProvider>
-            <div className={cn("h-screen", "flex", "flex-row")}>
-                <Menu />
-                <Editor />
-                {/* <Preview />
+        <GraphProvider>
+            <PaletteProvider>
+                <div className={cn("h-screen", "flex", "flex-row")}>
+                    <Menu />
+                    <Editor />
+                    {/* <Preview />
                     // to be further implemented
                 */}
-            </div>
-        </PaletteProvider>
+                </div>
+            </PaletteProvider>
+        </GraphProvider>
     );
 }
