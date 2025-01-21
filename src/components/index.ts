@@ -10,4 +10,5 @@ export * from "./button";
 export * from "./menu";
 export * from "./links";
 export * from "./trigger";
+export * from "./toolbar";
 export * from "./logo";
