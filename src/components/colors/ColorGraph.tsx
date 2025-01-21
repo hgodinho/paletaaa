@@ -89,9 +89,9 @@ export function ColorGraph() {
         linkColor: () => {
             return contrastColor("#FFF", getBackgroundHex());
         },
-        linkCanvasObject: (link, ctx, globalScale) => {
-            // console.log({ link, ctx, globalScale });
-        },
+        // linkCanvasObject: (link, ctx, globalScale) => {
+        // console.log({ link, ctx, globalScale });
+        // },
         linkCanvasObjectMode: () => "after",
     };
 
