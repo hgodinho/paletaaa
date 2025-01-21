@@ -230,16 +230,12 @@ export function Menu() {
                         "flex-col",
                         "duration-300",
                         "bg-white",
-                        "border-r",
                         "gap-2",
                         open ? ["w-96"] : ["w-0"]
                     )}
                     aria-expanded={open}
                     aria-roledescription="menu"
-                    // onKeyDown={handleKeyDown}
-                    style={{
-                        borderColor: contrastColor("#fff", getBackgroundHex()),
-                    }}
+                // onKeyDown={handleKeyDown}
                 >
                     <div
                         className={cn(

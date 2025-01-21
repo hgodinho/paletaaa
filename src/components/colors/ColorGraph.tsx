@@ -7,7 +7,8 @@ import ForceGraph2D, {
 } from "react-force-graph-2d";
 import useDimensions from "react-cool-dimensions";
 import { useGraphContext, usePaletteContext } from "@/context";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import { Toolbar, ToolsState } from "@/components";
 
 export type Node = NodeObject & {
     id: string;
@@ -19,6 +20,12 @@ export type Link = LinkObject & {
 };
 
 export function ColorGraph() {
+    const [tools, setTools] = useState<ToolsState>({
+        background: true,
+        labels: false,
+        magnet: false,
+    });
+
     const { getNodes, getLinks } = useGraphContext();
 
     const { getBackgroundHex, contrastColor, expandColor } =
@@ -58,20 +65,24 @@ export function ColorGraph() {
         nodeCanvasObject: ({ x, y, id, color }, ctx, globalScale) => {
             const bgHex = getBackgroundHex() as string;
             const colorHex = color.data.toString("hex");
-            const textColor = contrastColor("#fff", bgHex);
+            const textColor = contrastColor(
+                "#FFF",
+                tools.background ? bgHex : "#FFF"
+            );
 
             const pos = { x: x as number, y: y as number };
             const fontSize = 16 / globalScale;
             const radius = options.nodeRelSize as number;
 
             // label
-            const label = color.title || id;
-            ctx.font = `${fontSize}px Inter`;
-            ctx.fillStyle = textColor;
-            const labelY = pos.y - radius - 64 / globalScale;
-            ctx.fillText(label, pos.x, labelY); // color name
-            ctx.fillText(colorHex, pos.x, labelY + 24 / globalScale); // color hex
-
+            if (tools.labels) {
+                const label = color.title || id;
+                ctx.font = `${fontSize}px Inter`;
+                ctx.fillStyle = textColor;
+                const labelY = pos.y - radius - 64 / globalScale;
+                ctx.fillText(label, pos.x, labelY); // color name
+                ctx.fillText(colorHex, pos.x, labelY + 24 / globalScale); // color hex
+            }
             // circle
             ctx.lineWidth = 1;
             ctx.strokeStyle =
@@ -80,8 +91,13 @@ export function ColorGraph() {
         },
         nodeCanvasObjectMode: () => "after",
         onNodeDragEnd: (node) => {
-            node.fx = node.x;
-            node.fy = node.y;
+            if (tools.magnet) {
+                node.fx = undefined;
+                node.fy = undefined;
+            } else {
+                node.fx = node.x;
+                node.fy = node.y;
+            }
         },
         onNodeClick: (node) => expandColor(node.id),
 
@@ -99,11 +115,9 @@ export function ColorGraph() {
         const fg = graphRef.current;
 
         fg?.d3Force("center", null);
-        fg?.d3Force("charge", null);
-        // fg?.d3Force("charge")?.strength(-5);
-
+        fg?.d3Force("charge")?.strength(tools.magnet ? -100 : 0);
         fg?.d3Force("link")?.distance(100);
-    }, []);
+    }, [tools]);
 
     return (
         <>
@@ -120,7 +134,23 @@ export function ColorGraph() {
                     "cursor-move"
                 )}
             >
-                <div className={cn("absolute")}>
+                <div
+                    className={cn("group", "w-full", "absolute", "border-x")}
+                    style={{
+                        backgroundColor: tools.background
+                            ? getBackgroundHex()
+                            : "white",
+                        borderColor: contrastColor(
+                            tools.background ? getBackgroundHex() : "#FFF",
+                            "#FFF"
+                        ),
+                    }}
+                >
+                    <Toolbar
+                        tools={tools}
+                        setTools={setTools}
+                        className={cn("group-hover:opacity-100", "opacity-0")}
+                    />
                     <ForceGraph2D
                         // @ts-ignore
                         ref={graphRef}

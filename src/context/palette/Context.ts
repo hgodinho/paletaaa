@@ -24,7 +24,10 @@ export type PaletteContextCallback = {
     getBackground: () => Color | undefined;
     getBackgroundHex: () => string;
     onColorAdd: () => void;
-    contrastColor: (colorA: string, colorB: string) => "black" | "white";
+    contrastColor: (
+        foreground: string,
+        background: string
+    ) => "black" | "white";
     updateColorName: (id: string, title: string) => void;
     updateColorData: (id: string, data: Color) => void;
     onColorSelected: (id: string | null) => void;
