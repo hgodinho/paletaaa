@@ -6,11 +6,10 @@ import {
     PaletteContextType,
 } from "./Context";
 import ColorContrastChecker from "color-contrast-checker";
-import { useGraph } from "@/lib";
 
-import type { Node, Link } from "./types";
 import { parseColor } from "react-aria-components";
 import type { Color } from "./Context";
+import { useGraphContext } from "../graph";
 
 export function PaletteProvider({
     children,
@@ -19,7 +18,7 @@ export function PaletteProvider({
         PaletteContextDefault
     );
 
-    const { graph, ...graphActions } = useGraph<Node, Link>();
+    const { graph, ...graphActions } = useGraphContext();
 
     const validator = new ColorContrastChecker();
 
@@ -108,11 +107,7 @@ export function PaletteProvider({
                 onColorAdd,
                 updateColorName,
                 updateColorData,
-
                 onColorSelected,
-
-                ...graph,
-                ...graphActions,
 
                 validator,
             }}

@@ -1,7 +1,5 @@
 import { createContext } from "react";
 import { Color as PrimitiveColor, ColorSpace } from "react-aria-components";
-import { useGraph } from "@/lib";
-import { Link, Node } from "./types";
 
 export type Color = {
     title?: string;
@@ -16,8 +14,7 @@ export type PalleteContextState = {
 
 export type PaletteContextType = {
     validator?: ColorContrastChecker;
-} & PalleteContextState &
-    ReturnType<typeof useGraph<Node, Link>>;
+} & PalleteContextState;
 
 export type PaletteContextCallback = {
     onTitleChange: (title: string) => void;
@@ -45,32 +42,9 @@ export const PaletteCallback: PaletteContextCallback = {
     onColorSelected: () => {},
 };
 
-export const UseGraphCallbacks: ReturnType<typeof useGraph<Node, Link>> = {
-    graph: {
-        vertices: 0,
-        nodes: new Map(),
-        adjList: new Map(),
-    },
-    getNodes: () => [],
-    getLinks: () => [],
-    getNode: () => undefined,
-    addVertex: () => {},
-    bfsAll: () => [],
-    updateVertex: () => {},
-    removeVertex: () => {},
-    addDirEdge: () => {},
-    removeDirEdge: () => {},
-    addEdge: () => {},
-    getNodeEdges: () => [],
-    removeEdge: () => {},
-    haveEdges: () => false,
-    isDirEdge: () => false,
-};
-
 export const PaletteContextDefault: PaletteContextType = {
     title: "",
     colorSpace: "hsl",
-    ...UseGraphCallbacks,
 };
 
 export const PaletteContext = createContext<
