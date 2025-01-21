@@ -6,7 +6,7 @@ import ForceGraph2D, {
     ForceGraphMethods,
 } from "react-force-graph-2d";
 import useDimensions from "react-cool-dimensions";
-import { usePaletteContext } from "@/context";
+import { useGraphContext, usePaletteContext } from "@/context";
 import { useEffect, useRef } from "react";
 
 export type Node = NodeObject & {
@@ -19,7 +19,10 @@ export type Link = LinkObject & {
 };
 
 export function ColorGraph() {
-    const { getNodes, getNode, getLinks, contrastColor } = usePaletteContext();
+    const { getNodes, getLinks } = useGraphContext();
+
+    const { getBackgroundHex, contrastColor, onColorSelected } =
+        usePaletteContext();
 
     const { observe, width, height } = useDimensions();
 
@@ -53,9 +56,7 @@ export function ColorGraph() {
             return node.color.title || node.id;
         },
         nodeCanvasObject: ({ x, y, id, color }, ctx, globalScale) => {
-            const bgHex = getNode("background")?.color.data.toString(
-                "hex"
-            ) as string;
+            const bgHex = getBackgroundHex() as string;
             const colorHex = color.data.toString("hex");
             const textColor = contrastColor("#fff", bgHex);
 

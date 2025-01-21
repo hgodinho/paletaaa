@@ -29,7 +29,7 @@ export function Trigger({
     ValueTrue,
     ...props
 }: TriggerProps) {
-    const { contrastColor, getNode } = usePaletteContext();
+    const { contrastColor, getBackgroundHex } = usePaletteContext();
 
     return (
         <Button
@@ -42,10 +42,10 @@ export function Trigger({
             {...props}
             style={{
                 backgroundColor: contrastColor(
-                    getNode("background")?.color?.data.toString("hex"),
+                    getBackgroundHex() || "#000",
                     "#FFF"
                 ),
-                color: getNode("background")?.color?.data.toString("hex"),
+                color: getBackgroundHex() || "#FFF",
             }}
         >
             {value ? <ValueTrue size={16} /> : <ValueFalse size={16} />}
