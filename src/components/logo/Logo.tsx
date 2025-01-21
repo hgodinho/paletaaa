@@ -94,13 +94,13 @@ export function Logo({
                         y2="27.5"
                         gradientUnits="userSpaceOnUse"
                     >
-                        <stop stop-color="#FF1616" />
-                        <stop offset="0.169821" stop-color="#8C52FF" />
-                        <stop offset="0.355592" stop-color="#5271FF" />
-                        <stop offset="0.525348" stop-color="#7ED957" />
-                        <stop offset="0.679089" stop-color="#FFDE59" />
-                        <stop offset="0.829627" stop-color="#FF914D" />
-                        <stop offset="1" stop-color="#FF1616" />
+                        <stop stopColor="#FF1616" />
+                        <stop offset="0.169821" stopColor="#8C52FF" />
+                        <stop offset="0.355592" stopColor="#5271FF" />
+                        <stop offset="0.525348" stopColor="#7ED957" />
+                        <stop offset="0.679089" stopColor="#FFDE59" />
+                        <stop offset="0.829627" stopColor="#FF914D" />
+                        <stop offset="1" stopColor="#FF1616" />
                     </linearGradient>
                     <linearGradient
                         id="paint1_linear_67_144"
@@ -110,13 +110,13 @@ export function Logo({
                         y2="27.5"
                         gradientUnits="userSpaceOnUse"
                     >
-                        <stop stop-color="#FF1616" />
-                        <stop offset="0.169821" stop-color="#8C52FF" />
-                        <stop offset="0.355592" stop-color="#5271FF" />
-                        <stop offset="0.525348" stop-color="#7ED957" />
-                        <stop offset="0.679089" stop-color="#FFDE59" />
-                        <stop offset="0.829627" stop-color="#FF914D" />
-                        <stop offset="1" stop-color="#FF1616" />
+                        <stop stopColor="#FF1616" />
+                        <stop offset="0.169821" stopColor="#8C52FF" />
+                        <stop offset="0.355592" stopColor="#5271FF" />
+                        <stop offset="0.525348" stopColor="#7ED957" />
+                        <stop offset="0.679089" stopColor="#FFDE59" />
+                        <stop offset="0.829627" stopColor="#FF914D" />
+                        <stop offset="1" stopColor="#FF1616" />
                     </linearGradient>
                     <linearGradient
                         id="paint2_linear_67_144"
@@ -126,13 +126,13 @@ export function Logo({
                         y2="27.5"
                         gradientUnits="userSpaceOnUse"
                     >
-                        <stop stop-color="#FF1616" />
-                        <stop offset="0.169821" stop-color="#8C52FF" />
-                        <stop offset="0.355592" stop-color="#5271FF" />
-                        <stop offset="0.525348" stop-color="#7ED957" />
-                        <stop offset="0.679089" stop-color="#FFDE59" />
-                        <stop offset="0.829627" stop-color="#FF914D" />
-                        <stop offset="1" stop-color="#FF1616" />
+                        <stop stopColor="#FF1616" />
+                        <stop offset="0.169821" stopColor="#8C52FF" />
+                        <stop offset="0.355592" stopColor="#5271FF" />
+                        <stop offset="0.525348" stopColor="#7ED957" />
+                        <stop offset="0.679089" stopColor="#FFDE59" />
+                        <stop offset="0.829627" stopColor="#FF914D" />
+                        <stop offset="1" stopColor="#FF1616" />
                     </linearGradient>
                 </defs>
             </svg>

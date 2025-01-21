@@ -6,7 +6,7 @@ import ForceGraph2D, {
     ForceGraphMethods,
 } from "react-force-graph-2d";
 import useDimensions from "react-cool-dimensions";
-import { usePaletteContext } from "@/context";
+import { useGraphContext, usePaletteContext } from "@/context";
 import { useEffect, useRef } from "react";
 
 export type Node = NodeObject & {
@@ -19,7 +19,10 @@ export type Link = LinkObject & {
 };
 
 export function ColorGraph() {
-    const { getNodes, getNode, getLinks, contrastColor } = usePaletteContext();
+    const { getNodes, getLinks } = useGraphContext();
+
+    const { getBackgroundHex, contrastColor, expandColor } =
+        usePaletteContext();
 
     const { observe, width, height } = useDimensions();
 
@@ -36,7 +39,7 @@ export function ColorGraph() {
 
         // links
         linkDirectionalArrowLength: 4,
-        linkDirectionalArrowRelPos: 0.25,
+        linkDirectionalArrowRelPos: 0.4,
 
         // nodes
         nodeRelSize: 32,
@@ -53,9 +56,7 @@ export function ColorGraph() {
             return node.color.title || node.id;
         },
         nodeCanvasObject: ({ x, y, id, color }, ctx, globalScale) => {
-            const bgHex = getNode("background")?.color.data.toString(
-                "hex"
-            ) as string;
+            const bgHex = getBackgroundHex() as string;
             const colorHex = color.data.toString("hex");
             const textColor = contrastColor("#fff", bgHex);
 
@@ -78,21 +79,18 @@ export function ColorGraph() {
             ctx.stroke();
         },
         nodeCanvasObjectMode: () => "after",
-
         onNodeDragEnd: (node) => {
             node.fx = node.x;
             node.fy = node.y;
         },
+        onNodeClick: (node) => expandColor(node.id),
 
         // links
         linkColor: () => {
-            return contrastColor(
-                "#FFF",
-                getNode("background")?.color.data.toString("hex") || "#fff"
-            );
+            return contrastColor("#FFF", getBackgroundHex());
         },
         linkCanvasObject: (link, ctx, globalScale) => {
-            console.log({ link, ctx, globalScale });
+            // console.log({ link, ctx, globalScale });
         },
         linkCanvasObjectMode: () => "after",
     };

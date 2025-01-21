@@ -3,17 +3,16 @@ import { usePaletteContext } from "@/context";
 import { ColorGraph } from "@/components";
 
 export function Editor() {
-    const { contrastColor, getNode } = usePaletteContext();
+    const { contrastColor, getBackgroundHex } = usePaletteContext();
 
     return (
         <div
-            className={cn("editor", "w-full", "h-full", "border-r")}
+            className={cn("editor", "w-full", "h-full", "border-r", "relative")}
             style={{
-                backgroundColor:
-                    getNode("background")?.color.data.toString("hex"),
+                backgroundColor: getBackgroundHex() || "#fff",
                 borderColor: contrastColor(
                     "#fff",
-                    getNode("background")?.color.data.toString("hex")
+                    getBackgroundHex() || "#fff"
                 ),
             }}
         >

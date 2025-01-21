@@ -1,68 +1,52 @@
 import { createContext } from "react";
-import {
-    Color as PrimitiveColor,
-    ColorSpace,
-    parseColor,
-} from "react-aria-components";
-import { useGraph } from "@/lib";
-import { Link, Node } from "./types";
+import { Color as PrimitiveColor, ColorSpace } from "react-aria-components";
 
 export type Color = {
     title?: string;
     data: PrimitiveColor;
 };
 
-export type PaletteContextType = {
-    name: string;
+export type PalleteContextState = {
+    title: string;
     colorSpace: ColorSpace;
-    background: Color;
-    colors?: Color[];
+    selected?: string;
+};
+
+export type PaletteContextType = {
     validator?: ColorContrastChecker;
-} & ReturnType<typeof useGraph<Node, Link>>;
+} & PalleteContextState;
 
 export type PaletteContextCallback = {
-    setPalette: (palette: PaletteContextType) => void;
+    expandColor: (id: string) => void;
+    onTitleChange: (title: string) => void;
+    getColor: (id: string) => Color | undefined;
+    getColorHex: (id: string) => string | undefined;
+    getBackground: () => Color | undefined;
+    getBackgroundHex: () => string;
     onColorAdd: () => void;
     contrastColor: (colorA: string, colorB: string) => "black" | "white";
     updateColorName: (id: string, title: string) => void;
     updateColorData: (id: string, data: Color) => void;
+    onColorSelected: (id: string | null) => void;
 };
 
 export const PaletteCallback: PaletteContextCallback = {
-    setPalette: () => {},
+    expandColor: () => {},
+    onTitleChange: () => {},
+    getColor: () => undefined,
+    getColorHex: () => undefined,
+    getBackground: () => undefined,
+    getBackgroundHex: () => "#000",
     onColorAdd: () => {},
     contrastColor: () => "black",
     updateColorName: () => {},
     updateColorData: () => {},
-};
-
-export const UseGraphCallbacks: ReturnType<typeof useGraph<Node, Link>> = {
-    graph: {
-        vertices: 0,
-        nodes: new Map(),
-        adjList: new Map(),
-    },
-    getNodes: () => [],
-    getLinks: () => [],
-    getNode: () => undefined,
-    addVertex: () => {},
-    bfsAll: () => [],
-    updateVertex: () => {},
-    removeVertex: () => {},
-    addDirEdge: () => {},
-    removeDirEdge: () => {},
-    addEdge: () => {},
-    getNodeEdges: () => [],
-    removeEdge: () => {},
-    haveEdges: () => false,
-    isDirEdge: () => false,
+    onColorSelected: () => {},
 };
 
 export const PaletteContextDefault: PaletteContextType = {
-    name: "",
+    title: "",
     colorSpace: "hsl",
-    background: { data: parseColor("hsl(50, 85%, 85%)") },
-    ...UseGraphCallbacks,
 };
 
 export const PaletteContext = createContext<
