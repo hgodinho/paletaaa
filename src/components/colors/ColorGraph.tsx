@@ -50,37 +50,31 @@ export function ColorGraph() {
             return node.color.title || node.id;
         },
         nodeCanvasObject: ({ x, y, id, color }, ctx, globalScale) => {
-            const backgroundColor =
-                getNode("background")?.color.data.toString("hex");
-
-            // console.log({ ctx, globalScale })
+            const bgHex = getNode("background")?.color.data.toString(
+                "hex"
+            ) as string;
+            const colorHex = color.data.toString("hex");
+            const nodeColor = id === "background" ? bgHex : colorHex;
+            const textColor = contrastColor("#fff", bgHex);
+            const radius = 8 * globalScale;
+            const fontSize = 16 / globalScale;
+            const pos = { x: x as number, y: y as number };
 
             // label
-            const pos = { x: x as number, y: y as number };
             const label = color.title || id;
-            const fontSize = 16 / globalScale;
             ctx.font = `${fontSize}px Inter`;
-            ctx.fillStyle = contrastColor("#fff", backgroundColor as string);
-            ctx.fillText(label, pos.x, pos.y - 8 * globalScale);
-            ctx.fillText(
-                color.data.toString("hex"),
-                pos.x,
-                pos.y - 8 * globalScale + 6
-            );
+            ctx.fillStyle = textColor;
+            ctx.fillText(label, pos.x, pos.y - 8 - radius - fontSize);
+            ctx.fillText(colorHex, pos.x, pos.y - 4 - radius - fontSize);
 
             ctx.beginPath();
-            ctx.arc(pos.x, pos.y, 8 * 2, 0, 2 * Math.PI, false);
-            ctx.fillStyle =
-                (id === "background"
-                    ? backgroundColor
-                    : color.data.toString("hex")) || "#000";
+            ctx.arc(pos.x, pos.y, radius, 0, 2 * Math.PI, false);
+            ctx.fillStyle = nodeColor;
             ctx.fill();
 
             ctx.lineWidth = 1;
             ctx.strokeStyle =
-                id === "background"
-                    ? contrastColor("#fff", backgroundColor as string)
-                    : color.data.toString("hex");
+                id === "background" ? contrastColor("#fff", bgHex) : colorHex;
             ctx.stroke();
         },
         onNodeDragEnd: (node) => {
@@ -96,9 +90,9 @@ export function ColorGraph() {
             );
         },
         linkCanvasObject: (link, ctx, globalScale) => {
-            console.log({ link, ctx, globalScale })
+            console.log({ link, ctx, globalScale });
         },
-        linkCanvasObjectMode: () => "after"
+        linkCanvasObjectMode: () => "after",
     };
 
     useEffect(() => {
@@ -130,7 +124,9 @@ export function ColorGraph() {
                     <ForceGraph2D
                         // @ts-ignore
                         ref={graphRef}
-                        {...options} {...callbacks} />
+                        {...options}
+                        {...callbacks}
+                    />
                 </div>
             </div>
         </>
