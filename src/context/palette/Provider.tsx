@@ -42,27 +42,29 @@ export function PaletteProvider({
         });
     };
 
+    const getColor = (id: string): Color | undefined => {
+        return graphActions.getNode(id)?.color;
+    };
+
     const updateColorName = (id: string, title: string) => {
         graphActions.updateVertex({
             id,
             color: {
-                ...graph.nodes.get(id)?.color,
+                ...getColor(id),
                 title,
             },
         });
-    }
+    };
 
     const updateColorData = (id: string, data: Color) => {
-        console.log("updateColorData", { id, data, original: graph.nodes.get(id)?.color });
-
         graphActions.updateVertex({
             id,
             color: {
-                ...graphActions.getNode(id)?.color,
+                ...getColor(id),
                 ...data,
             },
         });
-    }
+    };
 
     return (
         <PaletteContext.Provider
@@ -70,6 +72,7 @@ export function PaletteProvider({
                 ...palette,
                 setPalette,
 
+                getColor,
                 contrastColor,
                 onColorAdd,
                 updateColorName,
