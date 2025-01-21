@@ -17,6 +17,7 @@ const initialState: GraphState<BaseVertex> = {
             "background",
             {
                 id: "background",
+                expanded: true,
                 color: {
                     data: parseColor(
                         `hsl(${Math.random() * 360}, ${Math.random() * 100}%, ${
