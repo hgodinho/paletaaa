@@ -29,23 +29,18 @@ export function Trigger({
     ValueTrue,
     ...props
 }: TriggerProps) {
-    const { contrastColor, getNode } = usePaletteContext();
+    const { contrastColor, getBackgroundHex } = usePaletteContext();
 
     return (
         <Button
             variant={"trigger"}
-            className={cn(
-                className
-            )}
+            className={cn(className)}
             onClick={() => onClick(!value)}
             aria-controls={controlledId}
             {...props}
             style={{
-                backgroundColor: contrastColor(
-                    getNode("background")?.color?.data.toString("hex"),
-                    "#FFF"
-                ),
-                color: getNode("background")?.color?.data.toString("hex"),
+                backgroundColor: contrastColor(getBackgroundHex(), "#FFF"),
+                color: getBackgroundHex(),
             }}
         >
             {value ? <ValueTrue size={16} /> : <ValueFalse size={16} />}

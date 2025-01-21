@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useState } from "react";
 
 import {
     PaletteContext,
@@ -6,34 +6,48 @@ import {
     PaletteContextType,
 } from "./Context";
 import ColorContrastChecker from "color-contrast-checker";
-import { useGraph } from "@/lib";
 
-import type { Node, Link } from "./types";
 import { parseColor } from "react-aria-components";
 import type { Color } from "./Context";
+import { useGraphContext } from "../graph";
 
 export function PaletteProvider({
     children,
 }: React.PropsWithChildren<{ [key: string]: unknown }>) {
-    const [palette, setPalette] = useState<PaletteContextType>(
+    const [state, setPalette] = useState<PaletteContextType>(
         PaletteContextDefault
     );
 
-    const { graph, ...graphActions } = useGraph<Node, Link>();
+    const { graph, ...graphActions } = useGraphContext();
 
-    const validator = useMemo(() => {
-        return new ColorContrastChecker();
-    }, []);
+    const validator = new ColorContrastChecker();
 
-    const contrastColor = useCallback((colorA: string, colorB: string) => {
+    const onColorSelected = (id: string | null) => {
+        if (id && graph.nodes.has(id) && id !== state.selected) {
+            setPalette({
+                ...state,
+                selected: id,
+            });
+        }
+    };
+
+    const onTitleChange = (title: string) => {
+        setPalette({
+            ...state,
+            title,
+        });
+    };
+
+    const contrastColor = (colorA: string, colorB: string) => {
         return validator?.check(colorA, colorB, 18).WCAG_AAA
             ? "white"
             : "black";
-    }, []);
+    };
 
     const onColorAdd = () => {
         graphActions.addVertex({
             id: Math.random().toString(36).substring(2, 7),
+            expanded: true,
             color: {
                 data: parseColor(
                     `hsl(${Math.random() * 360}, ${Math.random() * 100}%, ${Math.random() * 100
@@ -44,41 +58,68 @@ export function PaletteProvider({
         });
     };
 
+    const getColor = (id: string): Color | undefined => {
+        return graphActions.getNode(id)?.color;
+    };
+
+    const getColorHex = (id: string): string | undefined => {
+        return getColor(id)?.data.toString("hex");
+    };
+
+    const getBackground = () => {
+        return getColor("background");
+    };
+
+    const getBackgroundHex = () => {
+        return getBackground()?.data.toString("hex") || "#000";
+    };
+
     const updateColorName = (id: string, title: string) => {
         graphActions.updateVertex({
             id,
             color: {
-                ...graph.nodes.get(id)?.color,
+                ...getColor(id),
                 title,
             },
         });
-    }
+    };
 
     const updateColorData = (id: string, data: Color) => {
-        console.log("updateColorData", { id, data, original: graph.nodes.get(id)?.color });
-
         graphActions.updateVertex({
             id,
             color: {
-                ...graphActions.getNode(id)?.color,
+                ...getColor(id),
                 ...data,
             },
         });
-    }
+    };
+
+    const expandColor = (id: string) => {
+        const node = graphActions.getNode(id);
+        if (node) {
+            graphActions.updateVertex({
+                ...node,
+                expanded: !node.expanded,
+            });
+        }
+    };
 
     return (
         <PaletteContext.Provider
             value={{
-                ...palette,
-                setPalette,
+                ...state,
 
+                expandColor,
+                onTitleChange,
+                getColor,
+                getColorHex,
+                getBackground,
+                getBackgroundHex,
                 contrastColor,
                 onColorAdd,
                 updateColorName,
                 updateColorData,
-
-                ...graph,
-                ...graphActions,
+                onColorSelected,
 
                 validator,
             }}
