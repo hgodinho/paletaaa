@@ -39,7 +39,7 @@ export function ColorGraph() {
 
         // links
         linkDirectionalArrowLength: 4,
-        linkDirectionalArrowRelPos: 0.25,
+        linkDirectionalArrowRelPos: 0.4,
 
         // nodes
         nodeRelSize: 32,
