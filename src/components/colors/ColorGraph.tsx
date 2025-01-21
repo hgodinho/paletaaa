@@ -31,6 +31,8 @@ export function ColorGraph() {
             nodes: getNodes(),
             links: getLinks(),
         },
+        minZoom: 2,
+        maxZoom: 10,
 
         // links
         linkDirectionalArrowLength: 4,
