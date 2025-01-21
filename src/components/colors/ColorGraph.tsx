@@ -31,12 +31,15 @@ export function ColorGraph() {
             nodes: getNodes(),
             links: getLinks(),
         },
+        minZoom: 2,
+        maxZoom: 10,
 
         // links
         linkDirectionalArrowLength: 4,
         linkDirectionalArrowRelPos: 0.25,
 
         // nodes
+        nodeRelSize: 32,
     };
 
     const graphRef = useRef<ForceGraphMethods<Node, Link>>(null);
@@ -54,29 +57,28 @@ export function ColorGraph() {
                 "hex"
             ) as string;
             const colorHex = color.data.toString("hex");
-            const nodeColor = id === "background" ? bgHex : colorHex;
             const textColor = contrastColor("#fff", bgHex);
-            const radius = 8 * globalScale;
-            const fontSize = 16 / globalScale;
+
             const pos = { x: x as number, y: y as number };
+            const fontSize = 16 / globalScale;
+            const radius = options.nodeRelSize as number;
 
             // label
             const label = color.title || id;
             ctx.font = `${fontSize}px Inter`;
             ctx.fillStyle = textColor;
-            ctx.fillText(label, pos.x, pos.y - 8 - radius - fontSize);
-            ctx.fillText(colorHex, pos.x, pos.y - 4 - radius - fontSize);
+            const labelY = pos.y - radius - 64 / globalScale;
+            ctx.fillText(label, pos.x, labelY); // color name
+            ctx.fillText(colorHex, pos.x, labelY + 24 / globalScale); // color hex
 
-            ctx.beginPath();
-            ctx.arc(pos.x, pos.y, radius, 0, 2 * Math.PI, false);
-            ctx.fillStyle = nodeColor;
-            ctx.fill();
-
+            // circle
             ctx.lineWidth = 1;
             ctx.strokeStyle =
                 id === "background" ? contrastColor("#fff", bgHex) : colorHex;
             ctx.stroke();
         },
+        nodeCanvasObjectMode: () => "after",
+
         onNodeDragEnd: (node) => {
             node.fx = node.x;
             node.fy = node.y;
