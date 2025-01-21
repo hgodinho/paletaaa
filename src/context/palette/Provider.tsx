@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useState } from "react";
 
 import {
     PaletteContext,
@@ -15,13 +15,29 @@ import type { Color } from "./Context";
 export function PaletteProvider({
     children,
 }: React.PropsWithChildren<{ [key: string]: unknown }>) {
-    const [palette, setPalette] = useState<PaletteContextType>(
+    const [state, setPalette] = useState<PaletteContextType>(
         PaletteContextDefault
     );
 
     const { graph, ...graphActions } = useGraph<Node, Link>();
 
     const validator = new ColorContrastChecker();
+
+    const onColorSelected = (id: string | null) => {
+        if (id && graph.nodes.has(id) && id !== state.selected) {
+            setPalette({
+                ...state,
+                selected: id,
+            });
+        }
+    };
+
+    const onTitleChange = (title: string) => {
+        setPalette({
+            ...state,
+            title,
+        });
+    };
 
     const contrastColor = (colorA: string, colorB: string) => {
         return validator?.check(colorA, colorB, 18).WCAG_AAA
@@ -46,6 +62,18 @@ export function PaletteProvider({
         return graphActions.getNode(id)?.color;
     };
 
+    const getColorHex = (id: string): string | undefined => {
+        return getColor(id)?.data.toString("hex");
+    }
+
+    const getBackground = () => {
+        return getColor("background")
+    }
+
+    const getBackgroundHex = () => {
+        return getBackground()?.data.toString("hex");
+    }
+
     const updateColorName = (id: string, title: string) => {
         graphActions.updateVertex({
             id,
@@ -69,14 +97,19 @@ export function PaletteProvider({
     return (
         <PaletteContext.Provider
             value={{
-                ...palette,
-                setPalette,
+                ...state,
 
+                onTitleChange,
                 getColor,
+                getColorHex,
+                getBackground,
+                getBackgroundHex,
                 contrastColor,
                 onColorAdd,
                 updateColorName,
                 updateColorData,
+
+                onColorSelected,
 
                 ...graph,
                 ...graphActions,

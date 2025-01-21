@@ -11,6 +11,7 @@ export type Color = {
 export type PalleteContextState = {
     title: string;
     colorSpace: ColorSpace;
+    selected?: string;
 };
 
 export type PaletteContextType = {
@@ -19,7 +20,11 @@ export type PaletteContextType = {
     ReturnType<typeof useGraph<Node, Link>>;
 
 export type PaletteContextCallback = {
+    onTitleChange: (title: string) => void;
     getColor: (id: string) => Color | undefined;
+    getColorHex: (id: string) => string | undefined;
+    getBackground: () => Color | undefined;
+    getBackgroundHex: () => string | undefined;
     onColorAdd: () => void;
     contrastColor: (colorA: string, colorB: string) => "black" | "white";
     updateColorName: (id: string, title: string) => void;
@@ -28,7 +33,11 @@ export type PaletteContextCallback = {
 };
 
 export const PaletteCallback: PaletteContextCallback = {
+    onTitleChange: () => {},
     getColor: () => undefined,
+    getColorHex: () => undefined,
+    getBackground: () => undefined,
+    getBackgroundHex: () => undefined,
     onColorAdd: () => {},
     contrastColor: () => "black",
     updateColorName: () => {},
