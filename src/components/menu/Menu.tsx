@@ -1,5 +1,5 @@
 import { createRef, useState } from "react";
-import { MenuContext } from "./Context";
+import { MenuContext, useMenuContext } from "./Context";
 import { cn } from "@/lib";
 import {
     Picker,
@@ -11,20 +11,15 @@ import {
     Trigger,
     Logo,
 } from "@/components";
-import { usePaletteContext } from "@/context";
+import { useGraphContext, usePaletteContext } from "@/context";
 import { ChevronDown, MenuIcon, X } from "lucide-react";
 import { AddButton } from "../colors/AddButton";
 
 export function MenuItems() {
-    const [menu, setExpanded] = useState(new Map([["background", false]]));
+    const { items, setExpanded, bfsAll, removeItem } = useMenuContext();
 
-    const {
-        colorSpace,
-        bfsAll,
-        updateColorName,
-        updateColorData,
-        removeVertex,
-    } = usePaletteContext();
+    const { colorSpace, updateColorName, updateColorData } =
+        usePaletteContext();
 
     return bfsAll((vertex) => {
         const { id, color } = vertex;
@@ -54,7 +49,7 @@ export function MenuItems() {
                         "justify-between",
                         "p-2",
                         "border-gray-400",
-                        menu.get(id) && "border-b"
+                        items.get(id)?.expanded && "border-b"
                     )}
                 >
                     <div
@@ -86,7 +81,7 @@ export function MenuItems() {
                                 }`}
                             aria-disabled={id === "background"}
                             disabled={id === "background"}
-                            onClick={() => removeVertex(id)}
+                            onClick={() => removeItem(id)}
                             className={cn(
                                 "hidden",
                                 "group-hover:block",
@@ -101,16 +96,11 @@ export function MenuItems() {
                         <Button
                             variant={"square"}
                             title={`expand color ${color.title || id}`}
-                            aria-expanded={menu.get(id)}
+                            aria-expanded={items.get(id)?.expanded}
                             aria-controls={id}
                             id={`trigger-item-${id}`}
                             onClick={() => {
-                                setExpanded((prev) => {
-                                    return new Map([
-                                        ...prev,
-                                        [id, !menu.get(id)],
-                                    ]);
-                                });
+                                setExpanded(id);
                             }}
                             className={cn(
                                 "flex",
@@ -124,7 +114,7 @@ export function MenuItems() {
                                 className={cn(
                                     "transform",
                                     "duration-300",
-                                    !menu.get(id) && "-rotate-90"
+                                    !items.get(id)?.expanded && "-rotate-90"
                                 )}
                                 size={16}
                             />
@@ -144,7 +134,7 @@ export function MenuItems() {
                         "gap-4",
                         "justify-between",
                         "items-start",
-                        !menu.get(id) && "hidden"
+                        !items.get(id)?.expanded && "hidden"
                     )}
                 >
                     <div className={cn("w-full", "flex", "flex-col", "gap-4")}>
@@ -157,11 +147,9 @@ export function MenuItems() {
                                 onChange={(e) => {
                                     updateColorName(id, e.target.value);
                                 }}
-                            // disabled={menu.get(id)}
                             />
                         </Label>
                         <Picker
-                            // disabled={menu.get(id)}
                             title="color"
                             colorSpace={colorSpace}
                             color={color.data}
@@ -184,7 +172,20 @@ export function Menu() {
     const menuId = "menu";
     const ref = createRef<HTMLDivElement>();
     const [open, setOpen] = useState(true);
-    const { contrastColor, getNode, onColorAdd } = usePaletteContext();
+
+    const { graph, getNode, updateVertex, bfsAll, removeVertex } =
+        useGraphContext();
+
+    const setExpanded = (expandedId: string) => {
+        const node = getNode(expandedId);
+        if (node) {
+            updateVertex({ ...node, expanded: !node.expanded });
+        }
+    };
+
+    const removeItem = (id: string) => removeVertex(id);
+
+    const { contrastColor, getBackgroundHex, onColorAdd } = usePaletteContext();
 
     // const handleKeyDown = useCallback(
     //     (e: React.KeyboardEvent<HTMLDivElement>) => {
@@ -197,7 +198,16 @@ export function Menu() {
     // );
 
     return (
-        <MenuContext value={{ open, setOpen }}>
+        <MenuContext
+            value={{
+                open,
+                setOpen,
+                items: graph.nodes,
+                setExpanded,
+                bfsAll,
+                removeItem,
+            }}
+        >
             <div
                 className={cn(
                     "z-10",
@@ -228,10 +238,7 @@ export function Menu() {
                     aria-roledescription="menu"
                     // onKeyDown={handleKeyDown}
                     style={{
-                        borderColor: contrastColor(
-                            "#fff",
-                            getNode("background")?.color.data.toString("hex")
-                        ),
+                        borderColor: contrastColor("#fff", getBackgroundHex()),
                     }}
                 >
                     <div
@@ -252,14 +259,9 @@ export function Menu() {
                                 "font-bold"
                             )}
                             style={{
-                                backgroundColor:
-                                    getNode("background")?.color.data.toString(
-                                        "hex"
-                                    ),
+                                backgroundColor: getBackgroundHex(),
                                 color: contrastColor(
-                                    getNode("background")?.color.data.toString(
-                                        "hex"
-                                    ),
+                                    getBackgroundHex(),
                                     "#FFF"
                                 ),
                             }}
@@ -315,12 +317,7 @@ export function Menu() {
             </div>
             <Logo
                 variant={
-                    open
-                        ? "black"
-                        : contrastColor(
-                            getNode("background")?.color.data.toString("hex"),
-                            "#FFF"
-                        )
+                    open ? "black" : contrastColor(getBackgroundHex(), "#FFF")
                 }
                 size={"small"}
                 className={cn("fixed", "bottom-6", "left-6")}
