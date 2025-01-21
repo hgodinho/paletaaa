@@ -42,11 +42,12 @@ export function PaletteProvider({
         return validator?.check(colorA, colorB, 18).WCAG_AAA
             ? "white"
             : "black";
-    }
+    };
 
     const onColorAdd = () => {
         graphActions.addVertex({
             id: Math.random().toString(36).substring(2, 7),
+            expanded: true,
             color: {
                 data: parseColor(
                     `hsl(${Math.random() * 360}, ${Math.random() * 100}%, ${Math.random() * 100
@@ -63,15 +64,15 @@ export function PaletteProvider({
 
     const getColorHex = (id: string): string | undefined => {
         return getColor(id)?.data.toString("hex");
-    }
+    };
 
     const getBackground = () => {
-        return getColor("background")
-    }
+        return getColor("background");
+    };
 
     const getBackgroundHex = () => {
-        return getBackground()?.data.toString("hex");
-    }
+        return getBackground()?.data.toString("hex") || "#000";
+    };
 
     const updateColorName = (id: string, title: string) => {
         graphActions.updateVertex({
@@ -93,11 +94,22 @@ export function PaletteProvider({
         });
     };
 
+    const expandColor = (id: string) => {
+        const node = graphActions.getNode(id);
+        if (node) {
+            graphActions.updateVertex({
+                ...node,
+                expanded: !node.expanded,
+            });
+        }
+    };
+
     return (
         <PaletteContext.Provider
             value={{
                 ...state,
 
+                expandColor,
                 onTitleChange,
                 getColor,
                 getColorHex,

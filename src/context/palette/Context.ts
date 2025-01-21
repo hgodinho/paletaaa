@@ -17,11 +17,12 @@ export type PaletteContextType = {
 } & PalleteContextState;
 
 export type PaletteContextCallback = {
+    expandColor: (id: string) => void;
     onTitleChange: (title: string) => void;
     getColor: (id: string) => Color | undefined;
     getColorHex: (id: string) => string | undefined;
     getBackground: () => Color | undefined;
-    getBackgroundHex: () => string | undefined;
+    getBackgroundHex: () => string;
     onColorAdd: () => void;
     contrastColor: (colorA: string, colorB: string) => "black" | "white";
     updateColorName: (id: string, title: string) => void;
@@ -30,11 +31,12 @@ export type PaletteContextCallback = {
 };
 
 export const PaletteCallback: PaletteContextCallback = {
+    expandColor: () => {},
     onTitleChange: () => {},
     getColor: () => undefined,
     getColorHex: () => undefined,
     getBackground: () => undefined,
-    getBackgroundHex: () => undefined,
+    getBackgroundHex: () => "#000",
     onColorAdd: () => {},
     contrastColor: () => "black",
     updateColorName: () => {},
