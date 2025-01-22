@@ -152,7 +152,7 @@ export function ColorGraph() {
                         className={cn("group-hover:opacity-100", "opacity-0")}
                     />
                     <ForceGraph2D
-                        // @ts-ignore
+                        // @ts-expect-error - ref
                         ref={graphRef}
                         {...options}
                         {...callbacks}
