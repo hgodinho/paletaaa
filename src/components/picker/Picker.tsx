@@ -10,7 +10,7 @@ import { usePaletteContext } from "@/context";
 import { PickerProvider } from "./Provider";
 
 export function Picker({ color, title, onChange }: PickerProps) {
-    let { colorSpace } = usePaletteContext();
+    const { colorSpace } = usePaletteContext();
 
     return (
         <PickerProvider
