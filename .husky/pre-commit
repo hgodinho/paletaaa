@@ -1,1 +1,1 @@
-pnpm eslint --fix
+pnpx lint-staged
