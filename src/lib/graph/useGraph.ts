@@ -124,7 +124,7 @@ export function useGraph<V extends BaseVertex, E extends BaseEdge<V>>() {
      * @param callback | BFSVertexCallback - A function to execute on each traversed vertex
      * @returns an array of visited vertices in BFS order
      */
-    const bfsAll = <R = any>(callback?: BFSVertexCallback<V, R>) => {
+    const bfsAll = <R = unknown>(callback?: BFSVertexCallback<V, R>) => {
         const visited = new Set<string>();
         const result: (V["id"] | R)[] = [];
 
