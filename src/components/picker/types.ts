@@ -49,8 +49,6 @@ export type PickerContextType = PickerProps &
         setColor: (color: Color) => void;
     };
 
-export type PickerContextCallbacks = {};
-
 export type ColorSwatchPickerProps<T, ColorType> = {
     colors?: ColorType[];
     color?: Color;

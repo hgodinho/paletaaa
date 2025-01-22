@@ -1,9 +1,8 @@
 import { createContext, useContext } from "react";
-import { PickerContextCallbacks, PickerContextType } from "./types";
+import { PickerContextType } from "./types";
 import { parseColor } from "react-aria-components";
 
-export const PickerContextDefault: PickerContextType & PickerContextCallbacks =
-{
+export const PickerContextDefault: PickerContextType = {
     colorSpace: "hsl",
     areaProps: {},
     thumbProps: {},
@@ -16,9 +15,8 @@ export const PickerContextDefault: PickerContextType & PickerContextCallbacks =
     setColor: () => { },
 };
 
-export const PickerContext = createContext<
-    PickerContextType & PickerContextCallbacks
->(PickerContextDefault);
+export const PickerContext =
+    createContext<PickerContextType>(PickerContextDefault);
 
 export function usePickerContext() {
     return useContext(PickerContext);

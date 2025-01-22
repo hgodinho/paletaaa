@@ -15,7 +15,7 @@ export function reducer<V extends BaseVertex, E extends BaseEdge<V>>(
     action: GraphAction<V, E>
 ): GraphState<V> {
     switch (action.type) {
-        case "ADD_VERTEX":
+        case "ADD_VERTEX": {
             return {
                 ...state,
                 vertices: state.vertices + 1,
@@ -28,8 +28,9 @@ export function reducer<V extends BaseVertex, E extends BaseEdge<V>>(
                     [(action.payload as V).id, new Set()],
                 ]),
             };
+        }
 
-        case "REMOVE_VERTEX":
+        case "REMOVE_VERTEX": {
             const nodes = new Map(state.nodes);
             const removeAdjList = new Map(state.adjList);
 
@@ -42,8 +43,9 @@ export function reducer<V extends BaseVertex, E extends BaseEdge<V>>(
                 nodes,
                 adjList: removeAdjList,
             };
+        }
 
-        case "UPDATE_VERTEX":
+        case "UPDATE_VERTEX": {
             return {
                 ...state,
                 nodes: new Map([
@@ -57,8 +59,9 @@ export function reducer<V extends BaseVertex, E extends BaseEdge<V>>(
                     ],
                 ]),
             };
+        }
 
-        case "ADD_DIR_EDGE":
+        case "ADD_DIR_EDGE": {
             const edge = action.payload as E;
             const addAdjList = new Map(state.adjList);
             const source = addAdjList.get(edge.source);
@@ -71,8 +74,9 @@ export function reducer<V extends BaseVertex, E extends BaseEdge<V>>(
                 ...state,
                 adjList: addAdjList,
             };
+        }
 
-        case "ADD_EDGE":
+        case "ADD_EDGE": {
             const addEdge = action.payload as E;
             const addAdjListEdge = new Map(state.adjList);
             const sourceEdge = addAdjListEdge.get(addEdge.source);
@@ -90,8 +94,9 @@ export function reducer<V extends BaseVertex, E extends BaseEdge<V>>(
                 ...state,
                 adjList: addAdjListEdge,
             };
+        }
 
-        case "REMOVE_DIR_EDGE":
+        case "REMOVE_DIR_EDGE": {
             const removeEdge = action.payload as E;
             const removeAdjListEdge = new Map(state.adjList);
             const sourceRemove = removeAdjListEdge.get(removeEdge.source);
@@ -104,8 +109,9 @@ export function reducer<V extends BaseVertex, E extends BaseEdge<V>>(
                 ...state,
                 adjList: removeAdjListEdge,
             };
+        }
 
-        case "REMOVE_EDGE":
+        case "REMOVE_EDGE": {
             const removeEdgeBoth = action.payload as E;
             const removeAdjListBoth = new Map(state.adjList);
             const sourceRemoveBoth = removeAdjListBoth.get(
@@ -127,8 +133,10 @@ export function reducer<V extends BaseVertex, E extends BaseEdge<V>>(
                 ...state,
                 adjList: removeAdjListBoth,
             };
+        }
 
-        default:
+        default: {
             return state;
+        }
     }
 }

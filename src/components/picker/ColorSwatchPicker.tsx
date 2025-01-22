@@ -18,7 +18,7 @@ export function ColorSwatchPicker({
 }: ColorSwatchPickerProps<PrimitiveType, string>) {
     const { contrastColor } = usePaletteContext();
 
-    let [color, setColor] = useState(props.color);
+    const [color, setColor] = useState(props.color);
 
     const onColorChange = (color: Color) => {
         setColor(color);
