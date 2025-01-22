@@ -22,7 +22,6 @@ type TriggerProps = Omit<
 export function Trigger({
     controlledId,
     className,
-    label,
     value,
     onClick,
     ValueFalse,
