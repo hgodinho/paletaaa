@@ -43,15 +43,15 @@ export function ColorGraph() {
             nodes: getNodes(),
             links: getLinks(),
         },
-        minZoom: 2,
+        minZoom: 0.5,
         maxZoom: 10,
 
         // links
         linkDirectionalArrowLength: 4,
-        linkDirectionalArrowRelPos: 0.4,
+        linkDirectionalArrowRelPos: 0.3,
 
         // nodes
-        nodeRelSize: 32,
+        nodeRelSize: 24,
     };
 
     const graphRef = useRef<ForceGraphMethods<Node, Link>>(null);
