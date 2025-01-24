@@ -10,6 +10,8 @@ import { useGraphContext, usePaletteContext } from "@/context";
 import { useEffect, useRef, useState } from "react";
 import { Toolbar, ToolsState } from "@/components";
 
+import canvas from "./canvas";
+
 export type Node = NodeObject & {
     id: string;
 };
@@ -28,7 +30,7 @@ export function ColorGraph() {
 
     const { getNodes, getLinks } = useGraphContext();
 
-    const { getBackgroundHex, contrastColor, expandColor } =
+    const { getBackgroundHex, contrastColor, expandColor, validator } =
         usePaletteContext();
 
     const { observe, width, height } = useDimensions();
@@ -105,9 +107,102 @@ export function ColorGraph() {
         linkColor: () => {
             return contrastColor("#FFF", getBackgroundHex());
         },
-        // linkCanvasObject: (link, ctx, globalScale) => {
-        // console.log({ link, ctx, globalScale });
-        // },
+        linkCanvasObject: (link, ctx, globalScale) => {
+            if (!tools.labels) return;
+
+            // @link https://github.com/vasturiano/force-graph/blob/fa802c042ddb86714068b53697bcd9371133c9ef/src/canvas-force-graph.js#L323
+            const { source, target } = link;
+            if (
+                !source ||
+                !target ||
+                !source.hasOwnProperty("x") ||
+                !source.hasOwnProperty("y") ||
+                !target.hasOwnProperty("x") ||
+                !target.hasOwnProperty("y")
+            )
+                return;
+
+            const pos = options.linkDirectionalArrowRelPos! as number;
+            const radius = options.nodeRelSize!;
+
+            // direction vector
+            const vx = (target as Node).x! - (source as Node).x!;
+            const vy = (target as Node).y! - (source as Node).y!;
+
+            // length
+            const len = Math.sqrt(vx * vx + vy * vy);
+
+            // normalized
+            const dx = vx / len;
+            const dy = vy / len;
+
+            // available length
+            const availableLength = len - 2 * radius;
+
+            // position
+            const offset = radius + availableLength * pos;
+            // adjusted
+            const adjustedX = (source as Node).x! + dx * offset;
+            const adjustedY = (source as Node).y! + dy * offset;
+
+            const bgHex = getBackgroundHex() as string;
+            const textColor = contrastColor(
+                "#FFF",
+                tools.background ? bgHex : "#FFF"
+            );
+
+            const sourceHex = (source as Node).color.data.toString("hex");
+            const targetHex = (target as Node).color.data.toString("hex");
+            const isLevelAA = validator?.isLevelAA(sourceHex, targetHex);
+            const isLevelAAA = validator?.isLevelAAA(sourceHex, targetHex);
+
+            canvas.tag(
+                (ctx, x, y, color) => {
+                    const fontSize = 24;
+                    ctx.font = `${fontSize}px Inter`;
+                    ctx.fillStyle = color;
+
+                    ctx.fillText("aa", x, y + fontSize / 4);
+                    const aaSize = ctx.measureText("aa").width;
+                    const aaProps: [
+                        x: number,
+                        y: number,
+                        scale: number,
+                        color: string,
+                        height: number
+                    ] = [x + aaSize, y - 12, 1, color, 24];
+
+                    if (isLevelAA) {
+                        canvas.checkMark(ctx, ...aaProps);
+                    } else {
+                        canvas.x(ctx, ...aaProps);
+                    }
+
+                    ctx.fillText("aaa", x + 56, y + fontSize / 4);
+                    const aaaSize = ctx.measureText("aaa").width;
+                    const aaaPos: [
+                        x: number,
+                        y: number,
+                        scale: number,
+                        color: string,
+                        height: number
+                    ] = [x + aaSize + 32 + aaaSize, y - 12, 1, color, 24];
+
+                    if (isLevelAAA) {
+                        canvas.checkMark(ctx, ...aaaPos);
+                    } else {
+                        canvas.x(ctx, ...aaaPos);
+                    }
+                },
+                ctx,
+                adjustedX + 4,
+                adjustedY,
+                textColor,
+                globalScale,
+                24,
+                164
+            );
+        },
         linkCanvasObjectMode: () => "after",
     };
 
@@ -116,7 +211,7 @@ export function ColorGraph() {
 
         fg?.d3Force("center", null);
         fg?.d3Force("charge")?.strength(tools.magnet ? -100 : 0);
-        fg?.d3Force("link")?.distance(100);
+        fg?.d3Force("link")?.distance(112);
     }, [tools]);
 
     return (
