@@ -10,7 +10,8 @@
         "lint": "eslint .",
         "prepare": "husky",
         "preview": "vite preview",
-        "test": "vitest"
+        "test": "vitest",
+        "pr:main": "gh pr create --base main --project paletaaa"
     },
     "lint-staged": {
         "*.{js,jsx,ts,tsx}": [

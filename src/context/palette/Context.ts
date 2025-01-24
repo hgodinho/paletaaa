@@ -1,8 +1,10 @@
+import { Node } from "@/components";
 import { createContext } from "react";
 import { Color as PrimitiveColor, ColorSpace } from "react-aria-components";
 
 export type Color = {
     title?: string;
+    id: string;
     data: PrimitiveColor;
 };
 
@@ -13,6 +15,7 @@ export type PalleteContextState = {
 };
 
 export type PaletteContextType = {
+    background?: string;
     validator?: ColorContrastChecker;
 } & PalleteContextState;
 
@@ -31,6 +34,8 @@ export type PaletteContextCallback = {
     updateColorName: (id: string, title: string) => void;
     updateColorData: (id: string, data: Color) => void;
     onColorSelected: (id: string | null) => void;
+    setBackground: (data: string | undefined) => void;
+    getColors: () => Node[];
 };
 
 export const PaletteCallback: PaletteContextCallback = {
@@ -39,12 +44,14 @@ export const PaletteCallback: PaletteContextCallback = {
     getColor: () => undefined,
     getColorHex: () => undefined,
     getBackground: () => undefined,
-    getBackgroundHex: () => "#000",
+    getBackgroundHex: () => "#FFF",
     onColorAdd: () => {},
     contrastColor: () => "black",
     updateColorName: () => {},
     updateColorData: () => {},
     onColorSelected: () => {},
+    getColors: () => [],
+    setBackground: () => {},
 };
 
 export const PaletteContextDefault: PaletteContextType = {
