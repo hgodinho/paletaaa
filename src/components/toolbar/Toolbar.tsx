@@ -80,19 +80,23 @@ export function Toolbar({ className, tools, setTools }: ToolbarProps) {
                 </Button>
                 <Button
                     variant={"none"}
-                    onClick={() =>
+                    onPress={() =>
                         setTools({ ...tools, labels: !tools.labels })
                     }
-                    className={cn(buttonClass("labels"))}
+                    className={cn("p-2", buttonClass("labels"))}
                 >
                     <Tag size={18} />
                 </Button>
                 <Button
                     variant={"none"}
-                    onClick={() =>
+                    onPress={() =>
                         setTools({ ...tools, magnet: !tools.magnet })
                     }
-                    className={cn(buttonClass("magnet"))}
+                    className={cn(
+                        "p-2",
+                        "rounded-r-full",
+                        buttonClass("magnet")
+                    )}
                 >
                     <Magnet size={18} />
                 </Button>
