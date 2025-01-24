@@ -2,12 +2,9 @@ import { cn } from "@/lib";
 
 import { LucideIcon } from "lucide-react";
 import { usePaletteContext } from "@/context";
-import { Button } from "../button";
+import { Button, ButtonProps } from "../button";
 
-type TriggerProps = Omit<
-    React.ButtonHTMLAttributes<HTMLButtonElement>,
-    "onClick" | "value"
-> & {
+type TriggerProps = Omit<ButtonProps, "onClick" | "value"> & {
     controlledId: string;
     value: boolean;
     onClick: (value: boolean) => void;
@@ -33,8 +30,8 @@ export function Trigger({
     return (
         <Button
             variant={"trigger"}
-            className={cn(className)}
-            onClick={() => onClick(!value)}
+            className={cn(String(className))}
+            onPress={() => onClick(!value)}
             aria-controls={controlledId}
             {...props}
             style={{
