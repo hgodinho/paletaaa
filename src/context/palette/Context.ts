@@ -3,6 +3,7 @@ import { Color as PrimitiveColor, ColorSpace } from "react-aria-components";
 
 export type Color = {
     title?: string;
+    id: string;
     data: PrimitiveColor;
 };
 

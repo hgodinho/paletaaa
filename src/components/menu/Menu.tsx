@@ -150,6 +150,7 @@ export function MenuItems() {
                             color={color.data}
                             onChange={(newColor) => {
                                 updateColorData(id, {
+                                    id,
                                     data: newColor,
                                 });
                             }}
