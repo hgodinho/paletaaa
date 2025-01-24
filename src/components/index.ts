@@ -12,4 +12,3 @@ export * from "./links";
 export * from "./trigger";
 export * from "./toolbar";
 export * from "./logo";
-export * from "./combo-box";

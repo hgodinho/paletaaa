@@ -10,16 +10,15 @@ import ColorContrastChecker from "color-contrast-checker";
 import { parseColor } from "react-aria-components";
 import type { Color } from "./Context";
 import { useGraphContext } from "../graph";
-import { getRandomId } from "@/lib";
 
 export function PaletteProvider({
     children,
 }: React.PropsWithChildren<{ [key: string]: unknown }>) {
-    const { graph, ...graphActions } = useGraphContext();
-
     const [state, setPalette] = useState<PaletteContextType>(
         PaletteContextDefault
     );
+
+    const { graph, ...graphActions } = useGraphContext();
 
     const validator = new ColorContrastChecker();
 
@@ -39,26 +38,21 @@ export function PaletteProvider({
         });
     };
 
-    const contrastColor = (
-        colorA: string,
-        colorB: string,
-        level: "WCAG_AAA" | "WCAG_AA" = "WCAG_AAA"
-    ) => {
-        return validator?.check(colorA, colorB, 18)[level] ? "white" : "black";
+    const contrastColor = (colorA: string, colorB: string) => {
+        return validator?.check(colorA, colorB, 18).WCAG_AAA
+            ? "white"
+            : "black";
     };
 
     const onColorAdd = () => {
-        const id = getRandomId();
         graphActions.addVertex({
-            id,
+            id: Math.random().toString(36).substring(2, 7),
             expanded: true,
             color: {
                 data: parseColor(
-                    `hsl(${Math.random() * 360}, ${Math.random() * 100}%, ${
-                        Math.random() * 100
+                    `hsl(${Math.random() * 360}, ${Math.random() * 100}%, ${Math.random() * 100
                     }%)`
                 ),
-                id,
                 title: "",
             },
         });
@@ -73,18 +67,11 @@ export function PaletteProvider({
     };
 
     const getBackground = () => {
-        return getColor(state.background || "");
-    };
-
-    const setBackground = (data: string | undefined) => {
-        setPalette({
-            ...state,
-            background: data,
-        });
+        return getColor("background");
     };
 
     const getBackgroundHex = () => {
-        return getBackground()?.data.toString("hex") || "#FFF";
+        return getBackground()?.data.toString("hex") || "#000";
     };
 
     const updateColorName = (id: string, title: string) => {
@@ -117,10 +104,6 @@ export function PaletteProvider({
         }
     };
 
-    const getColors = () => {
-        return Array.from(graph.nodes.values());
-    };
-
     return (
         <PaletteContext.Provider
             value={{
@@ -137,8 +120,6 @@ export function PaletteProvider({
                 updateColorName,
                 updateColorData,
                 onColorSelected,
-                getColors,
-                setBackground,
 
                 validator,
             }}

@@ -1,17 +1,14 @@
-import {
-    Button as Primitive,
-    ButtonProps as PrimitiveProps,
-} from "react-aria-components";
 import { VariantProps } from "class-variance-authority";
 import { buttonVariants } from "./variant";
 
-export type ButtonProps = PrimitiveProps & VariantProps<typeof buttonVariants>;
+export type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement>;
 
-export function Button({ variant, className, ...props }: ButtonProps) {
+export function Button({
+    variant,
+    className,
+    ...props
+}: ButtonProps & VariantProps<typeof buttonVariants>) {
     return (
-        <Primitive
-            className={buttonVariants({ variant, className })}
-            {...props}
-        />
+        <button className={buttonVariants({ variant, className })} {...props} />
     );
 }
