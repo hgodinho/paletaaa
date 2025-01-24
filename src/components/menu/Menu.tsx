@@ -61,7 +61,7 @@ export function MenuItems() {
                         )}
                     >
                         <ColorSwatch size="large" color={color.data} />
-                        {color.title || id}
+                        {color.title || color.data.toString("hex")}
                     </div>
                     <div
                         className={cn(
