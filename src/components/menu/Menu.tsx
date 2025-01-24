@@ -61,7 +61,7 @@ export function MenuItems() {
                         )}
                     >
                         <ColorSwatch size="large" color={color.data} />
-                        {color.title || color.data.toString("hex")}
+                        {color.title || id}
                     </div>
                     <div
                         className={cn(
@@ -75,9 +75,13 @@ export function MenuItems() {
                     >
                         <Button
                             variant={"square"}
+                            title={`${id === "background"
+                                ? "can't delete background"
+                                : "delete color"
+                                }`}
                             aria-disabled={id === "background"}
-                            isDisabled={id === "background"}
-                            onPress={() => removeItem(id)}
+                            disabled={id === "background"}
+                            onClick={() => removeItem(id)}
                             className={cn(
                                 "hidden",
                                 "group-hover:block",
@@ -91,10 +95,11 @@ export function MenuItems() {
                         </Button>
                         <Button
                             variant={"square"}
+                            title={`expand color ${color.title || id}`}
                             aria-expanded={items.get(id)?.expanded}
                             aria-controls={id}
                             id={`trigger-item-${id}`}
-                            onPress={() => {
+                            onClick={() => {
                                 setExpanded(id);
                             }}
                             className={cn(
@@ -136,6 +141,7 @@ export function MenuItems() {
                         <Label title={"color name"}>
                             <Input
                                 size="small"
+                                type="text"
                                 placeholder="Name"
                                 value={color.title || ""}
                                 onChange={(e) => {
@@ -149,7 +155,6 @@ export function MenuItems() {
                             color={color.data}
                             onChange={(newColor) => {
                                 updateColorData(id, {
-                                    id,
                                     data: newColor,
                                 });
                             }}
@@ -230,7 +235,7 @@ export function Menu() {
                     )}
                     aria-expanded={open}
                     aria-roledescription="menu"
-                    // onKeyDown={handleKeyDown}
+                // onKeyDown={handleKeyDown}
                 >
                     <div
                         className={cn(

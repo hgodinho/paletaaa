@@ -23,21 +23,15 @@ export type Link = LinkObject & {
 
 export function ColorGraph() {
     const [tools, setTools] = useState<ToolsState>({
+        background: true,
         labels: true,
         magnet: false,
     });
 
-    const [isHovered, setHovered] = useState(false);
-
     const { getNodes, getLinks } = useGraphContext();
 
-    const {
-        getBackgroundHex,
-        contrastColor,
-        expandColor,
-        background,
-        validator,
-    } = usePaletteContext();
+    const { getBackgroundHex, contrastColor, expandColor, validator } =
+        usePaletteContext();
 
     const { observe, width, height } = useDimensions();
 
@@ -81,7 +75,7 @@ export function ColorGraph() {
             // circle
             ctx.lineWidth = 1;
             ctx.strokeStyle =
-                id === background ? contrastColor("#fff", bgHex) : colorHex;
+                id === "background" ? contrastColor("#fff", bgHex) : colorHex;
             ctx.stroke();
 
             // label
@@ -101,7 +95,7 @@ export function ColorGraph() {
                     ctx,
                     x!,
                     y! - options.nodeRelSize!,
-                    contrastColor("#FFF", bgHex),
+                    contrastColor("#FFF", tools.background ? bgHex : "#FFF"),
                     globalScale,
                     titleSize > bgSize ? titleSize + 40 : bgSize * 1.5,
                     16
@@ -163,7 +157,10 @@ export function ColorGraph() {
             const adjustedY = (source as Node).y! + dy * offset;
 
             const bgHex = getBackgroundHex() as string;
-            const textColor = contrastColor("#FFF", bgHex);
+            const textColor = contrastColor(
+                "#FFF",
+                tools.background ? bgHex : "#FFF"
+            );
 
             const sourceHex = (source as Node).color.data.toString("hex");
             const targetHex = (target as Node).color.data.toString("hex");
@@ -242,20 +239,23 @@ export function ColorGraph() {
                     "gap-4",
                     "cursor-move"
                 )}
-                onMouseEnter={() => setHovered(true)}
-                onMouseLeave={() => setHovered(false)}
             >
                 <div
                     className={cn("group", "w-full", "absolute", "border-x")}
                     style={{
-                        backgroundColor: getBackgroundHex(),
-                        borderColor: contrastColor(getBackgroundHex(), "#FFF"),
+                        backgroundColor: tools.background
+                            ? getBackgroundHex()
+                            : "white",
+                        borderColor: contrastColor(
+                            tools.background ? getBackgroundHex() : "#FFF",
+                            "#FFF"
+                        ),
                     }}
                 >
                     <Toolbar
                         tools={tools}
                         setTools={setTools}
-                        visible={isHovered}
+                        className={cn("group-hover:opacity-100", "opacity-0")}
                     />
                     <ForceGraph2D
                         // @ts-expect-error - ref
