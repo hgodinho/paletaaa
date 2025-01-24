@@ -136,7 +136,6 @@ export function MenuItems() {
                         <Label title={"color name"}>
                             <Input
                                 size="small"
-                                type="text"
                                 placeholder="Name"
                                 value={color.title || ""}
                                 onChange={(e) => {
