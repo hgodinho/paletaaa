@@ -27,10 +27,17 @@ export function ColorGraph() {
         magnet: false,
     });
 
+    const [isHovered, setHovered] = useState(false);
+
     const { getNodes, getLinks } = useGraphContext();
 
-    const { getBackgroundHex, contrastColor, expandColor, validator } =
-        usePaletteContext();
+    const {
+        getBackgroundHex,
+        contrastColor,
+        expandColor,
+        background,
+        validator,
+    } = usePaletteContext();
 
     const { observe, width, height } = useDimensions();
 
@@ -235,6 +242,8 @@ export function ColorGraph() {
                     "gap-4",
                     "cursor-move"
                 )}
+                onMouseEnter={() => setHovered(true)}
+                onMouseLeave={() => setHovered(false)}
             >
                 <div
                     className={cn("group", "w-full", "absolute", "border-x")}
@@ -246,7 +255,7 @@ export function ColorGraph() {
                     <Toolbar
                         tools={tools}
                         setTools={setTools}
-                        className={cn("group-hover:opacity-100", "opacity-0")}
+                        visible={isHovered}
                     />
                     <ForceGraph2D
                         // @ts-expect-error - ref
