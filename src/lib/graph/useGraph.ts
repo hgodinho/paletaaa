@@ -1,7 +1,6 @@
 import { useReducer } from "react";
 
 import { BaseVertex, BaseEdge, BFSVertexCallback } from "./types";
-import { parseColor } from "react-aria-components";
 import { reducer } from "./reducer";
 
 export type GraphState<V extends BaseVertex> = {
@@ -12,35 +11,14 @@ export type GraphState<V extends BaseVertex> = {
 
 const initialState: GraphState<BaseVertex> = {
     vertices: 0,
-    nodes: new Map([
-        [
-            "background",
-            {
-                id: "background",
-                expanded: true,
-                color: {
-                    data: parseColor(
-                        `hsl(${Math.random() * 360}, ${Math.random() * 100}%, ${
-                            Math.random() * 100
-                        }%)`
-                    ),
-                    title: "background",
-                    nodeVal: 20,
-                },
-            },
-        ],
-    ]),
-    adjList: new Map([["background", new Set<string>()]] as [
-        string,
-        Set<string>
-    ][]),
+    nodes: new Map(),
+    adjList: new Map(),
 };
 
-export function useGraph<V extends BaseVertex, E extends BaseEdge<V>>() {
-    const [graph, dispatch] = useReducer(
-        reducer<V, E>,
-        initialState as GraphState<V>
-    );
+export function useGraph<V extends BaseVertex, E extends BaseEdge<V>>(
+    _defaultState: GraphState<V> = initialState as GraphState<V>
+) {
+    const [graph, dispatch] = useReducer(reducer<V, E>, _defaultState);
 
     const getNodes = () => {
         return Array.from(graph.nodes.values());
