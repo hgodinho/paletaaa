@@ -55,7 +55,7 @@ export function AddLink({ current }: LinksProps) {
                         "justify-center",
                         "gap-2"
                     )}
-                    onClick={() => setOpen(!open)}
+                    onPress={() => setOpen(!open)}
                 >
                     {`${open ? "hide" : "show"} new link input`}
                     {open ? <Eye size={16} /> : <EyeOff size={16} />}
@@ -73,8 +73,7 @@ export function AddLink({ current }: LinksProps) {
                     <div className={cn("flex", "flex-row", "w-full", "gap-2")}>
                         <Button
                             variant="square"
-                            title={"link direction"}
-                            onClick={() => setDirected(!isDirected)}
+                            onPress={() => setDirected(!isDirected)}
                         >
                             {isDirected ? (
                                 <ArrowRight size={16} />
@@ -96,10 +95,9 @@ export function AddLink({ current }: LinksProps) {
                             value={to}
                         />
                         <Button
-                            title="add link"
                             variant={"square"}
-                            disabled={!to}
-                            onClick={addLink}
+                            isDisabled={!to}
+                            onPress={addLink}
                         >
                             <Plus size={16} />
                         </Button>
@@ -269,7 +267,7 @@ export function Links({ current }: LinksProps) {
                                     "hover:text-red-500",
                                     "hover:border-red-500"
                                 )}
-                                onClick={() => onRemove(target)}
+                                onPress={() => onRemove(target)}
                             >
                                 <X size={16} />
                             </Button>

@@ -12,7 +12,7 @@ export function AddButton({ className, ...props }: AddButtonProps) {
                 "items-center",
                 "justify-center",
                 "gap-2",
-                className
+                String(className)
             )}
             {...props}
         >

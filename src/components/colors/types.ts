@@ -1,4 +1,5 @@
 import { Color } from "@/context";
+import { ButtonProps } from "../button";
 
 export type ColorProps = {
     onChange?: (value: Color) => void;
@@ -11,4 +12,4 @@ export type ColorType = {
     value: string;
 };
 
-export type AddButtonProps = React.HTMLAttributes<HTMLButtonElement>;
+export type AddButtonProps = ButtonProps;
