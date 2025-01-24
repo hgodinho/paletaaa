@@ -24,7 +24,7 @@ export type Link = LinkObject & {
 export function ColorGraph() {
     const [tools, setTools] = useState<ToolsState>({
         background: true,
-        labels: false,
+        labels: true,
         magnet: false,
     });
 
@@ -64,32 +64,43 @@ export function ColorGraph() {
         nodeLabel: (node) => {
             return node.color.title || node.id;
         },
-        nodeCanvasObject: ({ x, y, id, color }, ctx, globalScale) => {
+        nodeCanvasObject: (
+            { x, y, id, color: nodeColor },
+            ctx,
+            globalScale
+        ) => {
             const bgHex = getBackgroundHex() as string;
-            const colorHex = color.data.toString("hex");
-            const textColor = contrastColor(
-                "#FFF",
-                tools.background ? bgHex : "#FFF"
-            );
+            const colorHex = nodeColor.data.toString("hex");
 
-            const pos = { x: x as number, y: y as number };
-            const fontSize = 16 / globalScale;
-            const radius = options.nodeRelSize as number;
-
-            // label
-            if (tools.labels) {
-                const label = color.title || id;
-                ctx.font = `${fontSize}px Inter`;
-                ctx.fillStyle = textColor;
-                const labelY = pos.y - radius - 64 / globalScale;
-                ctx.fillText(label, pos.x, labelY); // color name
-                ctx.fillText(colorHex, pos.x, labelY + 24 / globalScale); // color hex
-            }
             // circle
             ctx.lineWidth = 1;
             ctx.strokeStyle =
                 id === "background" ? contrastColor("#fff", bgHex) : colorHex;
             ctx.stroke();
+
+            // label
+            if (tools.labels) {
+                const fontSize = 24;
+                ctx.font = `${fontSize}px Inter`;
+                const titleSize = ctx.measureText(nodeColor.title || id).width;
+                const bgSize = ctx.measureText(colorHex).width;
+
+                canvas.label(
+                    (ctx, x, y, color) => {
+                        const label = nodeColor.title || id;
+                        ctx.fillStyle = color;
+                        ctx.fillText(label, x, y);
+                        ctx.fillText(colorHex, x, y + fontSize + 4);
+                    },
+                    ctx,
+                    x!,
+                    y! - options.nodeRelSize!,
+                    contrastColor("#FFF", tools.background ? bgHex : "#FFF"),
+                    globalScale,
+                    titleSize > bgSize ? titleSize + 40 : bgSize * 1.5,
+                    16
+                );
+            }
         },
         nodeCanvasObjectMode: () => "after",
         onNodeDragEnd: (node) => {
