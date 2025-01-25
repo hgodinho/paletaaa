@@ -8,10 +8,11 @@
         "commit": "cz",
         "dev": "vite",
         "lint": "eslint .",
+        "pr:main": "gh pr create --base main --project paletaaa",
         "prepare": "husky",
         "preview": "vite preview",
         "test": "vitest",
-        "pr:main": "gh pr create --base main --project paletaaa"
+        "typecheck": "tsc -b --noEmit"
     },
     "lint-staged": {
         "*.{js,jsx,ts,tsx}": [
