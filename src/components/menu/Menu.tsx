@@ -276,7 +276,7 @@ export function Menu() {
                     </div>
                     <AddButton
                         className={cn("duration-300", !open && "hidden")}
-                        onClick={onColorAdd}
+                        onPress={onColorAdd}
                     />
                     <div
                         className={cn(
