@@ -7,8 +7,11 @@ import ForceGraph2D, {
 } from "react-force-graph-2d";
 import useDimensions from "react-cool-dimensions";
 import { useGraphContext, usePaletteContext } from "@/context";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Toolbar, ToolsState } from "@/components";
+
+// @ts-expect-error - d3-force-3d
+import { forceCollide } from "d3-force-3d";
 
 import canvas from "./canvas";
 
@@ -41,24 +44,27 @@ export function ColorGraph() {
 
     const { observe, width, height } = useDimensions();
 
-    const options: ForceGraphProps<Node, Link> = {
-        // graph
-        width,
-        height,
-        graphData: {
-            nodes: getNodes(),
-            links: getLinks(),
-        },
-        minZoom: 0.5,
-        maxZoom: 10,
+    const options: ForceGraphProps<Node, Link> = useMemo(
+        () => ({
+            // graph
+            width,
+            height,
+            graphData: {
+                nodes: getNodes(),
+                links: getLinks(),
+            },
+            minZoom: 0.5,
+            maxZoom: 10,
 
-        // links
-        linkDirectionalArrowLength: 4,
-        linkDirectionalArrowRelPos: 0.3,
+            // links
+            linkDirectionalArrowLength: 4,
+            linkDirectionalArrowRelPos: 0.3,
 
-        // nodes
-        nodeRelSize: 24,
-    };
+            // nodes
+            nodeRelSize: 24,
+        }),
+        [width, height, getNodes, getLinks]
+    );
 
     const graphRef = useRef<ForceGraphMethods<Node, Link>>(null);
 
@@ -222,11 +228,14 @@ export function ColorGraph() {
 
     useEffect(() => {
         const fg = graphRef.current;
+        if (fg === null) return;
 
-        fg?.d3Force("center", null);
-        fg?.d3Force("charge")?.strength(tools.magnet ? -100 : 0);
-        fg?.d3Force("link")?.distance(112);
-    }, [tools]);
+        fg.d3Force("center", null);
+        fg.d3Force("charge")?.strength(tools.magnet ? 10 : 0);
+        fg.d3Force("link")?.distance(112);
+
+        fg.d3Force("collision", forceCollide(options.nodeRelSize));
+    }, [tools, options]);
 
     return (
         <>
