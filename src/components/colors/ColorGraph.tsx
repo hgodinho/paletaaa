@@ -240,18 +240,17 @@ export function ColorGraph() {
                     "justify-end",
                     "items-end",
                     "gap-4",
-                    "cursor-move"
+                    "cursor-move",
+                    "border-x"
                 )}
                 onMouseEnter={() => setHovered(true)}
                 onMouseLeave={() => setHovered(false)}
+                style={{
+                    backgroundColor: getBackgroundHex(),
+                    borderColor: contrastColor(getBackgroundHex(), "#FFF"),
+                }}
             >
-                <div
-                    className={cn("group", "w-full", "absolute", "border-x")}
-                    style={{
-                        backgroundColor: getBackgroundHex(),
-                        borderColor: contrastColor(getBackgroundHex(), "#FFF"),
-                    }}
-                >
+                <div className={cn("group", "w-fit", "h-fit", "absolute")}>
                     <Toolbar
                         tools={tools}
                         setTools={setTools}
