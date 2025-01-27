@@ -5,7 +5,7 @@ import {
     parseColor,
 } from "react-aria-components";
 import { PaintBucket } from "lucide-react";
-import { Input, Button, ComboBoxItem, ColorSwatch } from "@/components";
+import { Input, Button, ComboBoxItem, ColorSwatch, Scroll } from "@/components";
 import { ComboBoxProps } from "./types";
 import { cn } from "@/lib";
 import { usePaletteContext } from "@/context";
@@ -41,6 +41,7 @@ export function ColorComboBox<T extends object>({
                 ref={ref}
                 className={cn(
                     "w-fit",
+                    "h-full",
                     "z-10",
                     "mt-4",
                     "z-10",
@@ -48,6 +49,7 @@ export function ColorComboBox<T extends object>({
                     "p-2",
                     "bg-white"
                 )}
+                maxHeight={256}
                 offset={0}
                 isOpen={isOpen}
                 onOpenChange={onOpenChange}
@@ -55,16 +57,18 @@ export function ColorComboBox<T extends object>({
                     borderColor: contrastColor(getBackgroundHex(), "#FFF"),
                 }}
             >
-                <ListBox>
-                    <ComboBoxItem textValue="default">
-                        <ColorSwatch color={parseColor("#FFF")} />
-                        {"default"}
-                        <span>{`(#FFF)`}</span>
-                    </ComboBoxItem>
-                    {typeof children === "function"
-                        ? children({} as T)
-                        : children}
-                </ListBox>
+                <Scroll>
+                    <ListBox>
+                        <ComboBoxItem textValue="default">
+                            <ColorSwatch color={parseColor("#FFF")} />
+                            {"default"}
+                            <span>{`(#FFF)`}</span>
+                        </ComboBoxItem>
+                        {typeof children === "function"
+                            ? children({} as T)
+                            : children}
+                    </ListBox>
+                </Scroll>
             </Popover>
         </Primitive>
     );
