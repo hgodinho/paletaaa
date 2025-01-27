@@ -26,6 +26,8 @@ export function GraphProvider({ children }: React.PropsWithChildren) {
                         title: "background",
                         id: initialColors.a,
                     },
+                    x: 0,
+                    y: -50,
                 },
             ],
             [
@@ -42,6 +44,8 @@ export function GraphProvider({ children }: React.PropsWithChildren) {
                         title: "foreground",
                         id: initialColors.b,
                     },
+                    x: 0,
+                    y: 50,
                 },
             ],
         ]),

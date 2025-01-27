@@ -10,6 +10,7 @@ import {
     ColorSwatch,
     Trigger,
     Logo,
+    Scroll,
 } from "@/components";
 import { useGraphContext, usePaletteContext } from "@/context";
 import { ChevronDown, MenuIcon, X } from "lucide-react";
@@ -36,7 +37,8 @@ export function MenuItems() {
                     "border-t-0",
                     "first:border-t",
                     "first:rounded-t-sm",
-                    "last:rounded-b-sm"
+                    "last:rounded-b-sm",
+                    "snap-start"
                 )}
             >
                 <h3
@@ -223,9 +225,9 @@ export function Menu() {
                         "pb-16",
                         "flex",
                         "flex-col",
-                        "duration-300",
                         "bg-white",
                         "gap-2",
+                        "duration-300",
                         open ? ["w-96"] : ["w-0"]
                     )}
                     aria-expanded={open}
@@ -275,20 +277,12 @@ export function Menu() {
                         </a>
                     </div>
                     <AddButton
-                        className={cn("duration-300", !open && "hidden")}
+                        className={cn(!open && "hidden")}
                         onPress={onColorAdd}
                     />
-                    <div
-                        className={cn(
-                            "accordion",
-                            "overflow-auto",
-                            "h-full",
-                            "duration-300",
-                            !open && "hidden"
-                        )}
-                    >
+                    <Scroll className={cn("accordion", !open && "hidden")}>
                         <MenuItems />
-                    </div>
+                    </Scroll>
                 </aside>
                 <Trigger
                     value={open}
