@@ -151,7 +151,7 @@ export function Zoom({
             >
                 <NumberInput
                     aria-label="Zoom"
-                    size={"xs"}
+                    size={"small"}
                     className={cn("w-10")}
                     step={10}
                     minValue={min * 100}
