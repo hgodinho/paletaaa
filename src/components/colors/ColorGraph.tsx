@@ -243,7 +243,7 @@ export function ColorGraph() {
             if (graphRef.current === null) return;
             graphRef.current.zoom(scale, 300);
         },
-        visible: true,
+        visible: isHovered,
         min: options.minZoom!,
         max: options.maxZoom!,
         referenceScale: scale,
