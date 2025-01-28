@@ -8,7 +8,7 @@ import ForceGraph2D, {
 import useDimensions from "react-cool-dimensions";
 import { useGraphContext, usePaletteContext } from "@/context";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Toolbar, ToolsState } from "@/components";
+import { Toolbar, ToolsState, Zoom } from "@/components";
 
 // @ts-expect-error - d3-force-3d
 import { forceCollide } from "d3-force-3d";
@@ -31,6 +31,8 @@ export function ColorGraph() {
     });
 
     const [isHovered, setHovered] = useState(false);
+
+    const [scale, setScale] = useState(1);
 
     const { getNodes, getLinks } = useGraphContext();
 
@@ -224,6 +226,27 @@ export function ColorGraph() {
             );
         },
         linkCanvasObjectMode: () => "after",
+
+        onZoomEnd: (zoom) => {
+            if (zoom.k !== scale) {
+                setScale(zoom.k);
+            }
+        },
+    };
+
+    const zoom = {
+        zoomToFit: () => {
+            if (graphRef.current === null) return;
+            graphRef.current.zoomToFit(300, 128);
+        },
+        zoom: (scale: number) => {
+            if (graphRef.current === null) return;
+            graphRef.current.zoom(scale, 300);
+        },
+        visible: true,
+        min: options.minZoom!,
+        max: options.maxZoom!,
+        referenceScale: scale,
     };
 
     useEffect(() => {
@@ -271,6 +294,7 @@ export function ColorGraph() {
                         {...options}
                         {...callbacks}
                     />
+                    <Zoom {...zoom} />
                 </div>
             </div>
         </>
