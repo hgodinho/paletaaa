@@ -63,7 +63,7 @@ export function ColorGraph() {
             linkDirectionalArrowRelPos: 0.3,
 
             // nodes
-            nodeRelSize: 24,
+            nodeRelSize: 16,
         }),
         [width, height, getNodes, getLinks]
     );
@@ -87,7 +87,7 @@ export function ColorGraph() {
             const colorHex = nodeColor.data.toString("hex");
 
             // circle
-            ctx.lineWidth = 1;
+            ctx.lineWidth = 1 / globalScale;
             ctx.strokeStyle =
                 id === background ? contrastColor("#fff", bgHex) : colorHex;
             ctx.stroke();
@@ -254,8 +254,8 @@ export function ColorGraph() {
         if (fg === null) return;
 
         fg.d3Force("center", null);
-        fg.d3Force("charge")?.strength(tools.magnet ? 10 : 0);
-        fg.d3Force("link")?.distance(112);
+        fg.d3Force("charge")?.strength(tools.magnet ? options.nodeRelSize : 0);
+        fg.d3Force("link")?.distance(options.nodeRelSize! * 5);
 
         fg.d3Force("collision", forceCollide(options.nodeRelSize));
     }, [tools, options]);
