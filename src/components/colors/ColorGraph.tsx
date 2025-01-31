@@ -231,6 +231,22 @@ export function ColorGraph() {
             );
         },
         linkCanvasObjectMode: () => "after",
+        linkLineDash: (link) => {
+            const source = link.source as Node;
+            const target = link.target as Node;
+            if (
+                source.color &&
+                target.color &&
+                !validator?.isLevelAAA(
+                    source.color.data.toString("hex"),
+                    target.color.data.toString("hex")
+                )
+            ) {
+                return [2, 2];
+            }
+
+            return null;
+        },
 
         onZoomEnd: (zoom) => {
             if (zoom.k !== scale) {
