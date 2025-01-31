@@ -1,21 +1,33 @@
 import { BaseEdge, BaseVertex } from "./types";
 import { GraphState } from "./useGraph";
 
+export const GraphActions = {
+    ADD_VERTEX: "ADD_VERTEX",
+    REMOVE_VERTEX: "REMOVE_VERTEX",
+    UPDATE_VERTEX: "UPDATE_VERTEX",
+    UPDATE_VERTICES: "UPDATE_VERTICES",
+    ADD_DIR_EDGE: "ADD_DIR_EDGE",
+    ADD_EDGE: "ADD_EDGE",
+    REMOVE_DIR_EDGE: "REMOVE_DIR_EDGE",
+    REMOVE_EDGE: "REMOVE_EDGE",
+} as const;
+
 export type GraphAction<V extends BaseVertex, E extends BaseEdge<V>> =
-    | { type: "ADD_VERTEX"; payload: V }
-    | { type: "REMOVE_VERTEX"; payload: string }
-    | { type: "UPDATE_VERTEX"; payload: V }
-    | { type: "ADD_DIR_EDGE"; payload: E }
-    | { type: "ADD_EDGE"; payload: E }
-    | { type: "REMOVE_DIR_EDGE"; payload: E }
-    | { type: "REMOVE_EDGE"; payload: E };
+    | { type: typeof GraphActions.ADD_VERTEX; payload: V }
+    | { type: typeof GraphActions.REMOVE_VERTEX; payload: string }
+    | { type: typeof GraphActions.UPDATE_VERTEX; payload: V }
+    | { type: typeof GraphActions.UPDATE_VERTICES; payload: Map<string, V> }
+    | { type: typeof GraphActions.ADD_DIR_EDGE; payload: E }
+    | { type: typeof GraphActions.ADD_EDGE; payload: E }
+    | { type: typeof GraphActions.REMOVE_DIR_EDGE; payload: E }
+    | { type: typeof GraphActions.REMOVE_EDGE; payload: E };
 
 export function reducer<V extends BaseVertex, E extends BaseEdge<V>>(
     state: GraphState<V>,
     action: GraphAction<V, E>
 ): GraphState<V> {
     switch (action.type) {
-        case "ADD_VERTEX": {
+        case GraphActions.ADD_VERTEX: {
             return {
                 ...state,
                 vertices: state.vertices + 1,
@@ -30,7 +42,7 @@ export function reducer<V extends BaseVertex, E extends BaseEdge<V>>(
             };
         }
 
-        case "REMOVE_VERTEX": {
+        case GraphActions.REMOVE_VERTEX: {
             const nodes = new Map(state.nodes);
             const removeAdjList = new Map(state.adjList);
 
@@ -45,7 +57,7 @@ export function reducer<V extends BaseVertex, E extends BaseEdge<V>>(
             };
         }
 
-        case "UPDATE_VERTEX": {
+        case GraphActions.UPDATE_VERTEX: {
             return {
                 ...state,
                 nodes: new Map([
@@ -61,7 +73,14 @@ export function reducer<V extends BaseVertex, E extends BaseEdge<V>>(
             };
         }
 
-        case "ADD_DIR_EDGE": {
+        case GraphActions.UPDATE_VERTICES: {
+            return {
+                ...state,
+                nodes: action.payload as Map<string, V>,
+            };
+        }
+
+        case GraphActions.ADD_DIR_EDGE: {
             const edge = action.payload as E;
             const addAdjList = new Map(state.adjList);
             const source = addAdjList.get(edge.source);
@@ -76,7 +95,7 @@ export function reducer<V extends BaseVertex, E extends BaseEdge<V>>(
             };
         }
 
-        case "ADD_EDGE": {
+        case GraphActions.ADD_EDGE: {
             const addEdge = action.payload as E;
             const addAdjListEdge = new Map(state.adjList);
             const sourceEdge = addAdjListEdge.get(addEdge.source);
@@ -96,7 +115,7 @@ export function reducer<V extends BaseVertex, E extends BaseEdge<V>>(
             };
         }
 
-        case "REMOVE_DIR_EDGE": {
+        case GraphActions.REMOVE_DIR_EDGE: {
             const removeEdge = action.payload as E;
             const removeAdjListEdge = new Map(state.adjList);
             const sourceRemove = removeAdjListEdge.get(removeEdge.source);
@@ -111,7 +130,7 @@ export function reducer<V extends BaseVertex, E extends BaseEdge<V>>(
             };
         }
 
-        case "REMOVE_EDGE": {
+        case GraphActions.REMOVE_EDGE: {
             const removeEdgeBoth = action.payload as E;
             const removeAdjListBoth = new Map(state.adjList);
             const sourceRemoveBoth = removeAdjListBoth.get(

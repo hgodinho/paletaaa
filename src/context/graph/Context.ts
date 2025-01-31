@@ -16,6 +16,7 @@ export const GraphDefaults: GraphType = {
     addVertex: () => {},
     bfsAll: () => [],
     updateVertex: () => {},
+    updateVertices: () => {},
     removeVertex: () => {},
     addDirEdge: () => {},
     removeDirEdge: () => {},

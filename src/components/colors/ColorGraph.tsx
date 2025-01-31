@@ -63,7 +63,7 @@ export function ColorGraph() {
             linkDirectionalArrowRelPos: 0.3,
 
             // nodes
-            nodeRelSize: 16,
+            nodeRelSize: 24,
         }),
         [width, height, getNodes, getLinks]
     );
@@ -79,7 +79,7 @@ export function ColorGraph() {
             return node.color.title || node.id;
         },
         nodeCanvasObject: (
-            { x, y, id, color: nodeColor },
+            { x, y, id, val, color: nodeColor },
             ctx,
             globalScale
         ) => {
@@ -108,7 +108,7 @@ export function ColorGraph() {
                     },
                     ctx,
                     x!,
-                    y! - options.nodeRelSize!,
+                    y! - Math.sqrt(Math.max(0, val)) * options.nodeRelSize!,
                     contrastColor("#FFF", bgHex),
                     globalScale,
                     titleSize > bgSize ? titleSize + 40 : bgSize * 1.5,
@@ -136,7 +136,9 @@ export function ColorGraph() {
             if (!tools.labels) return;
 
             // @link https://github.com/vasturiano/force-graph/blob/fa802c042ddb86714068b53697bcd9371133c9ef/src/canvas-force-graph.js#L323
-            const { source, target } = link;
+            // const { source, target } = link;
+            const source = link.source as Node;
+            const target = link.target as Node;
             if (
                 !source ||
                 !target ||
@@ -148,7 +150,6 @@ export function ColorGraph() {
                 return;
 
             const pos = options.linkDirectionalArrowRelPos! as number;
-            const radius = options.nodeRelSize!;
 
             // direction vector
             const vx = (target as Node).x! - (source as Node).x!;
@@ -161,20 +162,24 @@ export function ColorGraph() {
             const dx = vx / len;
             const dy = vy / len;
 
+            const sourceRadius = options.nodeRelSize! * Math.sqrt(source.val!);
+            const targetRadius = options.nodeRelSize! * Math.sqrt(target.val!);
+
             // available length
-            const availableLength = len - 2 * radius;
+            const availableLength = len - (sourceRadius + targetRadius);
 
             // position
-            const offset = radius + availableLength * pos;
+            const offset = sourceRadius + availableLength * pos;
+
             // adjusted
-            const adjustedX = (source as Node).x! + dx * offset;
-            const adjustedY = (source as Node).y! + dy * offset;
+            const adjustedX = source.x! + dx * offset;
+            const adjustedY = source.y! + dy * offset;
 
             const bgHex = getBackgroundHex() as string;
             const textColor = contrastColor("#FFF", bgHex);
 
-            const sourceHex = (source as Node).color.data.toString("hex");
-            const targetHex = (target as Node).color.data.toString("hex");
+            const sourceHex = source.color.data.toString("hex");
+            const targetHex = target.color.data.toString("hex");
             const isLevelAA = validator?.isLevelAA(sourceHex, targetHex);
             const isLevelAAA = validator?.isLevelAAA(sourceHex, targetHex);
 
@@ -226,6 +231,22 @@ export function ColorGraph() {
             );
         },
         linkCanvasObjectMode: () => "after",
+        linkLineDash: (link) => {
+            const source = link.source as Node;
+            const target = link.target as Node;
+            if (
+                source.color &&
+                target.color &&
+                !validator?.isLevelAAA(
+                    source.color.data.toString("hex"),
+                    target.color.data.toString("hex")
+                )
+            ) {
+                return [2, 2];
+            }
+
+            return null;
+        },
 
         onZoomEnd: (zoom) => {
             if (zoom.k !== scale) {
@@ -254,11 +275,35 @@ export function ColorGraph() {
         if (fg === null) return;
 
         fg.d3Force("center", null);
-        fg.d3Force("charge")?.strength(tools.magnet ? options.nodeRelSize : 0);
-        fg.d3Force("link")?.distance(options.nodeRelSize! * 5);
+
+        fg.d3Force("charge")?.strength((node: Node) => {
+            if (tools.magnet) {
+                node.fx = undefined;
+                node.fy = undefined;
+                return -options.nodeRelSize! * 10;
+            } else {
+                return 0;
+            }
+        });
+
+        fg.d3Force("link")?.distance((link: LinkObject<Node>) => {
+            const source = link.source as Node;
+            const target = link.target as Node;
+
+            if (
+                !validator?.isLevelAAA(
+                    source.color?.data.toString("hex"),
+                    target.color?.data.toString("hex")
+                )
+            ) {
+                return options.nodeRelSize! * 8;
+            } else {
+                return options.nodeRelSize! * 5;
+            }
+        });
 
         fg.d3Force("collision", forceCollide(options.nodeRelSize));
-    }, [tools, options]);
+    }, [tools, options, validator]);
 
     return (
         <>
