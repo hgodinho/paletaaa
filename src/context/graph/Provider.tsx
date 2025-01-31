@@ -28,6 +28,7 @@ export function GraphProvider({ children }: React.PropsWithChildren) {
                     },
                     x: 0,
                     y: -50,
+                    val: 1.5,
                 },
             ],
             [
@@ -46,6 +47,7 @@ export function GraphProvider({ children }: React.PropsWithChildren) {
                     },
                     x: 0,
                     y: 50,
+                    val: 1,
                 },
             ],
         ]),
