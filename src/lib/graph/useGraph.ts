@@ -64,6 +64,10 @@ export function useGraph<V extends BaseVertex, E extends BaseEdge<V>>(
         dispatch({ type: "UPDATE_VERTEX", payload: node });
     };
 
+    const updateVertices = (nodes: Map<string, V>) => {
+        dispatch({ type: "UPDATE_VERTICES", payload: nodes });
+    };
+
     const hasVertex = (id: V["id"]) => {
         return graph.nodes.has(id);
     };
@@ -155,6 +159,7 @@ export function useGraph<V extends BaseVertex, E extends BaseEdge<V>>(
         addVertex,
         removeVertex,
         updateVertex,
+        updateVertices,
 
         addEdge,
         addDirEdge,

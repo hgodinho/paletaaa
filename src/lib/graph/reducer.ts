@@ -5,6 +5,7 @@ export const GraphActions = {
     ADD_VERTEX: "ADD_VERTEX",
     REMOVE_VERTEX: "REMOVE_VERTEX",
     UPDATE_VERTEX: "UPDATE_VERTEX",
+    UPDATE_VERTICES: "UPDATE_VERTICES",
     ADD_DIR_EDGE: "ADD_DIR_EDGE",
     ADD_EDGE: "ADD_EDGE",
     REMOVE_DIR_EDGE: "REMOVE_DIR_EDGE",
@@ -15,6 +16,7 @@ export type GraphAction<V extends BaseVertex, E extends BaseEdge<V>> =
     | { type: typeof GraphActions.ADD_VERTEX; payload: V }
     | { type: typeof GraphActions.REMOVE_VERTEX; payload: string }
     | { type: typeof GraphActions.UPDATE_VERTEX; payload: V }
+    | { type: typeof GraphActions.UPDATE_VERTICES; payload: Map<string, V> }
     | { type: typeof GraphActions.ADD_DIR_EDGE; payload: E }
     | { type: typeof GraphActions.ADD_EDGE; payload: E }
     | { type: typeof GraphActions.REMOVE_DIR_EDGE; payload: E }
@@ -68,6 +70,13 @@ export function reducer<V extends BaseVertex, E extends BaseEdge<V>>(
                         },
                     ],
                 ]),
+            };
+        }
+
+        case GraphActions.UPDATE_VERTICES: {
+            return {
+                ...state,
+                nodes: action.payload as Map<string, V>,
             };
         }
 

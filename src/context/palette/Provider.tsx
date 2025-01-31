@@ -108,13 +108,21 @@ export function PaletteProvider({
     };
 
     const expandColor = (id: string) => {
-        const node = graphActions.getNode(id);
-        if (node) {
-            graphActions.updateVertex({
-                ...node,
-                expanded: !node.expanded,
-            });
+        const updated = new Map(graph.nodes);
+        for (const [key, value] of updated) {
+            if (key === id) {
+                updated.set(key, {
+                    ...value,
+                    expanded: !value.expanded,
+                });
+            } else {
+                updated.set(key, {
+                    ...value,
+                    expanded: false,
+                });
+            }
         }
+        graphActions.updateVertices(updated);
     };
 
     const getColors = () => {
