@@ -176,7 +176,11 @@ export function Menu() {
     const setExpanded = (expandedId: string) => {
         const node = getNode(expandedId);
         if (node) {
-            updateVertex({ ...node, expanded: !node.expanded });
+            updateVertex({
+                ...node,
+                expanded: !node.expanded,
+                val: node.expanded ? 1 : 1.5,
+            });
         }
     };
 
