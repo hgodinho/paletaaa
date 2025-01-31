@@ -275,11 +275,35 @@ export function ColorGraph() {
         if (fg === null) return;
 
         fg.d3Force("center", null);
-        fg.d3Force("charge")?.strength(tools.magnet ? options.nodeRelSize : 0);
-        fg.d3Force("link")?.distance(options.nodeRelSize! * 5);
+
+        fg.d3Force("charge")?.strength((node: Node) => {
+            if (tools.magnet) {
+                node.fx = undefined;
+                node.fy = undefined;
+                return -options.nodeRelSize! * 10;
+            } else {
+                return 0;
+            }
+        });
+
+        fg.d3Force("link")?.distance((link: LinkObject<Node>) => {
+            const source = link.source as Node;
+            const target = link.target as Node;
+
+            if (
+                !validator?.isLevelAAA(
+                    source.color?.data.toString("hex"),
+                    target.color?.data.toString("hex")
+                )
+            ) {
+                return options.nodeRelSize! * 8;
+            } else {
+                return options.nodeRelSize! * 5;
+            }
+        });
 
         fg.d3Force("collision", forceCollide(options.nodeRelSize));
-    }, [tools, options]);
+    }, [tools, options, validator]);
 
     return (
         <>
