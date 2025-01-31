@@ -52,6 +52,7 @@ export function PaletteProvider({
         graphActions.addVertex({
             id,
             expanded: true,
+            val: 1.5,
             color: {
                 data: parseColor(
                     `hsl(${Math.random() * 360}, ${Math.random() * 100}%, ${
@@ -114,11 +115,13 @@ export function PaletteProvider({
                 updated.set(key, {
                     ...value,
                     expanded: !value.expanded,
+                    val: value.expanded ? 1 : 1.5,
                 });
             } else {
                 updated.set(key, {
                     ...value,
                     expanded: false,
+                    val: 1,
                 });
             }
         }
