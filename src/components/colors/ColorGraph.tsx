@@ -310,6 +310,7 @@ export function ColorGraph() {
             <div
                 ref={observe}
                 className={cn(
+                    "graph",
                     "m-auto",
                     "w-full",
                     "h-full",

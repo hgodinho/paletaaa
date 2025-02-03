@@ -211,7 +211,7 @@ export function Menu() {
         >
             <div
                 className={cn(
-                    "z-10",
+                    "menu",
                     "flex",
                     "items-start",
                     "justify-start",
