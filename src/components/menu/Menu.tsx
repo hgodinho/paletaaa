@@ -9,8 +9,8 @@ import {
     Links,
     ColorSwatch,
     Trigger,
-    Logo,
     Scroll,
+    Footer,
 } from "@/components";
 import { useGraphContext, usePaletteContext } from "@/context";
 import { ChevronDown, MenuIcon, X } from "lucide-react";
@@ -186,7 +186,7 @@ export function Menu() {
 
     const removeItem = (id: string) => removeVertex(id);
 
-    const { contrastColor, getBackgroundHex, onColorAdd } = usePaletteContext();
+    const { onColorAdd } = usePaletteContext();
 
     // const handleKeyDown = useCallback(
     //     (e: React.KeyboardEvent<HTMLDivElement>) => {
@@ -225,7 +225,7 @@ export function Menu() {
                         "h-screen",
                         "text-black",
                         "*:mx-2",
-                        "pt-4",
+                        "pt-2",
                         "pb-16",
                         "flex",
                         "flex-col",
@@ -238,48 +238,6 @@ export function Menu() {
                     aria-roledescription="menu"
                     // onKeyDown={handleKeyDown}
                 >
-                    <div
-                        className={cn(
-                            "flex",
-                            "flex-row",
-                            "justify-end",
-                            "gap-2",
-                            "items-center",
-                            "mb-4"
-                        )}
-                    >
-                        <span
-                            className={cn(
-                                "text-xs",
-                                "px-1",
-                                "rounded-full",
-                                "font-bold"
-                            )}
-                            style={{
-                                backgroundColor: getBackgroundHex(),
-                                color: contrastColor(
-                                    getBackgroundHex(),
-                                    "#FFF"
-                                ),
-                            }}
-                        >
-                            {import.meta.env.VITE_NEW_RELEASE_VERSION || "dev"}
-                        </span>
-                        <a
-                            href="https://github.com/hgodinho"
-                            target="_blank"
-                            aria-label="github hgodinho"
-                            title="github hgodinho"
-                            className={cn("align-self-end", "justify-self-end")}
-                        >
-                            <img
-                                src="https://cdn.simpleicons.org/github/181717"
-                                height={16}
-                                width={16}
-                                alt="github"
-                            />
-                        </a>
-                    </div>
                     <AddButton
                         className={cn(!open && "hidden")}
                         onPress={onColorAdd}
@@ -304,13 +262,7 @@ export function Menu() {
                     ValueFalse={MenuIcon}
                 />
             </div>
-            <Logo
-                variant={
-                    open ? "black" : contrastColor(getBackgroundHex(), "#FFF")
-                }
-                size={"small"}
-                className={cn("fixed", "bottom-6", "left-6")}
-            />
+            <Footer expanded={open} />
         </MenuContext>
     );
 }
