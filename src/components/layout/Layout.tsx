@@ -1,6 +1,6 @@
 import { GraphProvider, OptionsProvider, PaletteProvider } from "@/context";
 import { cn } from "@/lib";
-import { Editor, Menu /*Preview*/ } from "@/components";
+import { ColorGraph, Menu /*Preview*/ } from "@/components";
 
 export function Layout() {
     return (
@@ -16,7 +16,7 @@ export function Layout() {
                         )}
                     >
                         <Menu />
-                        <Editor />
+                        <ColorGraph />
                         {/* <Preview />
                     // to be further implemented
                 */}

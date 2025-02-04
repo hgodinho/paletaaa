@@ -1,5 +1,4 @@
 export * from "./colors";
-export * from "./editor";
 export * from "./input";
 export * from "./label";
 export * from "./layout";
