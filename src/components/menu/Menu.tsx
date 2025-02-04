@@ -1,4 +1,4 @@
-import { createRef, useState } from "react";
+import { createRef } from "react";
 import { MenuContext, useMenuContext } from "./Context";
 import { cn } from "@/lib";
 import {
@@ -12,7 +12,11 @@ import {
     Scroll,
     Footer,
 } from "@/components";
-import { useGraphContext, usePaletteContext } from "@/context";
+import {
+    useGraphContext,
+    useOptionsContext,
+    usePaletteContext,
+} from "@/context";
 import { ChevronDown, MenuIcon, X } from "lucide-react";
 import { AddButton } from "../colors/AddButton";
 
@@ -168,7 +172,8 @@ export function MenuItems() {
 export function Menu() {
     const menuId = "menu";
     const ref = createRef<HTMLDivElement>();
-    const [open, setOpen] = useState(true);
+
+    const { sidebar, setSidebar } = useOptionsContext();
 
     const { graph, getNode, updateVertex, bfsAll, removeVertex } =
         useGraphContext();
@@ -186,7 +191,7 @@ export function Menu() {
 
     const removeItem = (id: string) => removeVertex(id);
 
-    const { onColorAdd } = usePaletteContext();
+    const { onColorAdd, contrastColor, getBackgroundHex } = usePaletteContext();
 
     // const handleKeyDown = useCallback(
     //     (e: React.KeyboardEvent<HTMLDivElement>) => {
@@ -201,8 +206,8 @@ export function Menu() {
     return (
         <MenuContext
             value={{
-                open,
-                setOpen,
+                open: sidebar,
+                setOpen: setSidebar,
                 items: graph.nodes,
                 setExpanded,
                 bfsAll,
@@ -215,8 +220,13 @@ export function Menu() {
                     "flex",
                     "items-start",
                     "justify-start",
-                    "bg-transparent"
+                    "absolute",
+                    "z-10",
+                    "border-r"
                 )}
+                style={{
+                    borderColor: contrastColor(getBackgroundHex(), "#FFF"),
+                }}
             >
                 <aside
                     ref={ref}
@@ -225,44 +235,54 @@ export function Menu() {
                         "h-screen",
                         "text-black",
                         "*:mx-2",
-                        "pt-2",
+                        "pt-14",
+                        "lg:pt-2",
                         "pb-16",
                         "flex",
                         "flex-col",
                         "bg-white",
                         "gap-2",
                         "duration-300",
-                        open ? ["w-96"] : ["w-0"]
+                        sidebar ? ["w-screen", "lg:w-96"] : ["w-0"]
                     )}
-                    aria-expanded={open}
+                    aria-expanded={sidebar}
                     aria-roledescription="menu"
                     // onKeyDown={handleKeyDown}
                 >
                     <AddButton
-                        className={cn(!open && "hidden")}
+                        className={cn(!sidebar && "hidden")}
                         onPress={onColorAdd}
                     />
-                    <Scroll className={cn("accordion", !open && "hidden")}>
+                    <Scroll className={cn("accordion", !sidebar && "hidden")}>
                         <MenuItems />
                     </Scroll>
                 </aside>
                 <Trigger
-                    value={open}
-                    onClick={setOpen}
+                    value={sidebar}
+                    onClick={setSidebar}
                     controlledId={menuId}
                     aria-label={"Toggle menu"}
                     className={cn(
-                        "ml-4",
-                        "mt-4",
-                        "hover:ml-3",
-                        "hover:mt-3",
-                        open ? "left-96" : "left-0"
+                        "hover:ml-2",
+                        "hover:mt-2",
+                        sidebar
+                            ? [
+                                  "left-full",
+                                  "lg:left-96",
+
+                                  "-ml-10",
+                                  "mt-2",
+
+                                  "lg:mt-3",
+                                  "lg:ml-3",
+                              ]
+                            : ["left-0", "ml-2", "mt-2", "lg:mt-3", "lg:ml-3"]
                     )}
                     ValueTrue={X}
                     ValueFalse={MenuIcon}
                 />
             </div>
-            <Footer expanded={open} />
+            <Footer expanded={sidebar} />
         </MenuContext>
     );
 }
