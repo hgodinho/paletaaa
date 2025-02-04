@@ -49,6 +49,8 @@ export function Toolbar({ className, visible, tools, setTools }: ToolbarProps) {
         ];
     };
 
+    const { sidebar } = useOptionsContext();
+
     useEffect(() => {
         if (!visible && isBgComboOpen) {
             setBgComboOpen(false);
@@ -79,7 +81,8 @@ export function Toolbar({ className, visible, tools, setTools }: ToolbarProps) {
                 "flex-row",
                 "justify-center",
                 "items-center",
-                "mt-4"
+                "mt-2",
+                "lg:mt-3"
             )}
         >
             <div
@@ -88,10 +91,15 @@ export function Toolbar({ className, visible, tools, setTools }: ToolbarProps) {
                     "z-10",
                     "rounded-3xl",
                     "transform",
-                    "duration-700",
+                    "duration-300",
                     "flex",
                     "h-fit",
-                    visible ? "opacity-100" : "opacity-0",
+                    visible
+                        ? "opacity-100"
+                        : [
+                              sidebar ? "opacity-0" : "opacity-100",
+                              "lg:opacity-0",
+                          ],
                     className
                 )}
                 style={{
