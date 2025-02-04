@@ -1,5 +1,4 @@
 export * from "./colors";
-export * from "./editor";
 export * from "./input";
 export * from "./label";
 export * from "./layout";
@@ -15,3 +14,4 @@ export * from "./logo";
 export * from "./combo-box";
 export * from "./scroll";
 export * from "./zoom";
+export * from "./footer";

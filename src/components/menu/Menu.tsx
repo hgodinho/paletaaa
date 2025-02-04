@@ -1,4 +1,4 @@
-import { createRef, useState } from "react";
+import { createRef } from "react";
 import { MenuContext, useMenuContext } from "./Context";
 import { cn } from "@/lib";
 import {
@@ -9,10 +9,14 @@ import {
     Links,
     ColorSwatch,
     Trigger,
-    Logo,
     Scroll,
+    Footer,
 } from "@/components";
-import { useGraphContext, usePaletteContext } from "@/context";
+import {
+    useGraphContext,
+    useOptionsContext,
+    usePaletteContext,
+} from "@/context";
 import { ChevronDown, MenuIcon, X } from "lucide-react";
 import { AddButton } from "../colors/AddButton";
 
@@ -168,7 +172,8 @@ export function MenuItems() {
 export function Menu() {
     const menuId = "menu";
     const ref = createRef<HTMLDivElement>();
-    const [open, setOpen] = useState(true);
+
+    const { sidebar, setSidebar } = useOptionsContext();
 
     const { graph, getNode, updateVertex, bfsAll, removeVertex } =
         useGraphContext();
@@ -186,7 +191,7 @@ export function Menu() {
 
     const removeItem = (id: string) => removeVertex(id);
 
-    const { contrastColor, getBackgroundHex, onColorAdd } = usePaletteContext();
+    const { onColorAdd, contrastColor, getBackgroundHex } = usePaletteContext();
 
     // const handleKeyDown = useCallback(
     //     (e: React.KeyboardEvent<HTMLDivElement>) => {
@@ -201,8 +206,8 @@ export function Menu() {
     return (
         <MenuContext
             value={{
-                open,
-                setOpen,
+                open: sidebar,
+                setOpen: setSidebar,
                 items: graph.nodes,
                 setExpanded,
                 bfsAll,
@@ -211,12 +216,17 @@ export function Menu() {
         >
             <div
                 className={cn(
-                    "z-10",
+                    "menu",
                     "flex",
                     "items-start",
                     "justify-start",
-                    "bg-transparent"
+                    "absolute",
+                    "z-10",
+                    "border-r"
                 )}
+                style={{
+                    borderColor: contrastColor(getBackgroundHex(), "#FFF"),
+                }}
             >
                 <aside
                     ref={ref}
@@ -225,92 +235,54 @@ export function Menu() {
                         "h-screen",
                         "text-black",
                         "*:mx-2",
-                        "pt-4",
+                        "pt-14",
+                        "lg:pt-2",
                         "pb-16",
                         "flex",
                         "flex-col",
                         "bg-white",
                         "gap-2",
                         "duration-300",
-                        open ? ["w-96"] : ["w-0"]
+                        sidebar ? ["w-screen", "lg:w-96"] : ["w-0"]
                     )}
-                    aria-expanded={open}
+                    aria-expanded={sidebar}
                     aria-roledescription="menu"
                     // onKeyDown={handleKeyDown}
                 >
-                    <div
-                        className={cn(
-                            "flex",
-                            "flex-row",
-                            "justify-end",
-                            "gap-2",
-                            "items-center",
-                            "mb-4"
-                        )}
-                    >
-                        <span
-                            className={cn(
-                                "text-xs",
-                                "px-1",
-                                "rounded-full",
-                                "font-bold"
-                            )}
-                            style={{
-                                backgroundColor: getBackgroundHex(),
-                                color: contrastColor(
-                                    getBackgroundHex(),
-                                    "#FFF"
-                                ),
-                            }}
-                        >
-                            {import.meta.env.VITE_NEW_RELEASE_VERSION || "dev"}
-                        </span>
-                        <a
-                            href="https://github.com/hgodinho"
-                            target="_blank"
-                            aria-label="github hgodinho"
-                            title="github hgodinho"
-                            className={cn("align-self-end", "justify-self-end")}
-                        >
-                            <img
-                                src="https://cdn.simpleicons.org/github/181717"
-                                height={16}
-                                width={16}
-                                alt="github"
-                            />
-                        </a>
-                    </div>
                     <AddButton
-                        className={cn(!open && "hidden")}
+                        className={cn(!sidebar && "hidden")}
                         onPress={onColorAdd}
                     />
-                    <Scroll className={cn("accordion", !open && "hidden")}>
+                    <Scroll className={cn("accordion", !sidebar && "hidden")}>
                         <MenuItems />
                     </Scroll>
                 </aside>
                 <Trigger
-                    value={open}
-                    onClick={setOpen}
+                    value={sidebar}
+                    onClick={setSidebar}
                     controlledId={menuId}
                     aria-label={"Toggle menu"}
                     className={cn(
-                        "ml-4",
-                        "mt-4",
-                        "hover:ml-3",
-                        "hover:mt-3",
-                        open ? "left-96" : "left-0"
+                        "hover:ml-2",
+                        "hover:mt-2",
+                        sidebar
+                            ? [
+                                  "left-full",
+                                  "lg:left-96",
+
+                                  "-ml-10",
+                                  "mt-2",
+
+                                  "lg:mt-3",
+                                  "lg:ml-3",
+                              ]
+                            : ["left-0", "ml-2", "mt-2", "lg:mt-3", "lg:ml-3"]
                     )}
                     ValueTrue={X}
                     ValueFalse={MenuIcon}
                 />
             </div>
-            <Logo
-                variant={
-                    open ? "black" : contrastColor(getBackgroundHex(), "#FFF")
-                }
-                size={"small"}
-                className={cn("fixed", "bottom-6", "left-6")}
-            />
+            <Footer expanded={sidebar} />
         </MenuContext>
     );
 }
