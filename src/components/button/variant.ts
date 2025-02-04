@@ -24,7 +24,7 @@ export const buttonVariants = cva(
                 ],
                 trigger: [
                     "p-3",
-                    "fixed",
+                    "absolute",
                     "rounded-full",
                     "z-20",
                     "duration-300",
