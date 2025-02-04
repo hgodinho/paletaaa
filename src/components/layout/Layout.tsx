@@ -1,4 +1,4 @@
-import { GraphProvider, PaletteProvider } from "@/context";
+import { GraphProvider, OptionsProvider, PaletteProvider } from "@/context";
 import { cn } from "@/lib";
 import { Editor, Menu /*Preview*/ } from "@/components";
 
@@ -6,13 +6,22 @@ export function Layout() {
     return (
         <GraphProvider>
             <PaletteProvider>
-                <div className={cn("h-screen", "flex", "flex-row")}>
-                    <Menu />
-                    <Editor />
-                    {/* <Preview />
+                <OptionsProvider>
+                    <main
+                        className={cn(
+                            "h-screen",
+                            "w-screen",
+                            "flex",
+                            "flex-row"
+                        )}
+                    >
+                        <Menu />
+                        <Editor />
+                        {/* <Preview />
                     // to be further implemented
                 */}
-                </div>
+                    </main>
+                </OptionsProvider>
             </PaletteProvider>
         </GraphProvider>
     );
