@@ -306,43 +306,41 @@ export function ColorGraph() {
     }, [tools, options, validator]);
 
     return (
-        <>
-            <div
-                ref={observe}
-                className={cn(
-                    "graph",
-                    "m-auto",
-                    "w-full",
-                    "h-full",
-                    "flex",
-                    "justify-end",
-                    "items-end",
-                    "gap-4",
-                    "cursor-move",
-                    "border-x"
-                )}
-                onMouseEnter={() => setHovered(true)}
-                onMouseLeave={() => setHovered(false)}
-                style={{
-                    backgroundColor: getBackgroundHex(),
-                    borderColor: contrastColor(getBackgroundHex(), "#FFF"),
-                }}
-            >
-                <div className={cn("group", "w-fit", "h-fit", "absolute")}>
-                    <Toolbar
-                        tools={tools}
-                        setTools={setTools}
-                        visible={isHovered}
-                    />
-                    <ForceGraph2D
-                        // @ts-expect-error - ref
-                        ref={graphRef}
-                        {...options}
-                        {...callbacks}
-                    />
-                    <Zoom {...zoom} />
-                </div>
+        <div
+            ref={observe}
+            className={cn(
+                "graph",
+                "m-auto",
+                "w-full",
+                "h-full",
+                "flex",
+                "justify-end",
+                "items-end",
+                "gap-4",
+                "cursor-move",
+                "border-x"
+            )}
+            onMouseEnter={() => setHovered(true)}
+            onMouseLeave={() => setHovered(false)}
+            style={{
+                backgroundColor: getBackgroundHex(),
+                borderColor: contrastColor(getBackgroundHex(), "#FFF"),
+            }}
+        >
+            <div className={cn("group", "relative")}>
+                <Toolbar
+                    tools={tools}
+                    setTools={setTools}
+                    visible={isHovered}
+                />
+                <ForceGraph2D
+                    // @ts-expect-error - ref
+                    ref={graphRef}
+                    {...options}
+                    {...callbacks}
+                />
+                <Zoom {...zoom} />
             </div>
-        </>
+        </div>
     );
 }
