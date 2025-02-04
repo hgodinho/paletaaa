@@ -14,17 +14,20 @@ export function Footer({
     return (
         <footer
             className={cn(
-                "fixed",
+                "sticky",
+                "absolute",
                 "bottom-0",
                 "p-4",
                 "flex",
                 "items-center",
                 "gap-2",
                 "justify-between",
-                "w-96",
+                "w-full",
+                "lg:w-96",
                 "border-t",
                 "transition",
                 "duration-500",
+                "z-10",
                 expanded ? ["border-gray-400"] : ["border-transparent"],
                 className
             )}
@@ -37,14 +40,12 @@ export function Footer({
                         : contrastColor(getBackgroundHex(), "#FFF")
                 }
                 size={"small"}
-                className={cn("z-10")}
             />
             <div
                 className={cn(
                     "flex",
                     "items-center",
                     "gap-2",
-                    // "transition-opacity",
                     "duration-500",
                     expanded ? "opacity-100" : "opacity-0"
                 )}
