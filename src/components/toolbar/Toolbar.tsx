@@ -2,7 +2,7 @@ import { Magnet, Tag } from "lucide-react";
 import { Button, ColorComboBox, ColorSwatch } from "@/components";
 import { cn } from "@/lib";
 import { ToolbarProps } from "./types";
-import { usePaletteContext } from "@/context";
+import { useOptionsContext, usePaletteContext } from "@/context";
 import { ComboBoxItem } from "../combo-box/ComboBoxItem";
 import { useEffect, useRef, useState } from "react";
 

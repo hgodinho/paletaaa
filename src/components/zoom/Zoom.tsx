@@ -1,6 +1,6 @@
 import { cn } from "@/lib";
 import { ZoomProps } from "./types";
-import { usePaletteContext } from "@/context";
+import { useOptionsContext, usePaletteContext } from "@/context";
 
 import { Minus, Plus, Scan } from "lucide-react";
 import { Button, NumberInput } from "@/components";
@@ -24,6 +24,8 @@ export function Zoom({
     const contrast = contrastBG === "white" ? "black" : "white";
 
     const ratio = 0.2;
+
+    const { sidebar } = useOptionsContext();
 
     const zoomPlus = () => {
         if (currentZoom >= max) return;
@@ -63,11 +65,15 @@ export function Zoom({
                 "right-0",
                 "bottom-0",
                 "w-min",
-                "mr-4",
-                "mb-4",
+                "mr-2",
+                "mb-2",
+                "lg:mr-3",
+                "lg:mb-3",
                 "duration-300",
                 "transform",
-                visible ? ["opacity-100"] : ["opacity-0"]
+                visible
+                    ? ["opacity-100"]
+                    : [sidebar ? "opacity-0" : "opacity-100", "lg:opacity-0"]
             )}
         >
             <div
@@ -78,8 +84,7 @@ export function Zoom({
                     "z-10",
                     "border",
 
-                    "items-center",
-                    "w-10"
+                    "items-center"
                 )}
                 style={{
                     borderColor: contrastColor(bg, "#FFF"),
