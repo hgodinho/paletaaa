@@ -253,6 +253,17 @@ export function ColorGraph() {
                 setScale(zoom.k);
             }
         },
+
+        // onEngineTick: () => {
+        //     const padding = options.nodeRelSize! * 2; // Prevent sticking to edges
+        //     options.graphData?.nodes.forEach((node) => {
+        //         if (!node.x || !node.y) return;
+
+        //         // Clamp node positions within screen bounds
+        //         node.x = Math.max(padding, Math.min(width - padding, node.x));
+        //         node.y = Math.max(padding, Math.min(height - padding, node.y));
+        //     });
+        // },
     };
 
     const zoom = {
@@ -303,7 +314,24 @@ export function ColorGraph() {
         });
 
         fg.d3Force("collision", forceCollide(options.nodeRelSize));
-    }, [tools, options, validator]);
+
+        // fg.d3Force("box", () => {
+        //     options.graphData?.nodes.forEach((node) => {
+        //         if (!node.x || !node.y) return;
+
+        //         // Define padding to avoid nodes touching the edges
+        //         const padding = options.nodeRelSize! * 2;
+
+        //         // Clamp positions within the screen bounds
+        //         node.x = Math.max(padding, Math.min(width - padding, node.x));
+        //         node.y = Math.max(padding, Math.min(height - padding, node.y));
+        //     });
+        // });
+
+        // fg.
+    }, [tools, options, validator, width, height]);
+
+    // console.log({ sidebar });
 
     return (
         <div
