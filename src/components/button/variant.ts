@@ -28,7 +28,6 @@ export const buttonVariants = cva(
                     "rounded-full",
                     "z-20",
                     "duration-300",
-                    "hover:p-4",
                 ],
                 none: [],
             },

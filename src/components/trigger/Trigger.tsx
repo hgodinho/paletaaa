@@ -1,5 +1,3 @@
-import { cn } from "@/lib";
-
 import { LucideIcon } from "lucide-react";
 import { usePaletteContext } from "@/context";
 import { Button, ButtonProps } from "../button";
@@ -18,7 +16,6 @@ type TriggerProps = Omit<ButtonProps, "onClick" | "value"> & {
 
 export function Trigger({
     controlledId,
-    className,
     value,
     onClick,
     ValueFalse,
@@ -30,14 +27,13 @@ export function Trigger({
     return (
         <Button
             variant={"trigger"}
-            className={cn(String(className))}
             onPress={() => onClick(!value)}
             aria-controls={controlledId}
-            {...props}
             style={{
                 backgroundColor: contrastColor(getBackgroundHex(), "#FFF"),
                 color: getBackgroundHex(),
             }}
+            {...props}
         >
             {value ? <ValueTrue size={16} /> : <ValueFalse size={16} />}
         </Button>

@@ -10,7 +10,15 @@ export type ButtonProps = PrimitiveProps & VariantProps<typeof buttonVariants>;
 export function Button({ variant, className, ...props }: ButtonProps) {
     return (
         <Primitive
-            className={buttonVariants({ variant, className })}
+            className={(render) =>
+                buttonVariants({
+                    variant,
+                    className:
+                        typeof className === "string"
+                            ? className
+                            : className?.(render),
+                })
+            }
             {...props}
         />
     );
