@@ -17,6 +17,15 @@ services:
       - "4001:4001"
     volumes:
       - ./dist:/app/dist
+  prod:
+    build:
+      context: .
+      target: prod
+    ports:
+      - "4001:4001"
+    volumes:
+      - ./dist:/app/dist
 
 volumes:
+  root:
   root:
