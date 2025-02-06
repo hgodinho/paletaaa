@@ -8,12 +8,7 @@ export function Layout() {
             <PaletteProvider>
                 <OptionsProvider>
                     <main
-                        className={cn(
-                            "h-screen",
-                            "w-screen",
-                            "flex",
-                            "flex-row"
-                        )}
+                        className={cn("h-full", "w-full", "flex", "flex-row")}
                     >
                         <Menu />
                         <ColorGraph />

@@ -73,7 +73,11 @@ export function Zoom({
                 "transform",
                 visible
                     ? ["opacity-100"]
-                    : [sidebar ? "opacity-0" : "opacity-100", "lg:opacity-0"]
+                    : [
+                          sidebar
+                              ? ["opacity-0", "-z-10"]
+                              : ["opacity-100", "lg:opacity-0", "z-10"],
+                      ]
             )}
         >
             <div

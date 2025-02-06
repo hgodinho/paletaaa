@@ -3,6 +3,13 @@ import { OptionsCallbacks, OptionsType } from "./types";
 
 export const OptionsStateDefaults: OptionsType = {
     sidebar: true,
+    viewport: {
+        width: 480,
+        height: 800,
+        isMobile: true,
+        isTablet: false,
+        isDesktop: false,
+    },
 };
 
 export const OptionsCallbacksDefaults: OptionsCallbacks = {
