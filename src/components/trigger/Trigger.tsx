@@ -3,9 +3,9 @@ import { usePaletteContext } from "@/context";
 import { Button, ButtonProps } from "../button";
 
 type TriggerProps = Omit<ButtonProps, "onClick" | "value"> & {
+    ref?: React.Ref<HTMLButtonElement>;
     controlledId: string;
     value: boolean;
-    onClick: (value: boolean) => void;
     ValueTrue: LucideIcon;
     ValueFalse: LucideIcon;
     label?: {
@@ -17,7 +17,6 @@ type TriggerProps = Omit<ButtonProps, "onClick" | "value"> & {
 export function Trigger({
     controlledId,
     value,
-    onClick,
     ValueFalse,
     ValueTrue,
     ...props
@@ -27,7 +26,6 @@ export function Trigger({
     return (
         <Button
             variant={"trigger"}
-            onPress={() => onClick(!value)}
             aria-controls={controlledId}
             style={{
                 backgroundColor: contrastColor(getBackgroundHex(), "#FFF"),
