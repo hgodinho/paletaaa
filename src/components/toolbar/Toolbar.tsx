@@ -76,7 +76,10 @@ export function Toolbar({ className, visible, tools, setTools }: ToolbarProps) {
             className={cn(
                 "sticky",
                 "absolute",
-                "w-full",
+                "z-10",
+                "w-fit",
+                "left-1/2",
+                "-ml-12",
                 "flex",
                 "flex-row",
                 "justify-center",
@@ -137,6 +140,7 @@ export function Toolbar({ className, visible, tools, setTools }: ToolbarProps) {
                     ))}
                 </ColorComboBox>
                 <Button
+                    aria-label="Toggle Labels"
                     variant={"none"}
                     onPress={() =>
                         setTools({ ...tools, labels: !tools.labels })
@@ -146,6 +150,7 @@ export function Toolbar({ className, visible, tools, setTools }: ToolbarProps) {
                     <Tag size={18} />
                 </Button>
                 <Button
+                    aria-label="Toggle Magnet"
                     variant={"none"}
                     onPress={() =>
                         setTools({ ...tools, magnet: !tools.magnet })

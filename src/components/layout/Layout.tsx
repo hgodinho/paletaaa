@@ -1,6 +1,6 @@
 import { GraphProvider, OptionsProvider, PaletteProvider } from "@/context";
 import { cn } from "@/lib";
-import { ColorGraph, Menu /*Preview*/ } from "@/components";
+import { ColorGraph, Menu, Sidebar /*Preview*/ } from "@/components";
 
 export function Layout() {
     return (
@@ -10,11 +10,13 @@ export function Layout() {
                     <main
                         className={cn("h-full", "w-full", "flex", "flex-row")}
                     >
-                        <Menu />
+                        <Sidebar>
+                            <Menu />
+                        </Sidebar>
                         <ColorGraph />
                         {/* <Preview />
-                    // to be further implemented
-                */}
+                            // to be further implemented
+                        */}
                     </main>
                 </OptionsProvider>
             </PaletteProvider>

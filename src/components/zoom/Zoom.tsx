@@ -96,6 +96,7 @@ export function Zoom({
                 }}
             >
                 <Button
+                    aria-label="Zoom In"
                     variant="none"
                     className={cn(
                         "px-2",
@@ -115,6 +116,7 @@ export function Zoom({
                     <Plus size={18} />
                 </Button>
                 <Button
+                    aria-label="Zoom to Fit"
                     variant="none"
                     className={cn(
                         "py-1",
@@ -131,6 +133,7 @@ export function Zoom({
                     <Scan size={18} />
                 </Button>
                 <Button
+                    aria-label="Zoom Out"
                     variant="none"
                     className={cn(
                         "pt-1",
