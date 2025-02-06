@@ -1,21 +1,31 @@
 services:
-    dev:
-        build:
-            context: .
-            target: dev
-        ports:
-            - "4000:4000"
-        volumes:
-            - ./:/app
+  dev:
+    build:
+      context: .
+      target: dev
+    ports:
+      - "4000:4000"
+    volumes:
+      - ./:/app
+      - ./node_modules:/app/node_modules
 
-    prod:
-        build:
-            context: .
-            target: prod
-        ports:
-            - "4001:4001"
-        volumes:
-            - ./dist:/app/dist
+  prod:
+    build:
+      context: .
+      target: prod
+    ports:
+      - "4001:4001"
+    volumes:
+      - ./dist:/app/dist
+  prod:
+    build:
+      context: .
+      target: prod
+    ports:
+      - "4001:4001"
+    volumes:
+      - ./dist:/app/dist
 
 volumes:
-    root:
+  root:
+  root:

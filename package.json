@@ -34,7 +34,6 @@
         "lucide-react": "^0.473.0",
         "react": "^19.0.0",
         "react-aria-components": "^1.6.0",
-        "react-cool-dimensions": "^3.0.1",
         "react-dom": "^19.0.0",
         "react-force-graph": "^1.46.0",
         "react-force-graph-2d": "^1.27.0",

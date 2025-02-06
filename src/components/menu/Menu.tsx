@@ -173,7 +173,7 @@ export function Menu() {
     const menuId = "menu";
     const ref = createRef<HTMLDivElement>();
 
-    const { sidebar, setSidebar } = useOptionsContext();
+    const { sidebar, setSidebar, viewport } = useOptionsContext();
 
     const { graph, getNode, updateVertex, bfsAll, removeVertex } =
         useGraphContext();
@@ -217,14 +217,17 @@ export function Menu() {
             <div
                 className={cn(
                     "menu",
+                    "h-full",
                     "flex",
                     "items-start",
                     "justify-start",
                     "absolute",
                     "z-10",
-                    "border-r"
+                    "border-r",
+                    "bg-white"
                 )}
                 style={{
+                    height: viewport.height,
                     borderColor: contrastColor(getBackgroundHex(), "#FFF"),
                 }}
             >
@@ -232,7 +235,7 @@ export function Menu() {
                     ref={ref}
                     id={menuId}
                     className={cn(
-                        "h-screen",
+                        "h-full",
                         "text-black",
                         "*:mx-2",
                         "pt-14",
@@ -270,7 +273,7 @@ export function Menu() {
                                   "left-full",
                                   "lg:left-96",
 
-                                  "-ml-10",
+                                  "-ml-12",
                                   "mt-2",
 
                                   "lg:mt-3",

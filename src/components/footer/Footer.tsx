@@ -14,8 +14,7 @@ export function Footer({
     return (
         <footer
             className={cn(
-                "sticky",
-                "absolute",
+                "fixed",
                 "bottom-0",
                 "p-4",
                 "flex",
@@ -47,7 +46,7 @@ export function Footer({
                     "items-center",
                     "gap-2",
                     "duration-500",
-                    expanded ? "opacity-100" : "opacity-0"
+                    expanded ? ["opacity-100"] : ["hidden", "opacity-0"]
                 )}
             >
                 <a

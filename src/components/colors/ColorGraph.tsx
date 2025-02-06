@@ -5,8 +5,12 @@ import ForceGraph2D, {
     ForceGraphProps,
     ForceGraphMethods,
 } from "react-force-graph-2d";
-import useDimensions from "react-cool-dimensions";
-import { useGraphContext, usePaletteContext } from "@/context";
+
+import {
+    useGraphContext,
+    useOptionsContext,
+    usePaletteContext,
+} from "@/context";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Toolbar, ToolsState, Zoom } from "@/components";
 
@@ -44,7 +48,9 @@ export function ColorGraph() {
         validator,
     } = usePaletteContext();
 
-    const { observe, width, height } = useDimensions();
+    const {
+        viewport: { width, height, isMobile },
+    } = useOptionsContext();
 
     const options: ForceGraphProps<Node, Link> = useMemo(
         () => ({
@@ -63,9 +69,9 @@ export function ColorGraph() {
             linkDirectionalArrowRelPos: 0.3,
 
             // nodes
-            nodeRelSize: 24,
+            nodeRelSize: isMobile ? 16 : 24,
         }),
-        [width, height, getNodes, getLinks]
+        [width, height, isMobile, getNodes, getLinks]
     );
 
     const graphRef = useRef<ForceGraphMethods<Node, Link>>(null);
@@ -253,6 +259,17 @@ export function ColorGraph() {
                 setScale(zoom.k);
             }
         },
+
+        // onEngineTick: () => {
+        //     const padding = options.nodeRelSize! * 2; // Prevent sticking to edges
+        //     options.graphData?.nodes.forEach((node) => {
+        //         if (!node.x || !node.y) return;
+
+        //         // Clamp node positions within screen bounds
+        //         node.x = Math.max(padding, Math.min(width - padding, node.x));
+        //         node.y = Math.max(padding, Math.min(height - padding, node.y));
+        //     });
+        // },
     };
 
     const zoom = {
@@ -296,18 +313,34 @@ export function ColorGraph() {
                     target.color?.data.toString("hex")
                 )
             ) {
-                return options.nodeRelSize! * 8;
+                return options.nodeRelSize! * 6;
             } else {
-                return options.nodeRelSize! * 5;
+                return options.nodeRelSize! * 4;
             }
         });
 
         fg.d3Force("collision", forceCollide(options.nodeRelSize));
-    }, [tools, options, validator]);
+
+        // fg.d3Force("box", () => {
+        //     options.graphData?.nodes.forEach((node) => {
+        //         if (!node.x || !node.y) return;
+
+        //         // Define padding to avoid nodes touching the edges
+        //         const padding = options.nodeRelSize! * 2;
+
+        //         // Clamp positions within the screen bounds
+        //         node.x = Math.max(padding, Math.min(width - padding, node.x));
+        //         node.y = Math.max(padding, Math.min(height - padding, node.y));
+        //     });
+        // });
+
+        // fg.
+    }, [tools, options, validator, width, height]);
+
+    // console.log({ sidebar });
 
     return (
         <div
-            ref={observe}
             className={cn(
                 "graph",
                 "m-auto",
@@ -323,6 +356,7 @@ export function ColorGraph() {
             onMouseEnter={() => setHovered(true)}
             onMouseLeave={() => setHovered(false)}
             style={{
+                height,
                 backgroundColor: getBackgroundHex(),
                 borderColor: contrastColor(getBackgroundHex(), "#FFF"),
             }}
