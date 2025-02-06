@@ -60,7 +60,7 @@ export function Footer({
                         src="https://cdn.simpleicons.org/github/181717"
                         height={16}
                         width={16}
-                        alt="github"
+                        alt="github logo"
                     />
                 </a>
                 <span

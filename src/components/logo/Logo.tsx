@@ -42,7 +42,6 @@ export function Logo({
     return (
         <div
             {...props}
-            aria-label="paletaaa"
             title="paletaaa"
             className={logoVariants({ className, variant, size })}
         >

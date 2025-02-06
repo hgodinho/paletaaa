@@ -12,22 +12,13 @@ export function Sidebar({ className, children, ...props }: SidebarProps) {
 
     const { contrastColor, getBackgroundHex } = usePaletteContext();
 
-    // const handleKeyDown = useCallback(
-    //     (e: React.KeyboardEvent<HTMLDivElement>) => {
-    //         console.log({ e });
-    //         if (e.key === "Escape") {
-    //             setOpen(false);
-    //         }
-    //     },
-    //     [setOpen]
-    // );
-
     return (
         <>
             <aside
                 className={cn(
                     "sidebar",
                     "h-full",
+                    "w-fit",
                     "flex",
                     "items-start",
                     "justify-start",
@@ -42,6 +33,8 @@ export function Sidebar({ className, children, ...props }: SidebarProps) {
                     borderColor: contrastColor(getBackgroundHex(), "#FFF"),
                 }}
                 {...props}
+                aria-expanded={sidebar}
+                aria-roledescription="sidebar"
             >
                 <div
                     ref={ref}
@@ -57,8 +50,6 @@ export function Sidebar({ className, children, ...props }: SidebarProps) {
                         "duration-300",
                         sidebar ? ["w-screen", "lg:w-96"] : ["w-0"]
                     )}
-                    aria-expanded={sidebar}
-                    aria-roledescription="menu"
                 >
                     <div
                         className={cn(
@@ -74,9 +65,12 @@ export function Sidebar({ className, children, ...props }: SidebarProps) {
                 </div>
                 <Trigger
                     value={sidebar}
-                    onClick={setSidebar}
+                    onPress={(e) => {
+                        setSidebar(!sidebar);
+                        (e.target as HTMLButtonElement).blur();
+                    }}
                     controlledId={"sidebar"}
-                    aria-label={"Toggle sidebar"}
+                    aria-label={sidebar ? "close sidebar" : "open sidebar"}
                     className={({ defaultClassName, isHovered }) =>
                         cn(
                             defaultClassName,
