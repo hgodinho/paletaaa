@@ -4,9 +4,12 @@ import { OptionsType } from "./types";
 import { useViewPortSize } from "@/lib";
 
 export function OptionsProvider({ children }: React.PropsWithChildren) {
-    const [state, setState] = useState<OptionsType>(OptionsStateDefaults);
-
     const { windowDimensions: viewport } = useViewPortSize();
+
+    const [state, setState] = useState<OptionsType>({
+        ...OptionsStateDefaults,
+        sidebar: viewport.isMobile ? false : true,
+    });
 
     const setSidebar = (sidebar: boolean) => {
         setState((prev) => ({ ...prev, sidebar }));
