@@ -1,10 +1,10 @@
-import { GraphProvider, OptionsProvider, PaletteProvider } from "@/context";
+import { AppProvider, OptionsProvider, PaletteProvider } from "@/context";
 import { cn } from "@/lib";
 import { ColorGraph, Menu, Sidebar /*Preview*/ } from "@/components";
 
 export function Layout() {
     return (
-        <GraphProvider>
+        <AppProvider>
             <PaletteProvider>
                 <OptionsProvider>
                     <main
@@ -20,6 +20,6 @@ export function Layout() {
                     </main>
                 </OptionsProvider>
             </PaletteProvider>
-        </GraphProvider>
+        </AppProvider>
     );
 }
