@@ -1,10 +1,10 @@
-import { GraphType } from "@/context";
+import { AppType } from "@/context";
 import { createContext, useContext } from "react";
 
 export type MenuContextType = {
-    items: GraphType["graph"]["nodes"];
+    items: AppType["graph"]["nodes"];
     setExpanded: (id: string) => void;
-    removeItem: GraphType["removeVertex"];
+    removeItem: AppType["removeVertex"];
 };
 
 export const menuContextDefault: MenuContextType = {

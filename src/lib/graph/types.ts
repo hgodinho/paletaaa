@@ -16,3 +16,19 @@ export type Node = BaseVertex & {
 };
 
 export type Link = BaseEdge;
+
+export type GraphNodes<V extends BaseVertex> = Map<V["id"], V>;
+
+export type GraphEdges<V extends BaseVertex> = Map<V["id"], Set<V["id"]>>;
+
+export type GraphState<V extends BaseVertex> = {
+    vertices: number;
+    nodes: GraphNodes<V>;
+    edges: GraphEdges<V>;
+};
+
+export type GraphJSON<V extends BaseVertex> = {
+    vertices: number;
+    nodes: V[];
+    edges: { source: string; targets: string[] }[];
+};

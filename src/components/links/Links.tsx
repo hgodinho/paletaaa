@@ -11,7 +11,7 @@ import {
     X,
 } from "lucide-react";
 import { Select } from "../select";
-import { useGraphContext, usePaletteContext } from "@/context";
+import { useAppContext, usePaletteContext } from "@/context";
 import { useState } from "react";
 import { ColorSwatch } from "../picker";
 
@@ -26,7 +26,7 @@ export function AddLink({ current }: LinksProps) {
 
     const [to, setTo] = useState<string>("");
 
-    const { getNodes, haveEdges, addDirEdge, addEdge } = useGraphContext();
+    const { getVertices, haveEdges, addDirEdge, addEdge } = useAppContext();
 
     const addLink = () => {
         if (!current || !to || current === to) return;
@@ -82,7 +82,7 @@ export function AddLink({ current }: LinksProps) {
                             )}
                         </Button>
                         <Select
-                            options={getNodes()
+                            options={getVertices()
                                 .map((node) => ({
                                     value: node.id,
                                     label: node.color.title,
@@ -109,8 +109,9 @@ export function AddLink({ current }: LinksProps) {
 }
 
 export function Links({ current }: LinksProps) {
-    const { getNode, getNodeEdges, removeEdge, removeDirEdge, isDirEdge } =
-        useGraphContext();
+    const { getVertex, getNodeEdges, removeEdge, removeDirEdge, isDirEdge } =
+        useAppContext();
+
     const { validator } = usePaletteContext();
 
     const onRemove = (id: string) => {
@@ -136,7 +137,7 @@ export function Links({ current }: LinksProps) {
 
     return (
         <div className={cn("flex", "flex-col", "gap-4")}>
-            {getNodeEdges(current).map(({ source, target }) => {
+            {getNodeEdges(current)?.map(({ source, target }) => {
                 return (
                     <div
                         key={`${source}-${target}`}
@@ -159,7 +160,7 @@ export function Links({ current }: LinksProps) {
                         >
                             <ColorSwatch
                                 size={"small"}
-                                color={getNode(source)?.color.data}
+                                color={getVertex(source)?.color.data}
                             />
                             {isDirEdge(current, target) ? (
                                 <ArrowLeftRight size={16} />
@@ -168,9 +169,9 @@ export function Links({ current }: LinksProps) {
                             )}
                             <ColorSwatch
                                 size={"small"}
-                                color={getNode(target)?.color.data}
+                                color={getVertex(target)?.color.data}
                             />
-                            {getNode(target)?.color.title || target}
+                            {getVertex(target)?.color.title || target}
                         </div>
                         <div
                             className={cn(
@@ -203,19 +204,19 @@ export function Links({ current }: LinksProps) {
                                     <span>aa</span>
                                     {icon(
                                         validator?.isLevelAA(
-                                            getNode(
+                                            getVertex(
                                                 current
                                             )?.color.data.toString("hex"),
-                                            getNode(
+                                            getVertex(
                                                 target
                                             )?.color.data.toString("hex"),
                                             24
                                         ),
                                         validator?.isLevelAA(
-                                            getNode(
+                                            getVertex(
                                                 current
                                             )?.color.data.toString("hex"),
-                                            getNode(
+                                            getVertex(
                                                 target
                                             )?.color.data.toString("hex"),
                                             18
@@ -234,19 +235,19 @@ export function Links({ current }: LinksProps) {
                                     <span>aaa</span>
                                     {icon(
                                         validator?.isLevelAAA(
-                                            getNode(
+                                            getVertex(
                                                 current
                                             )?.color.data.toString("hex"),
-                                            getNode(
+                                            getVertex(
                                                 target
                                             )?.color.data.toString("hex"),
                                             24
                                         ),
                                         validator?.isLevelAAA(
-                                            getNode(
+                                            getVertex(
                                                 current
                                             )?.color.data.toString("hex"),
-                                            getNode(
+                                            getVertex(
                                                 target
                                             )?.color.data.toString("hex"),
                                             18

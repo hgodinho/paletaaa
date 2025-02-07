@@ -9,13 +9,13 @@ import ColorContrastChecker from "color-contrast-checker";
 
 import { parseColor } from "react-aria-components";
 import type { Color } from "./Context";
-import { useGraphContext } from "../graph";
+import { useAppContext } from "../app";
 import { getRandomId } from "@/lib";
 
 export function PaletteProvider({
     children,
 }: React.PropsWithChildren<{ [key: string]: unknown }>) {
-    const { graph, ...graphActions } = useGraphContext();
+    const { graph, ...graphActions } = useAppContext();
 
     const [state, setPalette] = useState<PaletteContextType>(
         PaletteContextDefault
@@ -66,7 +66,7 @@ export function PaletteProvider({
     };
 
     const getColor = (id: string): Color | undefined => {
-        return graphActions.getNode(id)?.color;
+        return graphActions.getVertex(id)?.color;
     };
 
     const getColorHex = (id: string): string | undefined => {
