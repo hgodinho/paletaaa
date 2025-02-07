@@ -34,7 +34,7 @@ export function ColorGraph() {
 
     const [scale, setScale] = useState(1);
 
-    const { graph, getNodes, getLinks, updateStorage } = useAppContext();
+    const { graph, getVertices, getEdges, updateStorage } = useAppContext();
 
     const {
         getBackgroundHex,
@@ -54,8 +54,8 @@ export function ColorGraph() {
             width,
             height,
             graphData: {
-                nodes: getNodes(),
-                links: getLinks(),
+                nodes: getVertices(),
+                links: getEdges(),
             },
             minZoom: 0.5,
             maxZoom: 10,
@@ -67,7 +67,7 @@ export function ColorGraph() {
             // nodes
             nodeRelSize: isMobile ? 16 : 24,
         }),
-        [width, height, isMobile, getNodes, getLinks]
+        [width, height, isMobile, getVertices, getEdges]
     );
 
     const graphRef = useRef<ForceGraphMethods<Node, Link>>(null);

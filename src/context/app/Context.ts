@@ -12,9 +12,9 @@ export const AppDefaults: AppType = {
         nodes: new Map(),
         edges: new Map(),
     },
-    getNodes: () => [],
-    getLinks: () => [],
-    getNode: () => undefined,
+    getVertices: () => [],
+    getEdges: () => [],
+    getVertex: () => undefined,
     addVertex: () => { },
     bfsAll: () => [],
     updateVertex: () => { },
@@ -34,6 +34,11 @@ export const AppDefaults: AppType = {
         edges: [],
     }),
     updateStorage: () => { },
+    hasVertex: () => false,
+    addVertices: () => { },
+    removeVertices: () => { },
+    addEdges: () => { },
+    addDirEdges: () => { },
 };
 
 export const AppContext = createContext<AppType>(AppDefaults);

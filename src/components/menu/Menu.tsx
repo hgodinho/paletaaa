@@ -7,10 +7,10 @@ import { Plus } from "lucide-react";
 export function Menu() {
     const { sidebar } = useOptionsContext();
 
-    const { graph, getNode, updateVertex, removeVertex } = useAppContext();
+    const { graph, getVertex, updateVertex, removeVertex } = useAppContext();
 
     const setExpanded = (expandedId: string) => {
-        const node = getNode(expandedId);
+        const node = getVertex(expandedId);
         if (node) {
             updateVertex({
                 ...node,

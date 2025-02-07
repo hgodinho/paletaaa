@@ -66,7 +66,7 @@ export function PaletteProvider({
     };
 
     const getColor = (id: string): Color | undefined => {
-        return graphActions.getNode(id)?.color;
+        return graphActions.getVertex(id)?.color;
     };
 
     const getColorHex = (id: string): string | undefined => {
