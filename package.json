@@ -38,6 +38,7 @@
         "react-dom": "^19.0.0",
         "react-force-graph": "^1.46.0",
         "react-force-graph-2d": "^1.27.0",
+        "react-router": "^7.1.5",
         "semantic-release": "^24.2.1"
     },
     "devDependencies": {
