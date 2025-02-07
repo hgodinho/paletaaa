@@ -11,7 +11,7 @@ import {
     X,
 } from "lucide-react";
 import { Select } from "../select";
-import { useGraphContext, usePaletteContext } from "@/context";
+import { useAppContext, usePaletteContext } from "@/context";
 import { useState } from "react";
 import { ColorSwatch } from "../picker";
 
@@ -26,7 +26,7 @@ export function AddLink({ current }: LinksProps) {
 
     const [to, setTo] = useState<string>("");
 
-    const { getNodes, haveEdges, addDirEdge, addEdge } = useGraphContext();
+    const { getNodes, haveEdges, addDirEdge, addEdge } = useAppContext();
 
     const addLink = () => {
         if (!current || !to || current === to) return;
@@ -110,7 +110,7 @@ export function AddLink({ current }: LinksProps) {
 
 export function Links({ current }: LinksProps) {
     const { getNode, getNodeEdges, removeEdge, removeDirEdge, isDirEdge } =
-        useGraphContext();
+        useAppContext();
     const { validator } = usePaletteContext();
 
     const onRemove = (id: string) => {

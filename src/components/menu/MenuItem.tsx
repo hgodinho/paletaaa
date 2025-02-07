@@ -1,5 +1,5 @@
 import { ChevronDown, X } from "lucide-react";
-import { useGraphContext, usePaletteContext } from "@/context";
+import { useAppContext, usePaletteContext } from "@/context";
 import { cn } from "@/lib";
 import { Label, Input, Links, Picker, ColorSwatch, Button } from "@/components";
 import { useMenuContext } from "./Context";
@@ -10,7 +10,7 @@ export function MenuItems() {
     const { colorSpace, updateColorName, updateColorData } =
         usePaletteContext();
 
-    const { bfsAll } = useGraphContext();
+    const { bfsAll } = useAppContext();
 
     return bfsAll((vertex) => {
         const { id, color } = vertex;

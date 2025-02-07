@@ -6,11 +6,7 @@ import ForceGraph2D, {
     ForceGraphMethods,
 } from "react-force-graph-2d";
 
-import {
-    useGraphContext,
-    useOptionsContext,
-    usePaletteContext,
-} from "@/context";
+import { useAppContext, useOptionsContext, usePaletteContext } from "@/context";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Toolbar, ToolsState, Zoom } from "@/components";
 
@@ -38,7 +34,7 @@ export function ColorGraph() {
 
     const [scale, setScale] = useState(1);
 
-    const { getNodes, getLinks } = useGraphContext();
+    const { graph, getNodes, getLinks, updateStorage } = useAppContext();
 
     const {
         getBackgroundHex,
@@ -131,6 +127,7 @@ export function ColorGraph() {
                 node.fx = node.x;
                 node.fy = node.y;
             }
+            updateStorage();
         },
         onNodeClick: (node) => expandColor(node.id),
 
@@ -337,7 +334,9 @@ export function ColorGraph() {
         // fg.
     }, [tools, options, validator, width, height]);
 
-    // console.log({ sidebar });
+    useEffect(() => {
+        updateStorage();
+    }, [graph, updateStorage]);
 
     return (
         <div
