@@ -50,10 +50,10 @@ export function Footer({
                 )}
             >
                 <a
-                    href="https://github.com/hgodinho"
+                    href="https://github.com/hgodinho/paletaaa"
                     target="_blank"
-                    aria-label="github hgodinho"
-                    title="github hgodinho"
+                    aria-label="github paletaaa"
+                    title="github paletaaa"
                     className={cn("align-self-end", "justify-self-end")}
                 >
                     <img
@@ -63,7 +63,11 @@ export function Footer({
                         alt="github logo"
                     />
                 </a>
-                <span
+                <a
+                    href="https://github.com/users/hgodinho/projects/4"
+                    target="_blank"
+                    aria-label="backlog paletaaa"
+                    title="backlog paletaaa"
                     className={cn(
                         "text-xs",
                         "px-1",
@@ -76,7 +80,7 @@ export function Footer({
                     }}
                 >
                     {import.meta.env.VITE_NEW_RELEASE_VERSION || "dev"}
-                </span>
+                </a>
             </div>
 
             {children}
