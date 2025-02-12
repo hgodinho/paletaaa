@@ -23,6 +23,10 @@ export function PaletteProvider({
 
     const validator = new ColorContrastChecker();
 
+    /**
+     * Select a color in the palette
+     * @param id | id of the color
+     */
     const onColorSelected = (id: string | null) => {
         if (id && graph.nodes.has(id) && id !== state.selected) {
             setPalette({
@@ -32,6 +36,10 @@ export function PaletteProvider({
         }
     };
 
+    /**
+     * Update the title of the palette
+     * @param title | new title of the palette
+     */
     const onTitleChange = (title: string) => {
         setPalette({
             ...state,
@@ -39,6 +47,13 @@ export function PaletteProvider({
         });
     };
 
+    /**
+     * Get the contrast color between two colors
+     * @param colorA | color A
+     * @param colorB | color B
+     * @param level | level of contrast
+     * @returns | the contrast color
+     */
     const contrastColor = (
         colorA: string,
         colorB: string,
@@ -47,6 +62,11 @@ export function PaletteProvider({
         return validator?.check(colorA, colorB, 18)[level] ? "white" : "black";
     };
 
+    /**
+     * Add a color to the palette
+     *
+     * @posthog color_add event
+     */
     const onColorAdd = () => {
         const id = getRandomId();
         graphActions.addVertex({
@@ -65,18 +85,36 @@ export function PaletteProvider({
         });
     };
 
+    /**
+     * Get a color by its id
+     * @param id | id of the color
+     * @returns the color
+     */
     const getColor = (id: string): Color | undefined => {
         return graphActions.getVertex(id)?.color;
     };
 
+    /**
+     * Get the hex value of a color
+     * @param id | id of the color
+     * @returns the hex value of the color
+     */
     const getColorHex = (id: string): string | undefined => {
         return getColor(id)?.data.toString("hex");
     };
 
+    /**
+     * Get the background color of the palette
+     * @returns the background color of the palette
+     */
     const getBackground = () => {
         return getColor(state.background || "");
     };
 
+    /**
+     * Set the background color of the palette
+     * @param data | new background color
+     */
     const setBackground = (data: string | undefined) => {
         setPalette({
             ...state,
@@ -84,10 +122,21 @@ export function PaletteProvider({
         });
     };
 
+    /**
+     * Get the background color of the palette
+     * @returns the background color of the palette
+     */
     const getBackgroundHex = () => {
         return getBackground()?.data.toString("hex") || "#FFF";
     };
 
+    /**
+     * Update the title of a color
+     * @param id | id of the color
+     * @param title | new title of the color
+     *
+     * @posthog color_rename event
+     */
     const updateColorName = (id: string, title: string) => {
         graphActions.updateVertex({
             id,
@@ -98,6 +147,13 @@ export function PaletteProvider({
         });
     };
 
+    /**
+     * Update the data of a color
+     * @param id | id of the color
+     * @param data | new data of the color
+     *
+     * @posthog color_update event
+     */
     const updateColorData = (id: string, data: Color) => {
         graphActions.updateVertex({
             id,
@@ -108,6 +164,10 @@ export function PaletteProvider({
         });
     };
 
+    /**
+     * Expand a color in the palette
+     * @param id | id of the color
+     */
     const expandColor = (id: string) => {
         const updated = new Map(graph.nodes);
         for (const [key, value] of updated) {
@@ -128,6 +188,10 @@ export function PaletteProvider({
         graphActions.updateVertices(updated);
     };
 
+    /**
+     * Get all the colors in the palette
+     * @returns all the colors in the palette
+     */
     const getColors = () => {
         return Array.from(graph.nodes.values());
     };
