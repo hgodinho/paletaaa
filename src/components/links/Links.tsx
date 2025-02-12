@@ -163,9 +163,9 @@ export function Links({ current }: LinksProps) {
                                 color={getVertex(source)?.color.data}
                             />
                             {isDirEdge(current, target) ? (
-                                <ArrowLeftRight size={16} />
-                            ) : (
                                 <ArrowRight size={16} />
+                            ) : (
+                                <ArrowLeftRight size={16} />
                             )}
                             <ColorSwatch
                                 size={"small"}
