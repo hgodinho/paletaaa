@@ -6,6 +6,7 @@ import {
     PaletteContextType,
 } from "./Context";
 import ColorContrastChecker from "color-contrast-checker";
+import { useVitePostHog } from "vite-plugin-posthog/react";
 
 import { parseColor } from "react-aria-components";
 import type { Color } from "./Context";
@@ -16,6 +17,8 @@ export function PaletteProvider({
     children,
 }: React.PropsWithChildren<{ [key: string]: unknown }>) {
     const { graph, ...graphActions } = useAppContext();
+
+    const posthog = useVitePostHog();
 
     const [state, setPalette] = useState<PaletteContextType>(
         PaletteContextDefault
@@ -69,28 +72,41 @@ export function PaletteProvider({
      */
     const onColorAdd = () => {
         const id = getRandomId();
+        const color = {
+            data: parseColor(
+                `hsl(${Math.random() * 360}, ${Math.random() * 100}%, ${
+                    Math.random() * 100
+                }%)`
+            ),
+            id,
+            title: "",
+        };
+
         graphActions.addVertex({
             id,
             expanded: true,
             val: 1.5,
-            color: {
-                data: parseColor(
-                    `hsl(${Math.random() * 360}, ${Math.random() * 100}%, ${
-                        Math.random() * 100
-                    }%)`
-                ),
-                id,
-                title: "",
-            },
+            color,
+        });
+
+        posthog?.capture("color_add", {
+            ...color,
+            data: color.data.toString("hex"),
         });
     };
 
     /**
      * Remove a color from the palette
      * @param id | id of the color
+     *
+     * @posthog color_remove event
      */
     const onColorRemove = (id: string) => {
         graphActions.removeVertex(id);
+
+        posthog?.capture("color_remove", {
+            id,
+        });
     };
 
     /**
@@ -153,6 +169,10 @@ export function PaletteProvider({
                 title,
             },
         });
+
+        posthog?.capture("color_rename", {
+            id,
+        });
     };
 
     /**
@@ -169,6 +189,11 @@ export function PaletteProvider({
                 ...getColor(id),
                 ...data,
             },
+        });
+
+        posthog?.capture("color_update", {
+            id,
+            data: data.data.toString("hex"),
         });
     };
 
@@ -209,6 +234,8 @@ export function PaletteProvider({
      * @param source | id of the source color
      * @param target | id of the target color
      * @param directed | whether the link is directed
+     *
+     * @posthog link_add event
      */
     const onLinkAdd = (
         source: string,
@@ -220,12 +247,20 @@ export function PaletteProvider({
         } else {
             graphActions.addEdge({ source, target });
         }
+
+        posthog?.capture("link_add", {
+            source,
+            target,
+            directed,
+        });
     };
 
     /**
      * Remove a link between two colors in the palette
      * @param source | id of the source color
      * @param target | id of the target color
+     *
+     * @posthog link_remove event
      */
     const onLinkRemove = (source: string, target: string) => {
         if (graphActions.isDirEdge(source, target)) {
@@ -233,6 +268,11 @@ export function PaletteProvider({
         } else {
             graphActions.removeEdge({ source, target });
         }
+
+        posthog?.capture("link_remove", {
+            source,
+            target,
+        });
     };
 
     return (
