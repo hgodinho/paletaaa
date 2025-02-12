@@ -7,7 +7,7 @@ import { Plus } from "lucide-react";
 export function Menu() {
     const { sidebar } = useOptionsContext();
 
-    const { graph, getVertex, updateVertex, removeVertex } = useAppContext();
+    const { graph, getVertex, updateVertex } = useAppContext();
 
     const setExpanded = (expandedId: string) => {
         const node = getVertex(expandedId);
@@ -20,15 +20,14 @@ export function Menu() {
         }
     };
 
-    const removeItem = (id: string) => removeVertex(id);
+    const { onColorAdd, onColorRemove } = usePaletteContext();
 
-    const { onColorAdd } = usePaletteContext();
     return (
         <MenuContext
             value={{
                 items: graph.nodes,
                 setExpanded,
-                removeItem,
+                removeItem: onColorRemove,
             }}
         >
             <Button
