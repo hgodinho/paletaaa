@@ -86,6 +86,14 @@ export function PaletteProvider({
     };
 
     /**
+     * Remove a color from the palette
+     * @param id | id of the color
+     */
+    const onColorRemove = (id: string) => {
+        graphActions.removeVertex(id);
+    };
+
+    /**
      * Get a color by its id
      * @param id | id of the color
      * @returns the color
@@ -196,6 +204,37 @@ export function PaletteProvider({
         return Array.from(graph.nodes.values());
     };
 
+    /**
+     * Link two colors in the palette
+     * @param source | id of the source color
+     * @param target | id of the target color
+     * @param directed | whether the link is directed
+     */
+    const onLinkAdd = (
+        source: string,
+        target: string,
+        directed: boolean = false
+    ) => {
+        if (directed) {
+            graphActions.addDirEdge({ source, target });
+        } else {
+            graphActions.addEdge({ source, target });
+        }
+    };
+
+    /**
+     * Remove a link between two colors in the palette
+     * @param source | id of the source color
+     * @param target | id of the target color
+     */
+    const onLinkRemove = (source: string, target: string) => {
+        if (graphActions.isDirEdge(source, target)) {
+            graphActions.removeDirEdge({ source, target });
+        } else {
+            graphActions.removeEdge({ source, target });
+        }
+    };
+
     return (
         <PaletteContext.Provider
             value={{
@@ -209,11 +248,14 @@ export function PaletteProvider({
                 getBackgroundHex,
                 contrastColor,
                 onColorAdd,
+                onColorRemove,
                 updateColorName,
                 updateColorData,
                 onColorSelected,
                 getColors,
                 setBackground,
+                onLinkAdd,
+                onLinkRemove,
 
                 validator,
             }}

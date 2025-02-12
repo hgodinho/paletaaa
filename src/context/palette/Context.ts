@@ -27,6 +27,7 @@ export type PaletteContextCallback = {
     getBackground: () => Color | undefined;
     getBackgroundHex: () => string;
     onColorAdd: () => void;
+    onColorRemove: (id: string) => void;
     contrastColor: (
         foreground: string,
         background: string
@@ -36,6 +37,8 @@ export type PaletteContextCallback = {
     onColorSelected: (id: string | null) => void;
     setBackground: (data: string | undefined) => void;
     getColors: () => Node[];
+    onLinkAdd: (source: string, target: string, directed?: boolean) => void;
+    onLinkRemove: (source: string, target: string) => void;
 };
 
 export const PaletteCallback: PaletteContextCallback = {
@@ -46,12 +49,15 @@ export const PaletteCallback: PaletteContextCallback = {
     getBackground: () => undefined,
     getBackgroundHex: () => "#FFF",
     onColorAdd: () => {},
+    onColorRemove: () => {},
     contrastColor: () => "black",
     updateColorName: () => {},
     updateColorData: () => {},
     onColorSelected: () => {},
     getColors: () => [],
     setBackground: () => {},
+    onLinkAdd: () => {},
+    onLinkRemove: () => {},
 };
 
 export const PaletteContextDefault: PaletteContextType = {
