@@ -6,9 +6,9 @@ import ForceGraph2D, {
     ForceGraphMethods,
 } from "react-force-graph-2d";
 
-import { useAppContext, usePaletteContext } from "@/context";
+import { useAppContext, usePaletteContext, useToolsContext } from "@/context";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Toolbar, ToolsState, Zoom } from "@/components";
+import { Toolbar, Zoom } from "@/components";
 
 // @ts-expect-error - d3-force-3d
 import { forceCollide } from "d3-force-3d";
@@ -25,12 +25,7 @@ export type Link = LinkObject & {
 };
 
 export function ColorGraph() {
-    const [tools, setTools] = useState<ToolsState>({
-        labels: true,
-        magnet: false,
-    });
-
-    const [isHovered, setHovered] = useState(false);
+    const { state, visible, setVisible } = useToolsContext();
 
     const [scale, setScale] = useState(1);
 
@@ -68,6 +63,8 @@ export function ColorGraph() {
 
             // nodes
             nodeRelSize: isMobile ? 16 : 24,
+
+            // enablePanInteraction: false,
         }),
         [width, height, isMobile, getVertices, getEdges]
     );
@@ -97,7 +94,7 @@ export function ColorGraph() {
             ctx.stroke();
 
             // label
-            if (tools.labels) {
+            if (state.labels.active) {
                 const fontSize = 24;
                 ctx.font = `${fontSize}px Inter`;
                 const titleSize = ctx.measureText(nodeColor.title || id).width;
@@ -122,7 +119,7 @@ export function ColorGraph() {
         },
         nodeCanvasObjectMode: () => "after",
         onNodeDragEnd: (node) => {
-            if (tools.magnet) {
+            if (state.magnet.active) {
                 node.fx = undefined;
                 node.fy = undefined;
             } else {
@@ -138,7 +135,7 @@ export function ColorGraph() {
             return contrastColor("#FFF", getBackgroundHex());
         },
         linkCanvasObject: (link, ctx, globalScale) => {
-            if (!tools.labels) return;
+            if (!state.labels.active) return;
 
             // @link https://github.com/vasturiano/force-graph/blob/fa802c042ddb86714068b53697bcd9371133c9ef/src/canvas-force-graph.js#L323
             // const { source, target } = link;
@@ -258,17 +255,6 @@ export function ColorGraph() {
                 setScale(zoom.k);
             }
         },
-
-        // onEngineTick: () => {
-        //     const padding = options.nodeRelSize! * 2; // Prevent sticking to edges
-        //     options.graphData?.nodes.forEach((node) => {
-        //         if (!node.x || !node.y) return;
-
-        //         // Clamp node positions within screen bounds
-        //         node.x = Math.max(padding, Math.min(width - padding, node.x));
-        //         node.y = Math.max(padding, Math.min(height - padding, node.y));
-        //     });
-        // },
     };
 
     const zoom = {
@@ -280,7 +266,7 @@ export function ColorGraph() {
             if (graphRef.current === null) return;
             graphRef.current.zoom(scale, 300);
         },
-        visible: isHovered,
+        visible: visible,
         min: options.minZoom!,
         max: options.maxZoom!,
         referenceScale: scale,
@@ -293,7 +279,7 @@ export function ColorGraph() {
         fg.d3Force("center", null);
 
         fg.d3Force("charge")?.strength((node: Node) => {
-            if (tools.magnet) {
+            if (state.magnet.active) {
                 node.fx = undefined;
                 node.fy = undefined;
                 return -options.nodeRelSize! * 10;
@@ -319,22 +305,7 @@ export function ColorGraph() {
         });
 
         fg.d3Force("collision", forceCollide(options.nodeRelSize));
-
-        // fg.d3Force("box", () => {
-        //     options.graphData?.nodes.forEach((node) => {
-        //         if (!node.x || !node.y) return;
-
-        //         // Define padding to avoid nodes touching the edges
-        //         const padding = options.nodeRelSize! * 2;
-
-        //         // Clamp positions within the screen bounds
-        //         node.x = Math.max(padding, Math.min(width - padding, node.x));
-        //         node.y = Math.max(padding, Math.min(height - padding, node.y));
-        //     });
-        // });
-
-        // fg.
-    }, [tools, options, validator, width, height]);
+    }, [state, options, validator, width, height]);
 
     useEffect(() => {
         updateStorage();
@@ -354,8 +325,8 @@ export function ColorGraph() {
                 "cursor-move",
                 "border-x"
             )}
-            onMouseEnter={() => setHovered(true)}
-            onMouseLeave={() => setHovered(false)}
+            onMouseEnter={() => setVisible(true)}
+            onMouseLeave={() => setVisible(false)}
             style={{
                 height,
                 backgroundColor: getBackgroundHex(),
@@ -363,11 +334,7 @@ export function ColorGraph() {
             }}
         >
             <div className={cn("group", "relative")}>
-                <Toolbar
-                    tools={tools}
-                    setTools={setTools}
-                    visible={isHovered}
-                />
+                <Toolbar />
                 <ForceGraph2D
                     // @ts-expect-error - ref
                     ref={graphRef}
