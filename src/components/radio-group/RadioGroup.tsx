@@ -15,7 +15,23 @@ export function RadioGroupItem({
             ref={ref}
             id={id}
             role="radio"
-            className={cn("p-2", "flex", "gap-2", "items-center", className)}
+            className={cn(
+                ariaChecked ? ["bg-gray-300", "font-bold"] : "",
+                "first:border-t",
+                "border-b",
+                "border-x",
+                "border-gray-400",
+                "hover:bg-gray-200",
+                "focus:outline-none",
+                "focus:border-black",
+                "focus:border-2",
+                "hover:cursor-pointer",
+                "p-2",
+                "flex",
+                "gap-2",
+                "items-center",
+                className
+            )}
             tabIndex={ariaChecked ? 0 : -1}
             aria-checked={ariaChecked}
             {...props}
@@ -32,6 +48,7 @@ export function RadioGroup<T>({
     defaultChecked,
     checked,
     onCheck,
+    onClick,
     ...props
 }: RadioGroupProps<T>) {
     const ref = useRef<HTMLUListElement>(null);
@@ -93,6 +110,11 @@ export function RadioGroup<T>({
         }
     };
 
+    const handleClick = (id: string) => {
+        onClick?.(id);
+        handleCheck(id);
+    };
+
     return (
         <ul
             ref={ref}
@@ -109,6 +131,7 @@ export function RadioGroup<T>({
                         id={id}
                         key={id}
                         aria-checked={selected === id}
+                        onClick={() => handleClick(id)}
                         {...props}
                     >
                         <Item {...props} data={data} />

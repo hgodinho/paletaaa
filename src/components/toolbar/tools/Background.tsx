@@ -48,6 +48,10 @@ export function Background({ className, ...props }: BackgroundProps) {
         if (id === getBackground()?.id) toggleBackground(false);
     };
 
+    const onClick = () => {
+        toggleBackground(false);
+    };
+
     return (
         <Tooltip
             placement="bottom"
@@ -87,6 +91,7 @@ export function Background({ className, ...props }: BackgroundProps) {
                                 onCheck={onBGChange}
                                 aria-label="Select a background color"
                                 checked={getBackground()?.id}
+                                onClick={onClick}
                                 items={getColors().map((node) => {
                                     return {
                                         id: node.id,
