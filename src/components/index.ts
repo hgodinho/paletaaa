@@ -10,6 +10,7 @@ export * from "./menu";
 export * from "./links";
 export * from "./trigger";
 export * from "./toolbar";
+export * from "./tooltip";
 export * from "./logo";
 export * from "./combo-box";
 export * from "./scroll";
