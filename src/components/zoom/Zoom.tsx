@@ -1,6 +1,6 @@
 import { cn } from "@/lib";
 import { ZoomProps } from "./types";
-import { useOptionsContext, usePaletteContext } from "@/context";
+import { useAppContext, usePaletteContext } from "@/context";
 
 import { Minus, Plus, Scan } from "lucide-react";
 import { Button, NumberInput } from "@/components";
@@ -25,7 +25,7 @@ export function Zoom({
 
     const ratio = 0.2;
 
-    const { sidebar } = useOptionsContext();
+    const { sidebar } = useAppContext();
 
     const zoomPlus = () => {
         if (currentZoom >= max) return;

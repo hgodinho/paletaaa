@@ -1,13 +1,11 @@
 import { MenuContext } from "./Context";
 import { cn } from "@/lib";
 import { Button, MenuItems, Scroll } from "@/components";
-import { useAppContext, useOptionsContext, usePaletteContext } from "@/context";
+import { useAppContext, usePaletteContext } from "@/context";
 import { Plus } from "lucide-react";
 
 export function Menu() {
-    const { sidebar } = useOptionsContext();
-
-    const { graph, getVertex, updateVertex } = useAppContext();
+    const { graph, sidebar, getVertex, updateVertex } = useAppContext();
 
     const setExpanded = (expandedId: string) => {
         const node = getVertex(expandedId);

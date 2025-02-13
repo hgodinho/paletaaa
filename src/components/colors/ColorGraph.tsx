@@ -6,7 +6,7 @@ import ForceGraph2D, {
     ForceGraphMethods,
 } from "react-force-graph-2d";
 
-import { useAppContext, useOptionsContext, usePaletteContext } from "@/context";
+import { useAppContext, usePaletteContext } from "@/context";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Toolbar, ToolsState, Zoom } from "@/components";
 
@@ -34,7 +34,13 @@ export function ColorGraph() {
 
     const [scale, setScale] = useState(1);
 
-    const { graph, getVertices, getEdges, updateStorage } = useAppContext();
+    const {
+        graph,
+        viewport: { width, height, isMobile },
+        getVertices,
+        getEdges,
+        updateStorage,
+    } = useAppContext();
 
     const {
         getBackgroundHex,
@@ -43,10 +49,6 @@ export function ColorGraph() {
         background,
         validator,
     } = usePaletteContext();
-
-    const {
-        viewport: { width, height, isMobile },
-    } = useOptionsContext();
 
     const options: ForceGraphProps<Node, Link> = useMemo(
         () => ({

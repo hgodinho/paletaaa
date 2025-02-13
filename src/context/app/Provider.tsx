@@ -1,9 +1,9 @@
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 
 import { parseColor } from "react-aria-components";
 import LZString from "lz-string";
 
-import { getRandomId, useGraph } from "@/lib";
+import { getRandomId, useGraph, useViewPortSize } from "@/lib";
 import { AppContext } from "./Context";
 import { Node, Link } from "./types";
 
@@ -125,11 +125,22 @@ export function AppProvider({ children }: React.PropsWithChildren) {
     //     );
     // }, [graph, toJSON]);
 
+    const { windowDimensions } = useViewPortSize();
+
+    const [sidebar, setSidebar] = useState<boolean>(
+        windowDimensions.isMobile ? false : true
+    );
+
     return (
         <AppContext
             value={{
                 graph,
                 updateStorage,
+
+                sidebar,
+                setSidebar,
+                viewport: windowDimensions,
+
                 ...graphActions,
             }}
         >
