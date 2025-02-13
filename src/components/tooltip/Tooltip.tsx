@@ -14,7 +14,7 @@ export function Tooltip({
 }: TooltipProps) {
     return (
         <TooltipTrigger delay={500} closeDelay={0}>
-            {trigger()}
+            {trigger}
             <Primitive
                 className={(values) =>
                     cn(
@@ -30,7 +30,17 @@ export function Tooltip({
                         <path d="M0 0 L4 4 L8 0" />
                     </svg>
                 </OverlayArrow>
-                {children}
+                <span
+                    className={cn(
+                        "font-bold",
+                        "text-xs",
+                        "text-white",
+                        "bg-gray-700",
+                        "p-1"
+                    )}
+                >
+                    {children}
+                </span>
             </Primitive>
         </TooltipTrigger>
     );
