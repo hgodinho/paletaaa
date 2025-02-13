@@ -1,4 +1,4 @@
-import { AppProvider, OptionsProvider, PaletteProvider } from "@/context";
+import { AppProvider, PaletteProvider, ToolsProvider } from "@/context";
 import { cn } from "@/lib";
 import { ColorGraph, Menu, Sidebar /*Preview*/ } from "@/components";
 import { BrowserRouter } from "react-router";
@@ -8,7 +8,7 @@ export function Layout() {
         <BrowserRouter>
             <AppProvider>
                 <PaletteProvider>
-                    <OptionsProvider>
+                    <ToolsProvider>
                         <main
                             className={cn(
                                 "h-full",
@@ -22,10 +22,10 @@ export function Layout() {
                             </Sidebar>
                             <ColorGraph />
                             {/* <Preview />
-                            // to be further implemented
-                        */}
+                                // to be further implemented
+                            */}
                         </main>
-                    </OptionsProvider>
+                    </ToolsProvider>
                 </PaletteProvider>
             </AppProvider>
         </BrowserRouter>
