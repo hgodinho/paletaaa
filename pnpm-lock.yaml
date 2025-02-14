@@ -32,6 +32,9 @@ importers:
       lz-string:
         specifier: ^1.5.0
         version: 1.5.0
+      posthog-js:
+        specifier: ^1.217.1
+        version: 1.217.1
       react:
         specifier: ^19.0.0
         version: 19.0.0
@@ -53,6 +56,9 @@ importers:
       semantic-release:
         specifier: ^24.2.1
         version: 24.2.1(typescript@5.7.3)
+      vite-plugin-posthog:
+        specifier: ^2.1.0
+        version: 2.1.0(@types/react@19.0.7)(react@19.0.0)
     devDependencies:
       '@commitlint/cli':
         specifier: ^19.6.1
@@ -2461,6 +2467,9 @@ packages:
     resolution: {integrity: sha512-9Kr/j4O16ISv8zBBhJoi4bXOYNTkFLOqSL3UDB0njXxCXNezjeyVrJyGOWtgfs/q2km1gwBcfH8q1yEGoMYunA==}
     engines: {node: '>=18'}
 
+  core-js@3.40.0:
+    resolution: {integrity: sha512-7vsMc/Lty6AGnn7uFpYT56QesI5D2Y/UkgKounk87OP9Z2H9Z8kj6jzcSGAxFmUtDOS0ntK6lbQz+Nsa0Jj6mQ==}
+
   core-util-is@1.0.3:
     resolution: {integrity: sha512-ZQBvi1DcpJ4GDqanjucZ2Hj3wEO5pZDS89BWbkcrvdxksJorwUDDZamX9ldFkp9aw2lmBDLgkObEA4DWNJ9FYQ==}
 
@@ -2859,6 +2868,9 @@ packages:
 
   fastq@1.18.0:
     resolution: {integrity: sha512-QKHXPW0hD8g4UET03SdOdunzSouc9N4AuHdsX8XNcTsuz+yYFILVNIX4l9yHABMhiEI9Db0JTTIpu0wB+Y1QQw==}
+
+  fflate@0.4.8:
+    resolution: {integrity: sha512-FJqqoDBR00Mdj9ppamLa/Y7vxm+PRmNWA67N846RvsoYVMKB4q3y/de5PA7gUmRMYK/8CMz2GDZQmCRN1wBcWA==}
 
   figures@2.0.0:
     resolution: {integrity: sha512-Oa2M9atig69ZkfwiApY8F2Yy+tzMbazyvqv21R0NsSC8floSOC09BbT1ITWAdoMGQvJ/aZnR1KMwdx9tvHnTNA==}
@@ -4145,6 +4157,9 @@ packages:
     resolution: {integrity: sha512-6oz2beyjc5VMn/KV1pPw8fliQkhBXrVn1Z3TVyqZxU8kZpzEKhBdmCFqI6ZbmGtamQvQGuU1sgPTk8ZrXDD7jQ==}
     engines: {node: ^10 || ^12 || >=14}
 
+  posthog-js@1.217.1:
+    resolution: {integrity: sha512-qttaRWe3WW7VL/MIG1Usg65Dzohw9Ylf8IVWyX36oHH9k0kzriPUl4Nx08P+oV0esbWWaCsljRzIiww4p+HOMQ==}
+
   preact@10.25.4:
     resolution: {integrity: sha512-jLdZDb+Q+odkHJ+MpW/9U5cODzqnB+fy2EiHSZES7ldV5LK7yjlVzTp7R8Xy6W6y75kfK8iWYtFVH7lvjwrCMA==}
 
@@ -4898,6 +4913,15 @@ packages:
     engines: {node: ^18.0.0 || ^20.0.0 || >=22.0.0}
     hasBin: true
 
+  vite-plugin-posthog@2.1.0:
+    resolution: {integrity: sha512-oQtxfMOGO4wAllA3boOyydDbzp7RqaEL2KdmhzlmbT6i8IDoH1bdtiRItXnj5nWDubfMH8DnECILSfZzgEg3tg==}
+    peerDependencies:
+      '@types/react': '>=16.8.0'
+      react: '>=16.8.0'
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+
   vite@6.0.7:
     resolution: {integrity: sha512-RDt8r/7qx9940f8FcOIAH9PTViRrghKaK2K1jY3RaAURrEUbm9Du1mJ72G+jlhtG3WwodnfzY8ORQZbBavZEAQ==}
     engines: {node: ^18.0.0 || ^20.0.0 || >=22.0.0}
@@ -4972,6 +4996,9 @@ packages:
 
   web-namespaces@2.0.1:
     resolution: {integrity: sha512-bKr1DkiNa2krS7qxNtdrtHAmzuYGFQLiQ13TsorsdT6ULTkPLKuu5+GsFpDlg6JFjUTwX2DyhMPG2be8uPrqsQ==}
+
+  web-vitals@4.2.4:
+    resolution: {integrity: sha512-r4DIlprAGwJ7YM11VZp4R884m0Vmgr6EAKe3P+kO0PPj3Unqyvv59rczf6UiGcb9Z8QxZVcqKNwv/g0WNdWwsw==}
 
   webidl-conversions@7.0.0:
     resolution: {integrity: sha512-VwddBukDzu71offAQR975unBIGqfKZpM+8ZX6ySk8nYhVoo5CYaZyzt3YBvYtRtO+aoGlqxPg/B87NGVZ/fu6g==}
@@ -7995,6 +8022,8 @@ snapshots:
 
   cookie@1.0.2: {}
 
+  core-js@3.40.0: {}
+
   core-util-is@1.0.3: {}
 
   cosmiconfig-typescript-loader@6.1.0(@types/node@22.10.7)(cosmiconfig@9.0.0(typescript@5.7.3))(typescript@5.7.3):
@@ -8429,6 +8458,8 @@ snapshots:
   fastq@1.18.0:
     dependencies:
       reusify: 1.0.4
+
+  fflate@0.4.8: {}
 
   figures@2.0.0:
     dependencies:
@@ -9654,6 +9685,13 @@ snapshots:
       picocolors: 1.1.1
       source-map-js: 1.2.1
 
+  posthog-js@1.217.1:
+    dependencies:
+      core-js: 3.40.0
+      fflate: 0.4.8
+      preact: 10.25.4
+      web-vitals: 4.2.4
+
   preact@10.25.4: {}
 
   prelude-ls@1.2.1: {}
@@ -10578,6 +10616,12 @@ snapshots:
       - tsx
       - yaml
 
+  vite-plugin-posthog@2.1.0(@types/react@19.0.7)(react@19.0.0):
+    dependencies:
+      react: 19.0.0
+    optionalDependencies:
+      '@types/react': 19.0.7
+
   vite@6.0.7(@types/node@22.10.7)(jiti@2.4.2)(yaml@2.7.0):
     dependencies:
       esbuild: 0.24.2
@@ -10637,6 +10681,8 @@ snapshots:
       defaults: 1.0.4
 
   web-namespaces@2.0.1: {}
+
+  web-vitals@4.2.4: {}
 
   webidl-conversions@7.0.0: {}
 

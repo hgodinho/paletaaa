@@ -87,6 +87,8 @@ jobs:
       - name: Build
         run: |
           echo "VITE_NEW_RELEASE_VERSION=${{ needs.verify-release.outputs.NEW_RELEASE_VERSION }}" >> .env
+          echo "REACT_APP_PUBLIC_POSTHOG_KEY=${{ secrets.POSTHOG_KEY }}" >> .env
+          echo "REACT_APP_PUBLIC_POSTHOG_URL=${{ secrets.POSTHOG_URL }}" >> .env
           pnpm build
 
       - name: Setup Pages

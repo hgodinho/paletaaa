@@ -1,13 +1,11 @@
 import { MenuContext } from "./Context";
 import { cn } from "@/lib";
 import { Button, MenuItems, Scroll } from "@/components";
-import { useAppContext, useOptionsContext, usePaletteContext } from "@/context";
+import { useAppContext, usePaletteContext } from "@/context";
 import { Plus } from "lucide-react";
 
 export function Menu() {
-    const { sidebar } = useOptionsContext();
-
-    const { graph, getVertex, updateVertex, removeVertex } = useAppContext();
+    const { graph, sidebar, getVertex, updateVertex } = useAppContext();
 
     const setExpanded = (expandedId: string) => {
         const node = getVertex(expandedId);
@@ -20,15 +18,14 @@ export function Menu() {
         }
     };
 
-    const removeItem = (id: string) => removeVertex(id);
+    const { onColorAdd, onColorRemove } = usePaletteContext();
 
-    const { onColorAdd } = usePaletteContext();
     return (
         <MenuContext
             value={{
                 items: graph.nodes,
                 setExpanded,
-                removeItem,
+                removeItem: onColorRemove,
             }}
         >
             <Button

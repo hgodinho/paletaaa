@@ -1,20 +1,14 @@
-import { Magnet, Tag } from "lucide-react";
-import { Button, ColorComboBox, ColorSwatch } from "@/components";
+import { Tools } from "@/components";
 import { cn } from "@/lib";
 import { ToolbarProps } from "./types";
-import { useOptionsContext, usePaletteContext } from "@/context";
-import { ComboBoxItem } from "../combo-box/ComboBoxItem";
-import { useEffect, useRef, useState } from "react";
+import { useAppContext, usePaletteContext, useToolsContext } from "@/context";
 
-export function Toolbar({ className, visible, tools, setTools }: ToolbarProps) {
-    const { contrastColor, getBackgroundHex, getColors, setBackground } =
-        usePaletteContext();
+export function Toolbar({ className }: ToolbarProps) {
+    const { contrastColor, getBackgroundHex } = usePaletteContext();
 
-    const comboRef = useRef<HTMLDivElement>(null);
+    const { state, visible } = useToolsContext();
 
-    const [isBgComboOpen, setBgComboOpen] = useState(false);
-
-    const buttonClass = (key: keyof typeof tools | "background") => {
+    const buttonClass = (key: keyof typeof state | "background") => {
         const bgHex = getBackgroundHex();
         const contrastBg = contrastColor("#FFF", bgHex);
         const contrast = contrastBg === "white" ? "black" : "white";
@@ -30,7 +24,7 @@ export function Toolbar({ className, visible, tools, setTools }: ToolbarProps) {
             ];
         }
 
-        if (!tools[key]) {
+        if (!state[key].active) {
             return [
                 `bg-${bgHex}`,
                 `text-${contrastBg}`,
@@ -49,27 +43,7 @@ export function Toolbar({ className, visible, tools, setTools }: ToolbarProps) {
         ];
     };
 
-    const { sidebar } = useOptionsContext();
-
-    useEffect(() => {
-        if (!visible && isBgComboOpen) {
-            setBgComboOpen(false);
-        }
-    }, [visible, isBgComboOpen]);
-
-    useEffect(() => {
-        function handleClickOutside(event: MouseEvent) {
-            if (
-                comboRef.current &&
-                !comboRef.current.contains(event.target as Node)
-            ) {
-                setBgComboOpen(false);
-            }
-        }
-        document.addEventListener("mousedown", handleClickOutside);
-        return () =>
-            document.removeEventListener("mousedown", handleClickOutside);
-    }, [comboRef]);
+    const { sidebar } = useAppContext();
 
     return (
         <div
@@ -110,59 +84,11 @@ export function Toolbar({ className, visible, tools, setTools }: ToolbarProps) {
                     color: contrastColor(getBackgroundHex(), "#FFF"),
                 }}
             >
-                <ColorComboBox
-                    ref={comboRef}
-                    buttonProps={{
-                        className: cn(buttonClass("background")),
-                        onPress: () => setBgComboOpen(!isBgComboOpen),
-                    }}
-                    isOpen={isBgComboOpen}
-                    onSelectionChange={(id) => {
-                        if (id) {
-                            setBackground(id as string);
-                            setBgComboOpen(false);
-                        }
-                    }}
-                    aria-label="Background Color"
-                >
-                    {Array.from(getColors()).map((data) => (
-                        <ComboBoxItem
-                            id={data.id}
-                            key={data.id}
-                            textValue={data.id}
-                        >
-                            <ColorSwatch color={data.color.data} />
-                            {data.color.title}
-                            <span>{`(${data.color.data.toString(
-                                "hex"
-                            )})`}</span>
-                        </ComboBoxItem>
-                    ))}
-                </ColorComboBox>
-                <Button
-                    aria-label="Toggle Labels"
-                    variant={"none"}
-                    onPress={() =>
-                        setTools({ ...tools, labels: !tools.labels })
-                    }
-                    className={cn("p-2", buttonClass("labels"))}
-                >
-                    <Tag size={18} />
-                </Button>
-                <Button
-                    aria-label="Toggle Magnet"
-                    variant={"none"}
-                    onPress={() =>
-                        setTools({ ...tools, magnet: !tools.magnet })
-                    }
-                    className={cn(
-                        "p-2",
-                        "rounded-r-full",
-                        buttonClass("magnet")
-                    )}
-                >
-                    <Magnet size={18} />
-                </Button>
+                <Tools.Background className={cn(buttonClass("background"))} />
+                <Tools.Labels className={cn(buttonClass("labels"))} />
+                <Tools.Magnet
+                    className={cn("rounded-r-full", buttonClass("magnet"))}
+                />
             </div>
         </div>
     );

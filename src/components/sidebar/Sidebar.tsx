@@ -1,14 +1,14 @@
 import { createRef } from "react";
 import { cn } from "@/lib";
 import { Trigger, Footer } from "@/components";
-import { useOptionsContext, usePaletteContext } from "@/context";
+import { useAppContext, usePaletteContext } from "@/context";
 import { SlidersHorizontal, X } from "lucide-react";
 import { SidebarProps } from "./types";
 
 export function Sidebar({ className, children, ...props }: SidebarProps) {
     const ref = createRef<HTMLDivElement>();
 
-    const { sidebar, setSidebar, viewport } = useOptionsContext();
+    const { sidebar, setSidebar, viewport } = useAppContext();
 
     const { contrastColor, getBackgroundHex } = usePaletteContext();
 

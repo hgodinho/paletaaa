@@ -26,16 +26,13 @@ export function AddLink({ current }: LinksProps) {
 
     const [to, setTo] = useState<string>("");
 
-    const { getVertices, haveEdges, addDirEdge, addEdge } = useAppContext();
+    const { onLinkAdd } = usePaletteContext();
+
+    const { getVertices, haveEdges } = useAppContext();
 
     const addLink = () => {
         if (!current || !to || current === to) return;
-
-        if (isDirected) {
-            addDirEdge({ source: current, target: to });
-        } else {
-            addEdge({ source: current, target: to });
-        }
+        onLinkAdd(current, to, isDirected);
         setTo("");
     };
 
@@ -109,17 +106,12 @@ export function AddLink({ current }: LinksProps) {
 }
 
 export function Links({ current }: LinksProps) {
-    const { getVertex, getNodeEdges, removeEdge, removeDirEdge, isDirEdge } =
-        useAppContext();
+    const { getVertex, getNodeEdges, isDirEdge } = useAppContext();
 
-    const { validator } = usePaletteContext();
+    const { validator, onLinkRemove } = usePaletteContext();
 
     const onRemove = (id: string) => {
-        if (isDirEdge(current, id)) {
-            removeEdge({ source: current, target: id });
-        } else {
-            removeDirEdge({ source: current, target: id });
-        }
+        onLinkRemove(current, id);
     };
 
     const icon = (
@@ -163,9 +155,9 @@ export function Links({ current }: LinksProps) {
                                 color={getVertex(source)?.color.data}
                             />
                             {isDirEdge(current, target) ? (
-                                <ArrowLeftRight size={16} />
-                            ) : (
                                 <ArrowRight size={16} />
+                            ) : (
+                                <ArrowLeftRight size={16} />
                             )}
                             <ColorSwatch
                                 size={"small"}

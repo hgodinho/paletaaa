@@ -22,7 +22,10 @@ export type GraphAction<V extends BaseVertex, E extends BaseEdge<V>> =
     | { type: typeof GraphActions.ADD_VERTICES; payload: V[] }
     | { type: typeof GraphActions.REMOVE_VERTEX; payload: string }
     | { type: typeof GraphActions.REMOVE_VERTICES; payload: string[] }
-    | { type: typeof GraphActions.UPDATE_VERTEX; payload: { id: V["id"] } & Partial<V> }
+    | {
+          type: typeof GraphActions.UPDATE_VERTEX;
+          payload: { id: V["id"] } & Partial<V>;
+      }
     | { type: typeof GraphActions.UPDATE_VERTICES; payload: Map<string, V> }
     | { type: typeof GraphActions.ADD_DIR_EDGE; payload: E }
     | { type: typeof GraphActions.ADD_EDGE; payload: E }
@@ -135,7 +138,7 @@ export function reducer<V extends BaseVertex, E extends BaseEdge<V>>(
                 return {
                     ...state,
                     nodes,
-                }
+                };
             } else {
                 return state;
             }
@@ -168,6 +171,8 @@ export function reducer<V extends BaseVertex, E extends BaseEdge<V>>(
 
             if (edges.has(edge.source)) {
                 edges.get(edge.source)!.add(edge.target);
+            } else {
+                edges.set(edge.source, new Set([edge.target]));
             }
 
             return {
