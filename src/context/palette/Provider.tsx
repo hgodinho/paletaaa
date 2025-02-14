@@ -137,13 +137,20 @@ export function PaletteProvider({
 
     /**
      * Set the background color of the palette
-     * @param data | new background color
+     * @param id | id of the color
+     *
+     * @posthog background_change event
      */
-    const setBackground = (data: string | undefined) => {
+    const setBackground = (id: string | undefined) => {
         setPalette({
             ...state,
-            background: data,
+            background: id,
         });
+        if (id)
+            posthog?.capture("background_change", {
+                id,
+                color: getColor(id)?.data.toString("hex"),
+            });
     };
 
     /**
