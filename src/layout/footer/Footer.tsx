@@ -1,7 +1,7 @@
 import { cn } from "@/lib";
 import { FooterProps } from "./types";
 import { usePaletteContext } from "@/context";
-import { Logo } from "../logo";
+import { Logo } from "@/components";
 
 export function Footer({
     className,

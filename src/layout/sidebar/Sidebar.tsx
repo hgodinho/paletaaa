@@ -1,9 +1,11 @@
 import { createRef } from "react";
-import { cn } from "@/lib";
-import { Trigger, Footer } from "@/components";
-import { useAppContext, usePaletteContext } from "@/context";
 import { SlidersHorizontal, X } from "lucide-react";
+
+import { cn } from "@/lib";
+import { Trigger } from "@/components";
+import { useAppContext, usePaletteContext } from "@/context";
 import { SidebarProps } from "./types";
+import { Footer } from "@/layout";
 
 export function Sidebar({ className, children, ...props }: SidebarProps) {
     const ref = createRef<HTMLDivElement>();
