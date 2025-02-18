@@ -10,6 +10,7 @@ export function Tooltip({
     trigger,
     children,
     className,
+    placement,
     ...props
 }: TooltipProps) {
     return (
@@ -23,10 +24,18 @@ export function Tooltip({
                             : className?.(values)
                     )
                 }
+                placement={placement}
                 {...props}
             >
                 <OverlayArrow>
-                    <svg width={8} height={8} viewBox="0 0 8 8">
+                    <svg
+                        className={cn(
+                            placement?.includes("right") && "rotate-90"
+                        )}
+                        width={8}
+                        height={8}
+                        viewBox="0 0 8 8"
+                    >
                         <path d="M0 0 L4 4 L8 0" />
                     </svg>
                 </OverlayArrow>
