@@ -16,3 +16,4 @@ export * from "./combo-box";
 export * from "./scroll";
 export * from "./zoom";
 export * from "./radio-group";
+export * from "./button-group";
