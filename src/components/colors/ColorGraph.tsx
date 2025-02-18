@@ -8,7 +8,7 @@ import ForceGraph2D, {
 
 import { useAppContext, usePaletteContext, useToolsContext } from "@/context";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Toolbar, Zoom } from "@/components";
+import { Toolbar, Zoom } from "@/features";
 
 // @ts-expect-error - d3-force-3d
 import { forceCollide } from "d3-force-3d";
