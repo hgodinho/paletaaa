@@ -1,4 +1,4 @@
-import { Tooltip, Button, ButtonProps } from "@/components";
+import { Button, ButtonProps, ButtonGroupItem } from "@/components";
 import { useToolsContext } from "@/context";
 import { cn } from "@/lib";
 import { Tag } from "lucide-react";
@@ -14,10 +14,7 @@ export function Labels({ className, ...props }: LabelProps) {
     const label = labels.active ? "hide labels" : "show labels";
 
     return (
-        <Tooltip
-            placement="bottom"
-            offset={8}
-            className={cn("fill-gray-700")}
+        <ButtonGroupItem
             trigger={
                 <Button
                     aria-label={label}
@@ -38,6 +35,6 @@ export function Labels({ className, ...props }: LabelProps) {
             }
         >
             {label}
-        </Tooltip>
+        </ButtonGroupItem>
     );
 }

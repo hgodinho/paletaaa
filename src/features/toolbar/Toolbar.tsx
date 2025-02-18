@@ -1,7 +1,8 @@
-import { Tools } from "@/components";
+import { ButtonGroup } from "@/components";
 import { cn } from "@/lib";
 import { ToolbarProps } from "./types";
 import { useAppContext, usePaletteContext, useToolsContext } from "@/context";
+import { Tools } from "./tools";
 
 export function Toolbar({ className }: ToolbarProps) {
     const { contrastColor, getBackgroundHex } = usePaletteContext();
@@ -46,50 +47,28 @@ export function Toolbar({ className }: ToolbarProps) {
     const { sidebar } = useAppContext();
 
     return (
-        <div
+        <ButtonGroup
+            // variant={"rounded"}
             className={cn(
-                "sticky",
                 "absolute",
                 "z-10",
-                "w-fit",
                 "left-1/2",
                 "-ml-12",
-                "flex",
-                "flex-row",
-                "justify-center",
-                "items-center",
-                "mt-2",
-                "lg:mt-3"
+
+                visible
+                    ? "opacity-100"
+                    : [sidebar ? "opacity-0" : "opacity-100", "lg:opacity-0"],
+
+                className
             )}
+            style={{
+                borderColor: contrastColor(getBackgroundHex(), "#FFF"),
+                color: contrastColor(getBackgroundHex(), "#FFF"),
+            }}
         >
-            <div
-                className={cn(
-                    "border",
-                    "z-10",
-                    "rounded-3xl",
-                    "transform",
-                    "duration-300",
-                    "flex",
-                    "h-fit",
-                    visible
-                        ? "opacity-100"
-                        : [
-                              sidebar ? "opacity-0" : "opacity-100",
-                              "lg:opacity-0",
-                          ],
-                    className
-                )}
-                style={{
-                    borderColor: contrastColor(getBackgroundHex(), "#FFF"),
-                    color: contrastColor(getBackgroundHex(), "#FFF"),
-                }}
-            >
-                <Tools.Background className={cn(buttonClass("background"))} />
-                <Tools.Labels className={cn(buttonClass("labels"))} />
-                <Tools.Magnet
-                    className={cn("rounded-r-full", buttonClass("magnet"))}
-                />
-            </div>
-        </div>
+            <Tools.Background className={cn(buttonClass("background"))} />
+            <Tools.Labels className={cn(buttonClass("labels"))} />
+            <Tools.Magnet className={cn(buttonClass("magnet"))} />
+        </ButtonGroup>
     );
 }
