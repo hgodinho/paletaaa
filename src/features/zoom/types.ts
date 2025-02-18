@@ -8,3 +8,10 @@ export type ZoomProps = {
     zoomToFit: () => void;
     zoom: (scale: number) => void;
 };
+
+export type ZoomContextType = ZoomProps & {
+    zoomPlus: () => void;
+    zoomMinus: () => void;
+
+    contrast: "black" | "white";
+};

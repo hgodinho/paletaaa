@@ -13,6 +13,5 @@ export * from "./tooltip";
 export * from "./logo";
 export * from "./combo-box";
 export * from "./scroll";
-export * from "./zoom";
 export * from "./radio-group";
 export * from "./button-group";
