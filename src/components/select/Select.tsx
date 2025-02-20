@@ -13,7 +13,6 @@ export function Select({
     style,
     ...props
 }: SelectProps<Primitive.SelectProps>) {
-
     return (
         <Primitive.Root {...props} onValueChange={onChange}>
             <Primitive.Trigger
@@ -24,7 +23,7 @@ export function Select({
                     "whitespace-nowrap",
                     "rounded-sm",
                     "border",
-                    "border-gray-400",
+                    "border-gray-800",
                     "text-sm",
                     "p-2",
                     "placeholder:text-muted-gray-500",
@@ -56,7 +55,7 @@ export function Select({
                         "rounded-sm",
                         "border",
 
-                        "border-gray-400",
+                        "border-gray-800",
                         "bg-white",
                         "text-black",
 
@@ -105,7 +104,7 @@ export function Select({
                                         "text-sm",
                                         "outline-none",
                                         "focus:border",
-                                        "focus:border-gray-400",
+                                        "focus:border-gray-800",
                                         "data-[disabled]:pointer-events-none",
                                         "data-[disabled]:opacity-50"
                                     )}

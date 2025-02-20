@@ -1,4 +1,4 @@
-import { Node } from "@/components";
+import { Node } from "@/context";
 import { createContext } from "react";
 import { Color as PrimitiveColor, ColorSpace } from "react-aria-components";
 

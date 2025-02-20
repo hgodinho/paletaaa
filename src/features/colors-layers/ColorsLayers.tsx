@@ -1,11 +1,14 @@
-import { MenuContext } from "./Context";
-import { cn } from "@/lib";
-import { Button, MenuItems, Scroll } from "@/components";
-import { useAppContext, usePaletteContext } from "@/context";
 import { Plus } from "lucide-react";
 
-export function Menu() {
-    const { graph, sidebar, getVertex, updateVertex } = useAppContext();
+import { cn } from "@/lib";
+import { Button, Scroll } from "@/components";
+import { useAppContext, usePaletteContext } from "@/context";
+
+import { ColorsLayersContext } from "./Context";
+import { Layers } from "./Layers";
+
+export function ColorsLayers() {
+    const { sidebar, getVertex, updateVertex } = useAppContext();
 
     const setExpanded = (expandedId: string) => {
         const node = getVertex(expandedId);
@@ -18,13 +21,17 @@ export function Menu() {
         }
     };
 
+    const isExpanded = (id: string) => {
+        return getVertex(id)?.expanded || false;
+    };
+
     const { onColorAdd, onColorRemove } = usePaletteContext();
 
     return (
-        <MenuContext
+        <ColorsLayersContext
             value={{
-                items: graph.nodes,
                 setExpanded,
+                isExpanded,
                 removeItem: onColorRemove,
             }}
         >
@@ -35,6 +42,8 @@ export function Menu() {
                     "items-center",
                     "justify-center",
                     "gap-2",
+                    "text-sm",
+                    "h-9",
                     !sidebar && "hidden"
                 )}
                 onPress={onColorAdd}
@@ -43,8 +52,8 @@ export function Menu() {
                 {"add color"}
             </Button>
             <Scroll className={cn("accordion", !sidebar && "hidden")}>
-                <MenuItems />
+                <Layers />
             </Scroll>
-        </MenuContext>
+        </ColorsLayersContext>
     );
 }

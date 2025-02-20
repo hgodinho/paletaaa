@@ -5,7 +5,7 @@ export const inputVariants = cva([], {
         inputType: {
             default: [
                 "border",
-                "border-gray-400",
+                "border-gray-800",
                 "placeholder:text-gray-400",
                 "rounded-sm",
                 "font-sans",

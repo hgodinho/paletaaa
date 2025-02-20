@@ -69,7 +69,7 @@ export function AddLink({ current }: LinksProps) {
                 >
                     <div className={cn("flex", "flex-row", "w-full", "gap-2")}>
                         <Button
-                            variant="square"
+                            variant="trigger"
                             onPress={() => setDirected(!isDirected)}
                         >
                             {isDirected ? (
@@ -92,7 +92,7 @@ export function AddLink({ current }: LinksProps) {
                             value={to}
                         />
                         <Button
-                            variant={"square"}
+                            variant={"trigger"}
                             isDisabled={!to}
                             onPress={addLink}
                         >
@@ -127,9 +127,13 @@ export function Links({ current }: LinksProps) {
         }
     };
 
+    const colorA = getVertex(current)?.color.data;
+
     return (
-        <div className={cn("flex", "flex-col", "gap-4")}>
+        <div className={cn("flex", "flex-col", "w-full", "gap-4")}>
             {getNodeEdges(current)?.map(({ source, target }) => {
+                const colorB = getVertex(target)?.color.data;
+
                 return (
                     <div
                         key={`${source}-${target}`}
@@ -196,21 +200,13 @@ export function Links({ current }: LinksProps) {
                                     <span>aa</span>
                                     {icon(
                                         validator?.isLevelAA(
-                                            getVertex(
-                                                current
-                                            )?.color.data.toString("hex"),
-                                            getVertex(
-                                                target
-                                            )?.color.data.toString("hex"),
+                                            colorA!.toString("hex"),
+                                            colorB!.toString("hex"),
                                             24
                                         ),
                                         validator?.isLevelAA(
-                                            getVertex(
-                                                current
-                                            )?.color.data.toString("hex"),
-                                            getVertex(
-                                                target
-                                            )?.color.data.toString("hex"),
+                                            colorA!.toString("hex"),
+                                            colorB!.toString("hex"),
                                             18
                                         )
                                     )}
@@ -227,21 +223,13 @@ export function Links({ current }: LinksProps) {
                                     <span>aaa</span>
                                     {icon(
                                         validator?.isLevelAAA(
-                                            getVertex(
-                                                current
-                                            )?.color.data.toString("hex"),
-                                            getVertex(
-                                                target
-                                            )?.color.data.toString("hex"),
+                                            colorA!.toString("hex"),
+                                            colorB!.toString("hex"),
                                             24
                                         ),
                                         validator?.isLevelAAA(
-                                            getVertex(
-                                                current
-                                            )?.color.data.toString("hex"),
-                                            getVertex(
-                                                target
-                                            )?.color.data.toString("hex"),
+                                            colorA!.toString("hex"),
+                                            colorB!.toString("hex"),
                                             18
                                         )
                                     )}

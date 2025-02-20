@@ -38,14 +38,30 @@ export const AppDefaults: AppType = {
     addDirEdges: () => {},
 
     sidebar: false,
-
     setSidebar: () => false,
+    scale: 1,
+    setScale: () => 1,
+
     viewport: {
         width: 480,
         height: 800,
         isMobile: true,
         isTablet: false,
         isDesktop: false,
+    },
+
+    options: {
+        width: 480,
+        height: 800,
+        graphData: {
+            nodes: [],
+            links: [],
+        },
+        minZoom: 0.5,
+        maxZoom: 10,
+        linkDirectionalArrowLength: 4,
+        linkDirectionalArrowRelPos: 0.3,
+        nodeRelSize: 16,
     },
 };
 

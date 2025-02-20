@@ -25,7 +25,7 @@ export function Scroll({
                 {children}
             </Primitive.Viewport>
             <Primitive.Scrollbar
-                className={cn("border", "border-gray-400", "w-3")}
+                className={cn("border", "border-gray-800", "w-3")}
                 orientation="vertical"
             >
                 <Primitive.Thumb className={cn("bg-gray-300")} />

@@ -169,10 +169,13 @@ export function PaletteProvider({
      * @posthog color_rename event
      */
     const updateColorName = (id: string, title: string) => {
+        const color = getColor(id);
+        if (!color) return;
+
         graphActions.updateVertex({
             id,
             color: {
-                ...getColor(id),
+                ...color,
                 title,
             },
         });

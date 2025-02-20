@@ -4,7 +4,7 @@ import {
     ColorSwatchProps,
 } from "react-aria-components";
 
-const colorSwatchVariants = cva(["rounded-full", "border", "border-gray-400"], {
+const colorSwatchVariants = cva(["rounded-full", "border", "border-gray-800"], {
     variants: {
         size: {
             small: ["w-4", "h-4"],

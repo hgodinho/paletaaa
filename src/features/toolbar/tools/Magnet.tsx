@@ -1,4 +1,5 @@
-import { Tooltip, Button, ButtonProps } from "@/components";
+import { Button, ButtonProps, ButtonGroupItem } from "@/components";
+import { useButtonGroupContext } from "@/components/button-group/Context";
 import { useToolsContext } from "@/context";
 import { cn } from "@/lib";
 import { Magnet as MagnetIcon } from "lucide-react";
@@ -12,18 +13,17 @@ export function Magnet({ className, ...props }: MagnetProps) {
     } = useToolsContext();
 
     const label = magnet.active ? "disable forces" : "apply forces";
+    const { variant } = useButtonGroupContext();
 
     return (
-        <Tooltip
-            placement="bottom"
-            offset={8}
-            className={cn("fill-gray-700")}
+        <ButtonGroupItem
             trigger={
                 <Button
                     aria-label={label}
                     className={(values) =>
                         cn(
                             "p-2",
+                            variant === "rounded" && ["last:rounded-r-full"],
                             typeof className === "string"
                                 ? className
                                 : className?.(values)
@@ -38,6 +38,6 @@ export function Magnet({ className, ...props }: MagnetProps) {
             }
         >
             {label}
-        </Tooltip>
+        </ButtonGroupItem>
     );
 }

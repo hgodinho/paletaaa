@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 
 const breakpoints = {
     sm: 640,
@@ -8,79 +8,41 @@ const breakpoints = {
     "2xl": 1536,
 };
 
-export function useViewPortSize() {
-    const getWindowDimensions = useCallback(() => {
-        const { width, height, isDesktop, isMobile, isTablet } = (() => {
-            if (typeof window !== "undefined") {
-                const { innerWidth, innerHeight } = window;
-                return {
-                    width: innerWidth,
-                    height: innerHeight,
-                    isMobile: innerWidth <= breakpoints.sm && innerWidth >= 0,
-                    isTablet:
-                        innerWidth <= breakpoints.lg &&
-                        innerWidth >= breakpoints.md,
-                    isDesktop: innerWidth >= breakpoints.lg,
-                };
-            } else {
-                // default to mobile for ssg
-                return {
-                    width: 480,
-                    height: 800,
-                    isMobile: true,
-                    isTablet: false,
-                    isDesktop: false,
-                };
-            }
-        })();
-
+const getWindowDimensions = () => {
+    if (typeof window === "undefined") {
         return {
-            width,
-            height,
-            isDesktop,
-            isMobile,
-            isTablet,
-            breakpoints,
+            width: 480,
+            height: 800,
+            isMobile: true,
+            isTablet: false,
+            isDesktop: false,
         };
-    }, []);
+    }
 
-    const [windowDimensions, setWindowDimensions] = useState(
-        (() => {
-            if (typeof window !== "undefined") {
-                const { innerWidth, innerHeight } = window;
-                return {
-                    width: innerWidth,
-                    height: innerHeight,
-                    isMobile: innerWidth <= breakpoints.sm && innerWidth >= 0,
-                    isTablet:
-                        innerWidth <= breakpoints.lg &&
-                        innerWidth >= breakpoints.md,
-                    isDesktop: innerWidth >= breakpoints.lg,
-                };
-            } else {
-                // default to mobile for ssg
-                return {
-                    width: 480,
-                    height: 800,
-                    isMobile: true,
-                    isTablet: false,
-                    isDesktop: false,
-                };
-            }
-        })()
-    );
+    const { innerWidth: width, innerHeight: height } = window;
+    return {
+        width,
+        height,
+        isMobile: width <= breakpoints.sm,
+        isTablet: width > breakpoints.sm && width < breakpoints.lg,
+        isDesktop: width >= breakpoints.lg,
+    };
+};
+
+export function useViewPortSize() {
+    const [windowDimensions, setWindowDimensions] =
+        useState(getWindowDimensions);
 
     useEffect(() => {
-        function handleResize() {
+        const handleResize = () => {
             setWindowDimensions(getWindowDimensions());
-        }
-        if (typeof window !== "undefined") {
-            window.addEventListener("resize", handleResize);
-        }
+        };
+
+        window.addEventListener("resize", handleResize);
         return () => {
             window.removeEventListener("resize", handleResize);
         };
-    }, [getWindowDimensions]);
+    }, []);
 
-    return { windowDimensions, setWindowDimensions };
+    return { windowDimensions, breakpoints };
 }

@@ -1,12 +1,13 @@
 import {
     Button,
+    ButtonGroupItem,
     ButtonProps,
     ColorSwatch,
     Popover,
     RadioGroup,
     Scroll,
-    Tooltip,
 } from "@/components";
+import { useButtonGroupContext } from "@/components/button-group/Context";
 import { usePaletteContext, useToolsContext } from "@/context";
 import { cn } from "@/lib";
 import { PaintBucket } from "lucide-react";
@@ -15,6 +16,8 @@ import { useEffect, useRef } from "react";
 type BackgroundProps = ButtonProps;
 
 export function Background({ className, ...props }: BackgroundProps) {
+    const { variant } = useButtonGroupContext();
+
     const {
         state: {
             background: { active },
@@ -53,10 +56,7 @@ export function Background({ className, ...props }: BackgroundProps) {
     };
 
     return (
-        <Tooltip
-            placement="bottom"
-            offset={8}
-            className={cn("fill-gray-700")}
+        <ButtonGroupItem
             trigger={
                 <Popover
                     isOpen={active}
@@ -73,7 +73,7 @@ export function Background({ className, ...props }: BackgroundProps) {
                                     "w-full",
                                     "h-full",
                                     "p-2",
-                                    "rounded-l-full",
+                                    variant === "rounded" && "rounded-l-full",
                                     typeof className === "string"
                                         ? className
                                         : className?.(values)
@@ -120,6 +120,6 @@ export function Background({ className, ...props }: BackgroundProps) {
             }
         >
             {"background"}
-        </Tooltip>
+        </ButtonGroupItem>
     );
 }

@@ -2,9 +2,11 @@ import { useState } from "react";
 import { ToolsContext } from "./Context";
 import { ToolsState } from "./types";
 import { useVitePostHog } from "vite-plugin-posthog/react";
-// import { usePaletteContext } from "../palette";
+import { useAppContext } from "../app";
 
 export function ToolsProvider({ children }: React.PropsWithChildren) {
+    const { graphRef, options, scale } = useAppContext();
+
     const [visible, setVisible] = useState<boolean>(false);
 
     const [state, setState] = useState<ToolsState>({
@@ -14,6 +16,21 @@ export function ToolsProvider({ children }: React.PropsWithChildren) {
     });
 
     const posthog = useVitePostHog();
+
+    const zoom = {
+        zoomToFit: () => {
+            if (graphRef?.current === null) return;
+            graphRef?.current.zoomToFit(300, 128);
+        },
+        zoom: (scale: number) => {
+            if (graphRef?.current === null) return;
+            graphRef?.current.zoom(scale, 300);
+        },
+        visible: visible,
+        min: options.minZoom || 0.1,
+        max: options.maxZoom || 2,
+        referenceScale: scale,
+    };
 
     /**
      * Toggle the visibility of the labels
@@ -71,8 +88,9 @@ export function ToolsProvider({ children }: React.PropsWithChildren) {
         <ToolsContext
             value={{
                 visible,
-                setVisible,
                 state,
+                setVisible,
+                zoom,
 
                 toggleLabels,
                 toggleMagnet,

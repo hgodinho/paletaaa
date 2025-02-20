@@ -1,5 +1,3 @@
-import { Color } from "@/context";
-
 export type BFSVertexCallback<V, R = void> = (vertex: V, current: string) => R;
 
 export type BaseVertex = {
@@ -11,11 +9,9 @@ export type BaseEdge<V extends BaseVertex = BaseVertex> = {
     target: V["id"]; // source: A
 };
 
-export type Node = BaseVertex & {
-    color: Color;
-};
+export type Node<T = unknown> = BaseVertex & T;
 
-export type Link = BaseEdge;
+export type Link<T extends BaseVertex> = BaseEdge<T>;
 
 export type GraphNodes<V extends BaseVertex> = Map<V["id"], V>;
 

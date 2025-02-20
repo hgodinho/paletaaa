@@ -16,12 +16,12 @@ export function RadioGroupItem({
             id={id}
             role="radio"
             className={cn(
-                ariaChecked ? ["bg-gray-300", "font-bold"] : "",
+                ariaChecked ? ["bg-gray-200", "font-bold"] : "",
                 "first:border-t",
                 "border-b",
                 "border-x",
-                "border-gray-400",
-                "hover:bg-gray-200",
+                "border-gray-800",
+                "hover:bg-gray-300",
                 "focus:outline-none",
                 "focus:border-black",
                 "focus:border-2",

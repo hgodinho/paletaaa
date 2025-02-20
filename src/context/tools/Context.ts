@@ -12,6 +12,14 @@ export const ToolsDefaults: ToolsType = {
     toggleLabels: () => {},
     toggleMagnet: () => {},
     toggleBackground: () => {},
+
+    zoom: {
+        zoomToFit: () => {},
+        zoom: () => {},
+        visible: false,
+        min: 0,
+        max: 0,
+    },
 };
 
 export const ToolsContext = createContext<ToolsType>(ToolsDefaults);

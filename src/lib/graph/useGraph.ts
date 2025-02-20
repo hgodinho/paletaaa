@@ -68,9 +68,9 @@ export function useGraph<V extends BaseVertex, E extends BaseEdge<V>>(
         const targets = graph.edges.get(id);
         return targets
             ? Array.from(targets).map((target) => ({
-                source: id,
-                target,
-            }))
+                  source: id,
+                  target,
+              }))
             : undefined;
     }
 
@@ -234,8 +234,8 @@ export function useGraph<V extends BaseVertex, E extends BaseEdge<V>>(
      * @param edgeCallback | ([source, targets]: [string, Set<string>]) => { source: string, targets: string[] } - A function to execute on each edge
      * @returns GraphJSON<V>
      */
-    function toJSON(
-        nodeCallback?: (node: V) => V,
+    function toJSON<T = unknown>(
+        nodeCallback?: (node: V) => T,
         edgeCallback?: ([source, targets]: [string, Set<string>]) => {
             source: string;
             targets: string[];
@@ -251,11 +251,11 @@ export function useGraph<V extends BaseVertex, E extends BaseEdge<V>>(
             edges: edgeCallback
                 ? Array.from(graph.edges.entries()).map(edgeCallback)
                 : Array.from(graph.edges.entries()).map(
-                    ([source, targets]) => ({
-                        source,
-                        targets: Array.from(targets),
-                    })
-                ),
+                      ([source, targets]) => ({
+                          source,
+                          targets: Array.from(targets),
+                      })
+                  ),
         };
     }
 
