@@ -130,7 +130,7 @@ export function Links({ current }: LinksProps) {
     const colorA = getVertex(current)?.color.data;
 
     return (
-        <div className={cn("flex", "flex-col", "gap-4")}>
+        <div className={cn("flex", "flex-col", "w-full", "gap-4")}>
             {getNodeEdges(current)?.map(({ source, target }) => {
                 const colorB = getVertex(target)?.color.data;
 

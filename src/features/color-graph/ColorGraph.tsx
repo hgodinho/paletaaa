@@ -27,7 +27,7 @@ export function ColorGraph() {
         graph,
         options,
         graphRef,
-        viewport: { width, height },
+        viewport: { height },
         setScale,
         updateStorage,
     } = useAppContext();
@@ -262,7 +262,8 @@ export function ColorGraph() {
         });
 
         fg.d3Force("collision", forceCollide(options.nodeRelSize));
-    }, [state, options, validator, width, height, graphRef]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [state]);
 
     useEffect(() => {
         updateStorage();
