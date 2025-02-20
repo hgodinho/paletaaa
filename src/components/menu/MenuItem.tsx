@@ -23,7 +23,7 @@ export function MenuItems() {
                     "flex",
                     "flex-col",
                     "justify-center",
-                    "border-gray-400",
+                    "border-gray-800",
                     "border-t-0",
                     "first:border-t",
                     "first:rounded-t-sm",
@@ -40,7 +40,7 @@ export function MenuItems() {
                         "w-full",
                         "justify-between",
                         "p-2",
-                        "border-gray-400",
+                        "border-gray-800",
                         items.get(id)?.expanded && "border-b"
                     )}
                 >
@@ -66,7 +66,7 @@ export function MenuItems() {
                         )}
                     >
                         <Button
-                            variant={"square"}
+                            variant={"trigger"}
                             aria-disabled={id === "background"}
                             aria-label={`remove ${
                                 color.title || color.data.toString("hex")
@@ -75,7 +75,7 @@ export function MenuItems() {
                             onPress={() => removeItem(id)}
                             className={cn(
                                 "hidden",
-                                "group-hover:block",
+                                "group-hover:flex",
                                 "text-gray-400",
                                 "hover:bg-white",
                                 "hover:border-red-500",
@@ -85,7 +85,7 @@ export function MenuItems() {
                             <X size={16} />
                         </Button>
                         <Button
-                            variant={"square"}
+                            variant={"trigger"}
                             aria-expanded={items.get(id)?.expanded}
                             aria-controls={id}
                             aria-label={
@@ -103,13 +103,6 @@ export function MenuItems() {
                             onPress={() => {
                                 setExpanded(id);
                             }}
-                            className={cn(
-                                "flex",
-                                "items-center",
-                                "gap-2",
-                                "w-full",
-                                "justify-between"
-                            )}
                         >
                             <ChevronDown
                                 className={cn(

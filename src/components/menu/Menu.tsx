@@ -35,6 +35,8 @@ export function Menu() {
                     "items-center",
                     "justify-center",
                     "gap-2",
+                    "text-sm",
+                    "h-9",
                     !sidebar && "hidden"
                 )}
                 onPress={onColorAdd}

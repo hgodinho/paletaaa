@@ -69,7 +69,7 @@ export function AddLink({ current }: LinksProps) {
                 >
                     <div className={cn("flex", "flex-row", "w-full", "gap-2")}>
                         <Button
-                            variant="square"
+                            variant="trigger"
                             onPress={() => setDirected(!isDirected)}
                         >
                             {isDirected ? (
@@ -92,7 +92,7 @@ export function AddLink({ current }: LinksProps) {
                             value={to}
                         />
                         <Button
-                            variant={"square"}
+                            variant={"trigger"}
                             isDisabled={!to}
                             onPress={addLink}
                         >

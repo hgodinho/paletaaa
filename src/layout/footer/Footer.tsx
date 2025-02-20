@@ -27,7 +27,7 @@ export function Footer({
                 "transition",
                 "duration-500",
                 "z-10",
-                expanded ? ["border-gray-400"] : ["border-transparent"],
+                expanded ? ["border-gray-800"] : ["border-transparent"],
                 className
             )}
             {...props}

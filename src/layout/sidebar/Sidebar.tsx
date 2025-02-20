@@ -73,16 +73,13 @@ export function Sidebar({ className, children, ...props }: SidebarProps) {
                     }}
                     controlledId={"sidebar"}
                     aria-label={sidebar ? "close sidebar" : "open sidebar"}
-                    className={({ defaultClassName, isHovered }) =>
+                    className={({ defaultClassName }) =>
                         cn(
+                            "absolute",
                             defaultClassName,
-                            isHovered && [
-                                "hover:ml-2",
-                                "hover:mt-2",
-                                "hover:p-4",
-                            ],
                             "left-0",
-                            ["ml-2", "mt-2", "lg:mt-3", "lg:ml-3"],
+                            ["ml-2", "mt-2"],
+
                             sidebar && [
                                 "left-full",
                                 "lg:left-96",
@@ -90,8 +87,8 @@ export function Sidebar({ className, children, ...props }: SidebarProps) {
                                 "-ml-12",
                                 "mt-2",
 
-                                "lg:mt-3",
-                                "lg:ml-3",
+                                "lg:mt-2",
+                                "lg:ml-2",
                             ]
                         )
                     }
