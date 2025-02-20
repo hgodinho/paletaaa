@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 
 import { parseColor } from "react-aria-components";
 import LZString from "lz-string";
@@ -6,8 +6,11 @@ import LZString from "lz-string";
 import { getRandomId, useGraph, useViewPortSize } from "@/lib";
 import { AppContext } from "./Context";
 import { Node, Link } from "./types";
+import { ForceGraphMethods, ForceGraphProps } from "react-force-graph-2d";
 
 export function AppProvider({ children }: React.PropsWithChildren) {
+    const graphRef = useRef<ForceGraphMethods<Node, Link>>(null);
+
     const { graph, ...graphActions } = useGraph<Node, Link>(
         (() => {
             const graphStr = localStorage.getItem("graph");
@@ -93,22 +96,6 @@ export function AppProvider({ children }: React.PropsWithChildren) {
         [graphActions]
     );
 
-    // const fromJSON: GraphType["fromJSON"] = useCallback(
-    //     (data) =>
-    //         graphActions.fromJSON(data, (node) => {
-    //             return {
-    //                 ...node,
-    //                 x: node.fx,
-    //                 y: node.fy,
-    //                 color: {
-    //                     ...node.color,
-    //                     data: parseColor(node.color.data),
-    //                 },
-    //             };
-    //         }),
-    //     [graphActions]
-    // );
-
     const updateStorage = () => {
         const jsonGraph = toJSON();
         localStorage.setItem(
@@ -117,30 +104,51 @@ export function AppProvider({ children }: React.PropsWithChildren) {
         );
     };
 
-    // useEffect(() => {
-    //     const jsonGraph = toJSON();
-    //     localStorage.setItem(
-    //         "graph",
-    //         LZString.compressToEncodedURIComponent(JSON.stringify(jsonGraph))
-    //     );
-    // }, [graph, toJSON]);
-
     const { windowDimensions } = useViewPortSize();
+
+    const options: ForceGraphProps<Node, Link> = {
+        // graph
+        width: windowDimensions.width,
+        height: windowDimensions.height,
+        graphData: {
+            nodes: graphActions.getVertices(),
+            links: graphActions.getEdges(),
+        },
+        minZoom: 0.5,
+        maxZoom: 10,
+
+        // links
+        linkDirectionalArrowLength: 4,
+        linkDirectionalArrowRelPos: 0.3,
+
+        // nodes
+        nodeRelSize: windowDimensions.isMobile ? 16 : 24,
+
+        // enablePanInteraction: false,
+    };
 
     const [sidebar, setSidebar] = useState<boolean>(
         windowDimensions.isMobile ? false : true
     );
 
+    const [scale, setScale] = useState(1);
+
     return (
         <AppContext
             value={{
+                graphRef,
                 graph,
                 updateStorage,
 
                 sidebar,
                 setSidebar,
-                viewport: windowDimensions,
 
+                scale,
+                setScale,
+
+                options,
+
+                viewport: windowDimensions,
                 ...graphActions,
             }}
         >

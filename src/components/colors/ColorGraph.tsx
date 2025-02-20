@@ -3,11 +3,10 @@ import ForceGraph2D, {
     NodeObject,
     LinkObject,
     ForceGraphProps,
-    ForceGraphMethods,
 } from "react-force-graph-2d";
 
 import { useAppContext, usePaletteContext, useToolsContext } from "@/context";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect } from "react";
 import { Toolbar, Zoom } from "@/features";
 
 // @ts-expect-error - d3-force-3d
@@ -25,51 +24,25 @@ export type Link = LinkObject & {
 };
 
 export function ColorGraph() {
-    const { state, visible, setVisible } = useToolsContext();
-
-    const [scale, setScale] = useState(1);
+    const { state, zoom, setVisible } = useToolsContext();
 
     const {
+        scale,
         graph,
-        viewport: { width, height, isMobile },
-        getVertices,
-        getEdges,
+        options,
+        graphRef,
+        viewport: { width, height },
+        setScale,
         updateStorage,
     } = useAppContext();
 
     const {
-        getBackgroundHex,
-        contrastColor,
-        expandColor,
-        background,
         validator,
+        background,
+        expandColor,
+        contrastColor,
+        getBackgroundHex,
     } = usePaletteContext();
-
-    const options: ForceGraphProps<Node, Link> = useMemo(
-        () => ({
-            // graph
-            width,
-            height,
-            graphData: {
-                nodes: getVertices(),
-                links: getEdges(),
-            },
-            minZoom: 0.5,
-            maxZoom: 10,
-
-            // links
-            linkDirectionalArrowLength: 4,
-            linkDirectionalArrowRelPos: 0.3,
-
-            // nodes
-            nodeRelSize: isMobile ? 16 : 24,
-
-            // enablePanInteraction: false,
-        }),
-        [width, height, isMobile, getVertices, getEdges]
-    );
-
-    const graphRef = useRef<ForceGraphMethods<Node, Link>>(null);
 
     const callbacks: ForceGraphProps<Node, Link> = {
         // nodes
@@ -84,6 +57,7 @@ export function ColorGraph() {
             ctx,
             globalScale
         ) => {
+            if (!options) return;
             const bgHex = getBackgroundHex() as string;
             const colorHex = nodeColor.data.toString("hex");
 
@@ -136,6 +110,7 @@ export function ColorGraph() {
         },
         linkCanvasObject: (link, ctx, globalScale) => {
             if (!state.labels.active) return;
+            if (!options) return;
 
             // @link https://github.com/vasturiano/force-graph/blob/fa802c042ddb86714068b53697bcd9371133c9ef/src/canvas-force-graph.js#L323
             // const { source, target } = link;
@@ -257,24 +232,10 @@ export function ColorGraph() {
         },
     };
 
-    const zoom = {
-        zoomToFit: () => {
-            if (graphRef.current === null) return;
-            graphRef.current.zoomToFit(300, 128);
-        },
-        zoom: (scale: number) => {
-            if (graphRef.current === null) return;
-            graphRef.current.zoom(scale, 300);
-        },
-        visible: visible,
-        min: options.minZoom!,
-        max: options.maxZoom!,
-        referenceScale: scale,
-    };
-
     useEffect(() => {
-        const fg = graphRef.current;
-        if (fg === null) return;
+        const fg = graphRef?.current;
+        if (!fg) return;
+        if (!options) return;
 
         fg.d3Force("center", null);
 
@@ -305,7 +266,7 @@ export function ColorGraph() {
         });
 
         fg.d3Force("collision", forceCollide(options.nodeRelSize));
-    }, [state, options, validator, width, height]);
+    }, [state, options, validator, width, height, graphRef]);
 
     useEffect(() => {
         updateStorage();

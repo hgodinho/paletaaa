@@ -14,4 +14,13 @@ export type ToolsType = {
     toggleLabels: () => void;
     toggleMagnet: () => void;
     toggleBackground: (value?: boolean) => void;
+
+    zoom: {
+        zoomToFit: () => void;
+        zoom: (scale: number) => void;
+        visible: boolean;
+        min: number;
+        max: number;
+        referenceScale?: number;
+    };
 };
