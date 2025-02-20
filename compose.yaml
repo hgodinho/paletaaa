@@ -18,5 +18,10 @@ services:
     volumes:
       - ./dist:/app/dist
 
+  test:
+    build:
+      context: .
+      target: test
+
 volumes:
   root:

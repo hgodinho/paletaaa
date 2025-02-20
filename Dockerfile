@@ -19,3 +19,10 @@ RUN pnpm install --frozen-lockfile
 COPY . .
 EXPOSE 4000
 CMD [ "sh", "-c", "pnpm build && pnpm preview" ]
+
+FROM base AS test
+WORKDIR /app
+COPY package.json pnpm-lock.yaml ./
+RUN pnpm install --frozen-lockfile
+COPY . .
+CMD [ "pnpm", "test" ]
