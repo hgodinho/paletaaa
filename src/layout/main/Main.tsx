@@ -1,16 +1,14 @@
 import { cn } from "@/lib";
 
-import { Menu /*Preview*/ } from "@/components";
-
 import { Sidebar } from "@/layout";
 
-import { ColorGraph } from "@/features";
+import { ColorGraph, ColorsLayers } from "@/features";
 
 export function Main() {
     return (
         <main className={cn("h-full", "w-full", "flex", "flex-row")}>
             <Sidebar>
-                <Menu />
+                <ColorsLayers />
             </Sidebar>
             <ColorGraph />
             {/* <Preview />
