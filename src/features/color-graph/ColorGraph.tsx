@@ -1,11 +1,16 @@
 import { cn } from "@/lib";
 import ForceGraph2D, {
-    NodeObject,
     LinkObject,
     ForceGraphProps,
 } from "react-force-graph-2d";
 
-import { useAppContext, usePaletteContext, useToolsContext } from "@/context";
+import {
+    useAppContext,
+    usePaletteContext,
+    useToolsContext,
+    Node,
+    Link,
+} from "@/context";
 import { useEffect } from "react";
 import { Toolbar, Zoom } from "@/features";
 
@@ -13,15 +18,6 @@ import { Toolbar, Zoom } from "@/features";
 import { forceCollide } from "d3-force-3d";
 
 import canvas from "./canvas";
-
-export type Node = NodeObject & {
-    id: string;
-};
-
-export type Link = LinkObject & {
-    source: string;
-    target: string;
-};
 
 export function ColorGraph() {
     const { state, zoom, setVisible } = useToolsContext();

@@ -1,5 +1,5 @@
 import { Color } from "@/context";
-import { ButtonProps } from "../button";
+import { ButtonProps } from "@/components";
 
 export type ColorProps = {
     onChange?: (value: Color) => void;
