@@ -5,7 +5,6 @@ export * from "./preview";
 export * from "./popover";
 export * from "./textarea";
 export * from "./button";
-export * from "./menu";
 export * from "./links";
 export * from "./trigger";
 export * from "./tooltip";
