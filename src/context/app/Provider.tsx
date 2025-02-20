@@ -5,7 +5,7 @@ import LZString from "lz-string";
 
 import { getRandomId, useGraph, useViewPortSize } from "@/lib";
 import { AppContext } from "./Context";
-import { Node, Link } from "./types";
+import { Node, Link } from "./";
 import { ForceGraphMethods, ForceGraphProps } from "react-force-graph-2d";
 
 export function AppProvider({ children }: React.PropsWithChildren) {

@@ -3,18 +3,10 @@ import { Dispatch, SetStateAction } from "react";
 import {
     ForceGraphMethods,
     ForceGraphProps,
-    LinkObject,
     NodeObject,
 } from "react-force-graph-2d";
-
-export type Node = NodeObject & {
-    id: string;
-};
-
-export type Link = LinkObject & {
-    source: string;
-    target: string;
-};
+import { Node as NodeType, Link as LinkType } from "@/lib";
+import { Color } from "../palette/Context";
 
 export type Viewport = {
     width: number;
@@ -23,6 +15,16 @@ export type Viewport = {
     isTablet: boolean;
     isDesktop: boolean;
 };
+
+export type Node = NodeType<
+    NodeObject & {
+        id: string;
+        color: Color;
+        expanded: boolean;
+    }
+>;
+
+export type Link = LinkType<Node>;
 
 export type AppType = ReturnType<typeof useGraph<Node, Link>> & {
     graphRef?: React.RefObject<ForceGraphMethods<Node, Link> | null>;
