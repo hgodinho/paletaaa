@@ -1,8 +1,10 @@
 import { cn } from "@/lib";
 
-import { ColorGraph, Menu /*Preview*/ } from "@/components";
+import { Menu /*Preview*/ } from "@/components";
 
 import { Sidebar } from "@/layout";
+
+import { ColorGraph } from "@/features";
 
 export function Main() {
     return (
@@ -12,8 +14,8 @@ export function Main() {
             </Sidebar>
             <ColorGraph />
             {/* <Preview />
-                                // to be further implemented
-                            */}
+                // to be further implemented
+            */}
         </main>
     );
 }
