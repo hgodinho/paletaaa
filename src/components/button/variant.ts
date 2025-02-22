@@ -23,7 +23,7 @@ export const buttonVariants = cva(
                     "rounded-sm",
                     "border",
                     "border-gray-800",
-                    "hover:bg-gray-00",
+                    "hover:bg-gray-300",
                 ],
                 trigger: [
                     "flex",
@@ -32,7 +32,7 @@ export const buttonVariants = cva(
                     "p-2",
                     "border",
                     "border-gray-800",
-                    "hover:bg-gray-00",
+                    "hover:bg-gray-300",
                     "z-20",
                     "duration-300",
                 ],
