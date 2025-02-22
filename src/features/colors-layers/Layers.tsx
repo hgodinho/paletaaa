@@ -2,9 +2,9 @@ import { useAppContext } from "@/context";
 import { Layer } from "./Layer";
 
 export function Layers() {
-    const { bfsAll } = useAppContext();
+    const { getVertices } = useAppContext();
 
-    return bfsAll((vertex) => {
+    return getVertices().map((vertex) => {
         return <Layer key={vertex.id} vertex={vertex} />;
     });
 }
