@@ -5,11 +5,12 @@ import ForceGraph2D, {
 } from "react-force-graph-2d";
 
 import {
+    Node,
+    Link,
     useAppContext,
     usePaletteContext,
     useToolsContext,
-    Node,
-    Link,
+    useNodeOptionsContext,
 } from "@/context";
 import { useEffect } from "react";
 import { Toolbar, Zoom } from "@/features";
@@ -20,13 +21,11 @@ import { forceCollide } from "d3-force-3d";
 import canvas from "./canvas";
 
 export function ColorGraph() {
-    const { state, zoom, setVisible } = useToolsContext();
-
     const {
         scale,
         graph,
         options,
-        graphRef,
+        graphInstance,
         viewport: { height },
         setScale,
         updateStorage,
@@ -39,6 +38,10 @@ export function ColorGraph() {
         contrastColor,
         getBackgroundHex,
     } = usePaletteContext();
+
+    const { state, zoom, setVisible } = useToolsContext();
+
+    const { ref, referenceProps, setSelected } = useNodeOptionsContext();
 
     const callbacks: ForceGraphProps<Node, Link> = {
         // nodes
@@ -88,6 +91,9 @@ export function ColorGraph() {
             }
         },
         nodeCanvasObjectMode: () => "after",
+        onNodeDrag: () => {
+            setSelected(undefined);
+        },
         onNodeDragEnd: (node) => {
             if (state.magnet.active) {
                 node.fx = undefined;
@@ -98,7 +104,10 @@ export function ColorGraph() {
             }
             updateStorage();
         },
-        onNodeClick: (node) => expandColor(node.id),
+        onNodeClick: (node) => {
+            setSelected(node.id);
+            expandColor(node.id);
+        },
 
         // links
         linkColor: () => {
@@ -226,10 +235,31 @@ export function ColorGraph() {
                 setScale(zoom.k);
             }
         },
+
+        onBackgroundClick: () => {
+            setSelected(undefined);
+        },
+
+        onRenderFramePre: (ctx, globalScale) => {
+            if (!state.labels.active) return;
+
+            // draw a crosshair at the origin
+            ctx.strokeStyle = "#000";
+            ctx.lineWidth = 1 / globalScale;
+            ctx.beginPath();
+            ctx.moveTo(0, -10 / globalScale);
+            ctx.lineTo(0, 10 / globalScale);
+            ctx.moveTo(-10 / globalScale, 0);
+            ctx.lineTo(10 / globalScale, 0);
+            ctx.stroke();
+            const fontSize = 12 / globalScale;
+            ctx.font = `${fontSize}px Inter`;
+            ctx.fillText("0,0", 15 / globalScale, 5 / globalScale);
+        },
     };
 
     useEffect(() => {
-        const fg = graphRef?.current;
+        const fg = graphInstance;
         if (!fg) return;
         if (!options) return;
 
@@ -295,9 +325,10 @@ export function ColorGraph() {
                 <Toolbar />
                 <ForceGraph2D
                     // @ts-expect-error - ref
-                    ref={graphRef}
+                    ref={ref}
                     {...options}
                     {...callbacks}
+                    {...referenceProps()}
                 />
                 <Zoom {...zoom} />
             </div>

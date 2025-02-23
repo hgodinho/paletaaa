@@ -54,6 +54,8 @@ export function Toolbar({ className }: ToolbarProps) {
                 "z-10",
                 "left-1/2",
                 "-ml-12",
+                "mt-2",
+                "lg:mt-3",
 
                 visible
                     ? "opacity-100"

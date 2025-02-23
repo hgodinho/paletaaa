@@ -96,6 +96,33 @@ export function PaletteProvider({
     };
 
     /**
+     * Duplicate a color in the palette
+     * @param id | id of the color
+     *
+     * @posthog color_duplicate event
+     */
+    const onColorDuplicate = (id: string) => {
+        const color = getColor(id);
+        if (!color) return;
+
+        const newId = getRandomId();
+        graphActions.addVertex({
+            id: newId,
+            expanded: true,
+            val: 1.5,
+            color: {
+                ...color,
+                id: newId,
+            },
+        });
+
+        posthog?.capture("color_duplicate", {
+            id,
+            newId,
+        });
+    };
+
+    /**
      * Remove a color from the palette
      * @param id | id of the color
      *
@@ -273,11 +300,7 @@ export function PaletteProvider({
      * @posthog link_remove event
      */
     const onLinkRemove = (source: string, target: string) => {
-        if (graphActions.isDirEdge(source, target)) {
-            graphActions.removeDirEdge({ source, target });
-        } else {
-            graphActions.removeEdge({ source, target });
-        }
+        graphActions.removeDirEdge({ source, target });
 
         posthog?.capture("link_remove", {
             source,
@@ -298,6 +321,7 @@ export function PaletteProvider({
                 getBackgroundHex,
                 contrastColor,
                 onColorAdd,
+                onColorDuplicate,
                 onColorRemove,
                 updateColorName,
                 updateColorData,

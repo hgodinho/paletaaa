@@ -8,8 +8,6 @@ export const buttonGroupVariants = cva(
         "justify-center",
         "items-center",
         "border",
-        "mt-2",
-        "lg:mt-3",
 
         "transform",
         "duration-300",

@@ -1,5 +1,10 @@
 import { Main } from "@/layout";
-import { AppProvider, PaletteProvider, ToolsProvider } from "@/context";
+import {
+    AppProvider,
+    PaletteProvider,
+    ToolsProvider,
+    NodeOptionsProvider,
+} from "@/context";
 import { BrowserRouter } from "react-router";
 
 function App() {
@@ -8,7 +13,9 @@ function App() {
             <AppProvider>
                 <PaletteProvider>
                     <ToolsProvider>
-                        <Main />
+                        <NodeOptionsProvider>
+                            <Main />
+                        </NodeOptionsProvider>
                     </ToolsProvider>
                 </PaletteProvider>
             </AppProvider>

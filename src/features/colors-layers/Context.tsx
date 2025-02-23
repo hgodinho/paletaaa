@@ -5,6 +5,7 @@ export const colorsLayersContextDefault: ColorsLayersContextType = {
     setExpanded: () => {},
     removeItem: () => {},
     isExpanded: () => false,
+    duplicateItem: () => {},
 };
 
 export const ColorsLayersContext = createContext(colorsLayersContextDefault);

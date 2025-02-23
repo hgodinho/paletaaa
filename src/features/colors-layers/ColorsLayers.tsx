@@ -25,7 +25,7 @@ export function ColorsLayers() {
         return getVertex(id)?.expanded || false;
     };
 
-    const { onColorAdd, onColorRemove } = usePaletteContext();
+    const { onColorAdd, onColorRemove, onColorDuplicate } = usePaletteContext();
 
     return (
         <ColorsLayersContext
@@ -33,9 +33,11 @@ export function ColorsLayers() {
                 setExpanded,
                 isExpanded,
                 removeItem: onColorRemove,
+                duplicateItem: onColorDuplicate,
             }}
         >
             <Button
+                aria-label="Add color"
                 variant={"square"}
                 className={cn(
                     "flex",

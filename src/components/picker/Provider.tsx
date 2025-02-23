@@ -10,7 +10,7 @@ import {
 export function PickerProvider({
     color,
     onChange,
-    children
+    children,
 }: React.PropsWithChildren<PickerContextProps>) {
     const [colorSpace] = useState<ColorSpace>("hsl");
 
@@ -19,30 +19,34 @@ export function PickerProvider({
             xChannel: "saturation",
             yChannel: "lightness",
 
-            colorSpace: colorSpace,
-            value: color.toString("hex"),
+            colorSpace,
+            value: color,
+
             onChange,
         },
         thumbProps: {},
         sliderProps: {
             orientation: "vertical",
             channel: "hue",
-            colorSpace: colorSpace,
-            value: color.toString("hex"),
+
+            colorSpace,
+            value: color,
             onChange,
         },
         fieldProps: {
-            colorSpace: colorSpace,
-            value: color.toString("hex"),
-            onChange: (c: PrimitiveColor | ChangeEvent<HTMLInputElement> | null) => {
+            colorSpace,
+            value: color,
+            onChange: (
+                c: PrimitiveColor | ChangeEvent<HTMLInputElement> | null
+            ) => {
                 if (!c) return;
                 if ("target" in c) {
                     c = parseColor(c.target.value);
                 }
-                onChange?.(c.toFormat(colorSpace));
-            }
+                onChange?.(c);
+            },
         },
-    }
+    };
 
     const value = {
         ...PickerContextDefault,

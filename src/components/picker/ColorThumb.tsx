@@ -23,6 +23,9 @@ export function ColorThumb({ className, ...props }: ColorThumbProps) {
                 "ring-offset-2",
                 "ring-offset-white",
 
+                "focus-within:ring-2",
+                "focus-within:ring-black",
+
                 String(className)
             )}
             {...thumbProps}

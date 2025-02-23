@@ -1,4 +1,4 @@
-import { AppType, Node } from "@/context";
+import { AppType, Node, PaletteContextCallback } from "@/context";
 
 export type LayerProps = {
     vertex: Node;
@@ -7,5 +7,6 @@ export type LayerProps = {
 export type ColorsLayersContextType = {
     setExpanded: (id: string) => void;
     removeItem: AppType["removeVertex"];
+    duplicateItem: PaletteContextCallback["onColorDuplicate"];
     isExpanded: (id: string) => boolean;
 };

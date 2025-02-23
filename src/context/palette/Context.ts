@@ -27,6 +27,7 @@ export type PaletteContextCallback = {
     getBackground: () => Color | undefined;
     getBackgroundHex: () => string;
     onColorAdd: () => void;
+    onColorDuplicate: (id: string) => void;
     onColorRemove: (id: string) => void;
     contrastColor: (
         foreground: string,
@@ -49,6 +50,7 @@ export const PaletteCallback: PaletteContextCallback = {
     getBackground: () => undefined,
     getBackgroundHex: () => "#FFF",
     onColorAdd: () => {},
+    onColorDuplicate: () => {},
     onColorRemove: () => {},
     contrastColor: () => "black",
     updateColorName: () => {},

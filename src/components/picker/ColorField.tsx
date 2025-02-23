@@ -1,4 +1,5 @@
 import {
+    Color,
     ColorField as Primitive,
     ColorFieldProps as PrimitiveType,
 } from "react-aria-components";
@@ -7,9 +8,11 @@ import { Label, Input, InputProps } from "@/components";
 import { usePickerContext } from "./Context";
 import { cn } from "@/lib";
 
-export type ColorFieldProps = PrimitiveType & {
-    label?: string;
-} & InputProps;
+export type ColorFieldProps = Omit<InputProps, "value"> &
+    PrimitiveType & {
+        label?: string;
+        value?: Color;
+    };
 
 export function ColorField({ label, size, ...props }: ColorFieldProps) {
     const { fieldProps } = usePickerContext();
