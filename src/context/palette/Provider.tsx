@@ -300,11 +300,7 @@ export function PaletteProvider({
      * @posthog link_remove event
      */
     const onLinkRemove = (source: string, target: string) => {
-        if (graphActions.isDirEdge(source, target)) {
-            graphActions.removeDirEdge({ source, target });
-        } else {
-            graphActions.removeEdge({ source, target });
-        }
+        graphActions.removeDirEdge({ source, target });
 
         posthog?.capture("link_remove", {
             source,
