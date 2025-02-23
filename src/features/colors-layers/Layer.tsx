@@ -1,4 +1,13 @@
-import { Button, ColorSwatch, Input, Label, Links, Picker } from "@/components";
+import {
+    Button,
+    ButtonGroup,
+    ButtonGroupItem,
+    ColorSwatch,
+    Input,
+    Label,
+    Links,
+    Picker,
+} from "@/components";
 import { cn } from "@/lib";
 import { ChevronDown, Copy, X } from "lucide-react";
 import { useColorsLayersContext } from "./Context";
@@ -50,7 +59,7 @@ export function Layer({ vertex }: LayerProps) {
                     <ColorSwatch size="large" color={vertex.color.data} />
                     {title}
                 </div>
-                <div
+                <ButtonGroup
                     className={cn(
                         "flex",
                         "border",
@@ -59,59 +68,77 @@ export function Layer({ vertex }: LayerProps) {
                         "justify-end",
                         "opacity-0",
                         "group-hover:opacity-100",
+                        "focus-within:opacity-100",
                         "duration-300",
                         "transition"
                     )}
                 >
-                    <Button
-                        variant={"trigger"}
-                        aria-label={`remove ${title}`}
-                        onPress={() => removeItem(vertex.id)}
-                        className={cn(
-                            "text-gray-400",
-                            "border-0",
-                            "group-hover:text-red-500",
-                            "hover:bg-red-200",
-                            "hover:text-red-900"
-                        )}
+                    <ButtonGroupItem
+                        trigger={
+                            <Button
+                                variant={"trigger"}
+                                aria-label={`remove ${title}`}
+                                onPress={() => removeItem(vertex.id)}
+                                className={cn(
+                                    "border-0",
+                                    "group-hover:text-red-500",
+                                    "hover:bg-red-200",
+                                    "hover:text-red-900"
+                                )}
+                            >
+                                <X size={16} />
+                            </Button>
+                        }
+                    >{`remove ${title}`}</ButtonGroupItem>
+                    <ButtonGroupItem
+                        trigger={
+                            <Button
+                                variant={"trigger"}
+                                aria-label={`duplicate ${title}`}
+                                onPress={() => {
+                                    duplicateItem(vertex.id);
+                                }}
+                                className={cn(
+                                    "border-0",
+                                    // "border-x",
+                                    "hover:bg-gray-200"
+                                )}
+                            >
+                                <Copy size={16} />
+                            </Button>
+                        }
+                    >{`duplicate ${title}`}</ButtonGroupItem>
+                    <ButtonGroupItem
+                        trigger={
+                            <Button
+                                variant={"trigger"}
+                                aria-expanded={isLayerExpanded}
+                                aria-controls={vertex.id}
+                                aria-label={
+                                    !isLayerExpanded ? "expand" : "collapse"
+                                }
+                                id={`trigger-item-${vertex.id}`}
+                                onPress={() => {
+                                    setExpanded(vertex.id);
+                                }}
+                                className={cn("border-0", "hover:bg-gray-200")}
+                            >
+                                <ChevronDown
+                                    className={cn(
+                                        "transform",
+                                        "duration-300",
+                                        !isLayerExpanded && "-rotate-90"
+                                    )}
+                                    size={16}
+                                />
+                            </Button>
+                        }
                     >
-                        <X size={16} />
-                    </Button>
-                    <Button
-                        variant={"trigger"}
-                        aria-label={"duplicate"}
-                        onPress={() => {
-                            duplicateItem(vertex.id);
-                        }}
-                        className={cn(
-                            "border-0",
-                            "border-x",
-                            "hover:bg-gray-200"
-                        )}
-                    >
-                        <Copy size={16} />
-                    </Button>
-                    <Button
-                        variant={"trigger"}
-                        aria-expanded={isLayerExpanded}
-                        aria-controls={vertex.id}
-                        aria-label={!isLayerExpanded ? "expand" : "collapse"}
-                        id={`trigger-item-${vertex.id}`}
-                        onPress={() => {
-                            setExpanded(vertex.id);
-                        }}
-                        className={cn("border-0", "hover:bg-gray-200")}
-                    >
-                        <ChevronDown
-                            className={cn(
-                                "transform",
-                                "duration-300",
-                                !isLayerExpanded && "-rotate-90"
-                            )}
-                            size={16}
-                        />
-                    </Button>
-                </div>
+                        {!isLayerExpanded
+                            ? `expand ${title}`
+                            : `collapse ${title}`}
+                    </ButtonGroupItem>
+                </ButtonGroup>
             </h3>
             <div
                 id={vertex.id}
