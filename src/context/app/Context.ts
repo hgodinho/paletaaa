@@ -8,6 +8,8 @@ export const AppDefaults: AppType = {
         nodes: new Map(),
         edges: new Map(),
     },
+    graphInstance: null,
+    setGraphInstance: () => {},
 
     getVertices: () => [],
     getEdges: () => [],

@@ -27,13 +27,20 @@ export type Node = NodeType<
 export type Link = LinkType<Node>;
 
 export type AppType = ReturnType<typeof useGraph<Node, Link>> & {
-    graphRef?: React.RefObject<ForceGraphMethods<Node, Link> | null>;
+    graphRef?: React.RefObject<
+        (HTMLElement & ForceGraphMethods<Node, Link>) | null
+    >;
+
+    graphInstance: (HTMLElement & ForceGraphMethods<Node, Link>) | null;
     options: ForceGraphProps<Node, Link>;
     viewport: Viewport;
     sidebar: boolean;
     scale: number;
     setScale: Dispatch<SetStateAction<number>>;
 
+    setGraphInstance: Dispatch<
+        SetStateAction<(HTMLElement & ForceGraphMethods<Node, Link>) | null>
+    >;
     updateStorage: () => void;
     setSidebar: Dispatch<SetStateAction<boolean>>;
 };

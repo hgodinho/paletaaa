@@ -9,7 +9,11 @@ import { Node, Link } from "./";
 import { ForceGraphMethods, ForceGraphProps } from "react-force-graph-2d";
 
 export function AppProvider({ children }: React.PropsWithChildren) {
-    const graphRef = useRef<ForceGraphMethods<Node, Link>>(null);
+    const graphRef = useRef<HTMLElement & ForceGraphMethods<Node, Link>>(null);
+
+    const [graphInstance, setGraphInstance] = useState<
+        (HTMLElement & ForceGraphMethods<Node, Link>) | null
+    >(null);
 
     const { graph, ...graphActions } = useGraph<Node, Link>(
         (() => {
@@ -137,7 +141,9 @@ export function AppProvider({ children }: React.PropsWithChildren) {
         <AppContext
             value={{
                 graphRef,
+                graphInstance,
                 graph,
+                setGraphInstance,
                 updateStorage,
 
                 sidebar,
