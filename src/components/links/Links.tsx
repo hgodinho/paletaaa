@@ -127,12 +127,12 @@ export function Links({ current }: LinksProps) {
         }
     };
 
-    const colorA = getVertex(current)?.color.data;
+    const colorA = getVertex(current)?.color;
 
     return (
         <div className={cn("flex", "flex-col", "w-full", "gap-4")}>
             {getNodeEdges(current)?.map(({ source, target }) => {
-                const colorB = getVertex(target)?.color.data;
+                const colorB = getVertex(target)?.color;
 
                 return (
                     <div
@@ -154,20 +154,14 @@ export function Links({ current }: LinksProps) {
                                 "items-center"
                             )}
                         >
-                            <ColorSwatch
-                                size={"small"}
-                                color={getVertex(source)?.color.data}
-                            />
+                            <ColorSwatch size={"small"} color={colorA?.data} />
                             {isDirEdge(current, target) ? (
                                 <ArrowRight size={16} />
                             ) : (
                                 <ArrowLeftRight size={16} />
                             )}
-                            <ColorSwatch
-                                size={"small"}
-                                color={getVertex(target)?.color.data}
-                            />
-                            {getVertex(target)?.color.title || target}
+                            <ColorSwatch size={"small"} color={colorB?.data} />
+                            {colorB?.title || colorB?.data.toString("hex")}
                         </div>
                         <div
                             className={cn(
@@ -200,13 +194,13 @@ export function Links({ current }: LinksProps) {
                                     <span>aa</span>
                                     {icon(
                                         validator?.isLevelAA(
-                                            colorA!.toString("hex"),
-                                            colorB!.toString("hex"),
+                                            colorA!.data.toString("hex"),
+                                            colorB!.data.toString("hex"),
                                             24
                                         ),
                                         validator?.isLevelAA(
-                                            colorA!.toString("hex"),
-                                            colorB!.toString("hex"),
+                                            colorA!.data.toString("hex"),
+                                            colorB!.data.toString("hex"),
                                             18
                                         )
                                     )}
@@ -223,19 +217,20 @@ export function Links({ current }: LinksProps) {
                                     <span>aaa</span>
                                     {icon(
                                         validator?.isLevelAAA(
-                                            colorA!.toString("hex"),
-                                            colorB!.toString("hex"),
+                                            colorA!.data.toString("hex"),
+                                            colorB!.data.toString("hex"),
                                             24
                                         ),
                                         validator?.isLevelAAA(
-                                            colorA!.toString("hex"),
-                                            colorB!.toString("hex"),
+                                            colorA!.data.toString("hex"),
+                                            colorB!.data.toString("hex"),
                                             18
                                         )
                                     )}
                                 </div>
                             </div>
                             <Button
+                                aria-label="remove link"
                                 variant={"none"}
                                 className={cn(
                                     "invisible",
