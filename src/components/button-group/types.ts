@@ -4,4 +4,7 @@ import { buttonGroupVariants } from "./variants";
 
 export type ButtonGroupContextType = VariantProps<typeof buttonGroupVariants>;
 
-export type ButtonGroupProps = GroupProps & ButtonGroupContextType;
+export type ButtonGroupProps = GroupProps &
+    ButtonGroupContextType & {
+        ref?: React.Ref<HTMLDivElement>;
+    };
